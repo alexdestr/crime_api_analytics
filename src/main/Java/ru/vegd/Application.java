@@ -7,25 +7,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 import ru.vegd.dao.StreetLevelCrimesDao;
 import ru.vegd.dataReceiver.Receiver;
+import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.StreetLevelCrimes;
 
 import java.time.YearMonth;
-import java.util.*;
+import java.util.List;
+import java.util.Properties;
 
 @SpringBootApplication
 @Component
 public class Application {
 
     @Autowired
-    static StreetLevelCrimesDao streetLevelCrimesDao;
+    StreetLevelCrimesDao streetLevelCrimesDao;
 
     public static void main(String[] args) {
         new SpringApplicationBuilder(Application.class)
                 .web(WebApplicationType.NONE) // .REACTIVE, .SERVLET
                 .run(args);
+
+        ApplicationContext ctx =
+                new AnnotationConfigApplicationContext("ru.vegd");
+
+        Application application = ctx.getBean(Application.class);
+        StreetLevelCrimesDao streetLevelCrimesDao = application.streetLevelCrimesDao;
 
         Options options = new Options();
         CommandLine cmd = null;
@@ -67,29 +77,10 @@ public class Application {
             JsonArray jsonArray = jsonArrayList.get(id);
             for (Integer z = 0; z < jsonArray.size(); z++) {
                 JsonObject json = jsonArray.get(z).getAsJsonObject();
-                StreetLevelCrimes crimes = new StreetLevelCrimes(json.get("category").getAsString(),
-                        json.get("location_type").getAsString(),
-                        getValuesFromMap((Map) json.get("location")),
-                        Long.valueOf(((Map) ((Map) json.get("location")).get("street")).get("id").toString()),
-                        ((Map) ((Map) json.get("location")).get("street")).get("id").toString(),
-                        json.get("context").getAsLong(),
-                        json.get("outcome_status").getAsString(),
-                        json.get("persistent_id").getAsString(),
-                        json.get("id").getAsLong(),
-                        json.get("location_subtype").getAsString(),
-                        YearMonth.parse(json.get("date").getAsString())
-                );
-                streetLevelCrimesDao.addCrime(crimes);
+                JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
+                streetLevelCrimesDao.addCrime(jsonToEntityConverter.convert(json));
             }
         }
     }
-        private static List<Double> getValuesFromMap(Map map) {
-            Iterator<Map.Entry> itr = map.entrySet().iterator();
-            List<Double> values = new ArrayList();
-            while (itr.hasNext()) {
-                Map.Entry pair = itr.next();
-                values.add((Double) pair.getValue());
-            }
-            return values;
-        }
+
 }

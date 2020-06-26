@@ -12,7 +12,22 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDao {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    private static final String SQL_ADD_CRIME = "INSERT INTO streetLevelCrimes(category, locationType, latitude, longitude, streetId, streetName, context, outcomeCategory, outcomeDate, persistentId, id, locationSubtype, month) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_ADD_CRIME = "INSERT INTO streetLevelCrimes" +
+            "(category, " +
+            "locationType, " +
+            "latitude, " +
+            "longitude, " +
+            "streetId, " +
+            "streetName, " +
+            "context, " +
+            "outcomeCategory, " +
+            "outcomeDate, " +
+            "persistentId, " +
+            "id, " +
+            "locationSubtype, " +
+            "month) " +
+            "VALUES " +
+            "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Override
     public void addCrime(StreetLevelCrimes crime) {
@@ -25,6 +40,7 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDao {
                 crime.getStreetName().toString(),
                 crime.getContext().toString(),
                 crime.getOutcomeCategory().toString(),
+                crime.getOutcomeDate().toString(),
                 crime.getPersistentId().toString(),
                 crime.getId().toString(),
                 crime.getLocationSubtype().toString(),
