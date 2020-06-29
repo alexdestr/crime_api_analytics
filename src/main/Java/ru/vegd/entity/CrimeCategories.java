@@ -46,7 +46,7 @@ public class CrimeCategories {
 
     @Override
     public String toString() {
-        return "CrimeCategoriesDao{" +
+        return "CrimeCategoriesImpl{" +
                 "url='" + url + '\'' +
                 ", name='" + name + '\'' +
                 '}';

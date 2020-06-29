@@ -46,9 +46,13 @@ public class JsonLoader implements Callable<JsonArray> {
             BufferedReader br = new BufferedReader(
                     new InputStreamReader((response.getEntity().getContent())));
 
-            if ((output = br.readLine()) != null) {
+            String inputLine;
+            StringBuilder stringBuilder = new StringBuilder();
+            while ((inputLine = br.readLine()) != null) {
+                stringBuilder.append(inputLine);
             }
-            jsonArray = JsonParser.parseString(output).getAsJsonArray();
+
+            jsonArray = JsonParser.parseString(stringBuilder.toString()).getAsJsonArray();
             httpClient.getConnectionManager().shutdown();
 
         } catch (ClientProtocolException e) {

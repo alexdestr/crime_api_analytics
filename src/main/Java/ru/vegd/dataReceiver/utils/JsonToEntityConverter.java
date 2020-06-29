@@ -1,13 +1,29 @@
 package ru.vegd.dataReceiver.utils;
 
 import com.google.gson.JsonObject;
+import ru.vegd.entity.CrimeCategories;
 import ru.vegd.entity.StreetLevelCrimes;
 
 import java.time.YearMonth;
 
 public class JsonToEntityConverter {
 
+    CrimeCategories crimeCategories = new CrimeCategories();
     StreetLevelCrimes crimes = new StreetLevelCrimes();
+
+    public CrimeCategories convertToCrimeCategories(JsonObject json) {
+        if (json.get("url").isJsonNull() == false) {
+            crimeCategories.setUrl(json.get("url").getAsString().replaceAll("\"", ""));
+        } else {
+            crimeCategories.setUrl(null);
+        }
+        if (json.get("name").isJsonNull() == false) {
+            crimeCategories.setName(json.get("name").getAsString().replaceAll("\"", ""));
+        } else {
+            crimeCategories.setName(null);
+        }
+        return crimeCategories;
+    }
 
     public StreetLevelCrimes convertToStreetLevelCrimes(JsonObject json) {
         if (json.get("category").isJsonNull() == false) {
