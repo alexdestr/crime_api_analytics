@@ -9,7 +9,7 @@ public class JsonToEntityConverter {
 
     StreetLevelCrimes crimes = new StreetLevelCrimes();
 
-    public StreetLevelCrimes convert(JsonObject json) {
+    public StreetLevelCrimes convertToStreetLevelCrimes(JsonObject json) {
         if (json.get("category").isJsonNull() == false) {
             crimes.setCategory(json.get("category").getAsString().replaceAll("\"", ""));
         } else {

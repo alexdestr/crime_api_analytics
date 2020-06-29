@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import ru.vegd.dao.StreetLevelCrimesDao;
 import ru.vegd.dataReceiver.Receiver;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
-import ru.vegd.entity.StreetLevelCrimes;
 
 import java.time.YearMonth;
 import java.util.List;
@@ -70,15 +69,16 @@ public class Application {
         YearMonth fromDate = YearMonth.of(2018, 1);
         YearMonth toDate = YearMonth.of(2018, 3);
 
-        Receiver receiver = new Receiver(link);
-        List<JsonArray> jsonArrayList = receiver.getData(fromDate, toDate);
+        Receiver crimesCategoryReceiver = new Receiver();
+        Receiver streetLevelCrimesReceiver = new Receiver(link);
+        List<JsonArray> jsonArrayList = streetLevelCrimesReceiver.getData(fromDate, toDate);
 
         for (Integer id = 0; id < jsonArrayList.size(); id++) {
             JsonArray jsonArray = jsonArrayList.get(id);
             for (Integer z = 0; z < jsonArray.size(); z++) {
                 JsonObject json = jsonArray.get(z).getAsJsonObject();
                 JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
-                streetLevelCrimesDao.addCrime(jsonToEntityConverter.convert(json));
+                streetLevelCrimesDao.addCrime(jsonToEntityConverter.convertToStreetLevelCrimes(json));
             }
         }
     }
