@@ -15,6 +15,8 @@ import java.util.List;
 @Repository
 public class StreetLevelCrimesImpl implements StreetLevelCrimesDao {
 
+    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(StreetLevelCrimesImpl.class.getName());
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 

@@ -29,6 +29,10 @@ public class Application {
     @Autowired
     StreetLevelCrimesDao streetLevelCrimesDao;
 
+    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Application.class.getName());
+
+    private static final String FILE_PATH = "LondonStations.csv";
+
     public static void main(String[] args) {
         new SpringApplicationBuilder(Application.class)
                 .web(WebApplicationType.NONE) // .REACTIVE, .SERVLET
@@ -41,10 +45,11 @@ public class Application {
         CrimeCategoriesDao crimeCategoriesDao = application.crimeCategoriesDao;
         StreetLevelCrimesDao streetLevelCrimesDao = application.streetLevelCrimesDao;
 
+        CSVReader
 
         Options options = new Options();
         CommandLine cmd = null;
-        String link = "https://data.police.uk/api/crimes-street/all-crime?lng=-0.242033&lat=51.467128&date=2018-01";
+        String link = "https://data.police.uk/api/crimes-street/all-crime?lng=0&lat=0&date=2018-01";
         String lng = null;
         String lat = null;
         String date = null;
@@ -61,19 +66,18 @@ public class Application {
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
+            logger.warn("Parsing cmd error.");
             e.printStackTrace();
         }
 
         if (cmd.hasOption("D")) {
             Properties properties = cmd.getOptionProperties("D");
             link = properties.getProperty("link");
-            lng = properties.getProperty("lng");
-            lat = properties.getProperty("lat");
             date = properties.getProperty("date");
         }
 
         YearMonth fromDate = YearMonth.of(2018, 1);
-        YearMonth toDate = YearMonth.of(2018, 4);
+        YearMonth toDate = YearMonth.of(2018, 12);
 
         Receiver crimesCategoryReceiver = new Receiver("https://data.police.uk/api/crime-categories");
         Receiver streetLevelCrimesReceiver = new Receiver(link);

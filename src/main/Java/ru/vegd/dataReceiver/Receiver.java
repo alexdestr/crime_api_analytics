@@ -12,6 +12,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class Receiver {
 
+    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Receiver.class.getName());
+
     private String link;
     List<JsonArray> resultList = new ArrayList<>();
 
@@ -29,8 +31,10 @@ public class Receiver {
             try {
                 resultList.add(jsonArrayFuture.get());
             } catch (InterruptedException e) {
+                logger.warn("Thread interrupted!");
                 e.printStackTrace();
             } catch (ExecutionException e) {
+                logger.warn("Execution interrupted!");
                 e.printStackTrace();
             }
         }
@@ -44,8 +48,10 @@ public class Receiver {
             try {
                 resultList.add(jsonArrayFuture.get());
             } catch (InterruptedException e) {
+                logger.warn("Thread interrupted!");
                 e.printStackTrace();
             } catch (ExecutionException e) {
+                logger.warn("Execution interrupted!");
                 e.printStackTrace();
             }
         executor.shutdown();

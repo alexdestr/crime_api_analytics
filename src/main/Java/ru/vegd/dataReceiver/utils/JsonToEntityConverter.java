@@ -8,6 +8,9 @@ import java.time.YearMonth;
 
 public class JsonToEntityConverter {
 
+    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(JsonToEntityConverter.class.getName());
+
+
     CrimeCategories crimeCategories = new CrimeCategories();
     StreetLevelCrimes crimes = new StreetLevelCrimes();
 

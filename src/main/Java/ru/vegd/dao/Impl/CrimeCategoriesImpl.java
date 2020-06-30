@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.vegd.Application;
 import ru.vegd.dao.CrimeCategoriesDao;
 import ru.vegd.entity.CrimeCategories;
 
@@ -12,6 +13,8 @@ import java.sql.SQLException;
 
 @Repository
 public class CrimeCategoriesImpl implements CrimeCategoriesDao {
+
+    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(CrimeCategoriesImpl.class.getName());
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -39,7 +42,6 @@ public class CrimeCategoriesImpl implements CrimeCategoriesDao {
                         return 1;
                     }
                 }
-
         );
     }
 }
