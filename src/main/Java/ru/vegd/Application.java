@@ -2,6 +2,7 @@ package ru.vegd;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.opencsv.CSVReader;
 import org.apache.commons.cli.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.WebApplicationType;
@@ -14,10 +15,12 @@ import ru.vegd.dao.CrimeCategoriesDao;
 import ru.vegd.dao.StreetLevelCrimesDao;
 import ru.vegd.dataReceiver.Receiver;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
+import ru.vegd.entity.StreetLocation;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.YearMonth;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @SpringBootApplication
 @Component
@@ -45,11 +48,25 @@ public class Application {
         CrimeCategoriesDao crimeCategoriesDao = application.crimeCategoriesDao;
         StreetLevelCrimesDao streetLevelCrimesDao = application.streetLevelCrimesDao;
 
-        CSVReader
+        CSVReader reader = null;
+        List<StreetLocation> csvData = new ArrayList<>();
+        try {
+            reader = new CSVReader(new FileReader(FILE_PATH));
+            String[] line;
+            while ((line = reader.readNext()) != null) {
+                if (line[0].equals("name")) {
+                    continue;
+                } else {
+                    csvData.add(new StreetLocation(line[0], Double.valueOf(line[1]), Double.valueOf(line[2])));
+                }
+            }
+        } catch (IOException e) {
+            logger.error("Cant open file");
+        }
 
         Options options = new Options();
         CommandLine cmd = null;
-        String link = "https://data.police.uk/api/crimes-street/all-crime?lng=0&lat=0&date=2018-01";
+        String link = "https://data.police.uk/api/crimes-street/all-crime";
         String lng = null;
         String lat = null;
         String date = null;
@@ -77,10 +94,10 @@ public class Application {
         }
 
         YearMonth fromDate = YearMonth.of(2018, 1);
-        YearMonth toDate = YearMonth.of(2018, 12);
+        YearMonth toDate = YearMonth.of(2018, 4);
 
-        Receiver crimesCategoryReceiver = new Receiver("https://data.police.uk/api/crime-categories");
-        Receiver streetLevelCrimesReceiver = new Receiver(link);
+        Receiver crimesCategoryReceiver = new Receiver("https://data.police.uk/api/crime-categories", csvData);
+        Receiver streetLevelCrimesReceiver = new Receiver(link, csvData);
         List<JsonArray> crimesCategories = crimesCategoryReceiver.receiveData();
         List<JsonArray> jsonArrayList = streetLevelCrimesReceiver.receiveData(fromDate, toDate);
 

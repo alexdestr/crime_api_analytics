@@ -6,6 +6,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import ru.vegd.dataReceiver.receivingDataExceptions.ResponseException;
 
 import java.io.BufferedReader;
@@ -39,7 +40,7 @@ public class JsonLoader implements Callable<JsonArray> {
         JsonArray jsonArray = null;
         Integer secondsToSleepOn505ErrorCode = 30;
         try {
-            httpClient = new DefaultHttpClient();
+            httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager());
             HttpGet getRequest = new HttpGet(
                     link);
             getRequest.addHeader("accept", "application/json");
@@ -48,7 +49,7 @@ public class JsonLoader implements Callable<JsonArray> {
                 response = httpClient.execute(getRequest);
                 Integer httpCode = response.getStatusLine().getStatusCode();
 
-                if (httpCode != 200 || httpCode != 429 || httpCode < 500) {
+                if (httpCode != 200) {
                     if (httpCode == 429) {
                         TimeUnit.SECONDS.sleep(1);
                     }
@@ -59,6 +60,8 @@ public class JsonLoader implements Callable<JsonArray> {
                             throw new ResponseException("Failed : HTTP error code", httpCode);
                         }
                     }
+                } else {
+                    break;
                 }
             }
             BufferedReader br = new BufferedReader(
