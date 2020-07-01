@@ -3,17 +3,15 @@ package ru.vegd.dataReceiver;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.springframework.stereotype.Component;
 import ru.vegd.dataReceiver.receivingDataExceptions.ResponseException;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -40,24 +38,25 @@ public class JsonLoader implements Callable<JsonArray> {
         HttpResponse response = null;
         JsonArray jsonArray = null;
         Integer secondsToSleepOn505ErrorCode = 30;
+        Integer sleepTimeInSeconds = 1;
         try {
             httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager());
             HttpGet getRequest = new HttpGet(
                     link);
             getRequest.addHeader("accept", "application/json");
 
-            for (Integer i = secondsToSleepOn505ErrorCode; i <= Integer.MAX_VALUE; i = i + 30) {
+            for (Integer i = secondsToSleepOn505ErrorCode; i <= Integer.MAX_VALUE; i = i + secondsToSleepOn505ErrorCode) {
                 response = httpClient.execute(getRequest);
                 Integer httpCode = response.getStatusLine().getStatusCode();
 
-                if (httpCode != 200) {
-                    if (httpCode == 429) {
-                        TimeUnit.SECONDS.sleep(1);
+                if (httpCode != org.springframework.http.HttpStatus.OK.value()) {
+                    if (httpCode == org.springframework.http.HttpStatus.TOO_MANY_REQUESTS.value()) {
+                        TimeUnit.SECONDS.sleep(sleepTimeInSeconds);
                     }
-                    if (httpCode >= 500) {
+                    if (httpCode >= org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                         logger.warn(httpCode + "HTTP error. Trying to reconnect");
                         TimeUnit.SECONDS.sleep(i);
-                        if (i > 60) {
+                        if (i > secondsToSleepOn505ErrorCode * 2) {
                             throw new ResponseException("Failed : HTTP error code", httpCode);
                         }
                     }
