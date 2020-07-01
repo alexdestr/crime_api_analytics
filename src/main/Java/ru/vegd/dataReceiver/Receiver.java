@@ -12,10 +12,7 @@ import ru.vegd.linkBuilder.LinkBuider;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 
 public class Receiver {
@@ -62,7 +59,15 @@ public class Receiver {
                 }
             }
         }
-        executor.shutdown();
+        try {
+            executor.shutdown();
+            final boolean done = executor.awaitTermination(csvData.size() * 11, TimeUnit.SECONDS);
+            if (!done) {
+                logger.warn("Not all data has received");
+            }
+        } catch (InterruptedException e) {
+            logger.warn("Interrupt exception");
+        }
     }
 
     public List<JsonArray> receiveData() {
