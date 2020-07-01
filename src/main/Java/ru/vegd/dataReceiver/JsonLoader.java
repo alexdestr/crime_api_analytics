@@ -7,6 +7,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.springframework.stereotype.Component;
 import ru.vegd.dataReceiver.receivingDataExceptions.ResponseException;
 
 import java.io.BufferedReader;
@@ -15,6 +16,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
 
 public class JsonLoader implements Callable<JsonArray> {
 
@@ -31,7 +33,6 @@ public class JsonLoader implements Callable<JsonArray> {
     public String getName() {
         return name;
     }
-
 
     @Override
     public JsonArray call() throws Exception {
@@ -61,6 +62,7 @@ public class JsonLoader implements Callable<JsonArray> {
                         }
                     }
                 } else {
+                    i = 0;
                     break;
                 }
             }

@@ -7,7 +7,7 @@ public class StreetLocation {
     private Double latitude;
     private Double longitude;
 
-    public StreetLocation(String streetName, Double latitude, Double longitude) {
+    public StreetLocation(String streetName, Double longitude, Double latitude) {
         this.streetName = streetName;
         this.latitude = latitude;
         this.longitude = longitude;

@@ -94,12 +94,12 @@ public class Application {
         }
 
         YearMonth fromDate = YearMonth.of(2018, 1);
-        YearMonth toDate = YearMonth.of(2018, 4);
+        YearMonth toDate = YearMonth.of(2018, 6);
 
-        Receiver crimesCategoryReceiver = new Receiver("https://data.police.uk/api/crime-categories", csvData);
-        Receiver streetLevelCrimesReceiver = new Receiver(link, csvData);
+        Receiver crimesCategoryReceiver = new Receiver("https://data.police.uk/api/crime-categories", csvData, streetLevelCrimesDao);
+        Receiver streetLevelCrimesReceiver = new Receiver(link, csvData, streetLevelCrimesDao);
         List<JsonArray> crimesCategories = crimesCategoryReceiver.receiveData();
-        List<JsonArray> jsonArrayList = streetLevelCrimesReceiver.receiveData(fromDate, toDate);
+        streetLevelCrimesReceiver.receiveData(fromDate, toDate);
 
         for (Integer id = 0; id < crimesCategories.size(); id++) {
             JsonArray jsonArray = crimesCategories.get(id);
@@ -107,15 +107,6 @@ public class Application {
                 JsonObject json = jsonArray.get(z).getAsJsonObject();
                 JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
                 crimeCategoriesDao.addCrimeCategory(jsonToEntityConverter.convertToCrimeCategories(json));
-            }
-        }
-
-        for (Integer id = 0; id < jsonArrayList.size(); id++) {
-            JsonArray jsonArray = jsonArrayList.get(id);
-            for (Integer z = 0; z < jsonArray.size(); z++) {
-                JsonObject json = jsonArray.get(z).getAsJsonObject();
-                JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
-                streetLevelCrimesDao.addCrime(jsonToEntityConverter.convertToStreetLevelCrimes(json));
             }
         }
     }
