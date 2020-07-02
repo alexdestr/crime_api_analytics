@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+#set -e
 
 ################################################################################
 # Other functions                                                              #
@@ -17,8 +17,7 @@ function error_exit {
 
 function display_help() {
    # Display Help
-   echo ""
-   echo
+   echo "-----------------------------------"
    echo "Syntax: scriptTemplate [1 | 2 | 3 | 4]"
    echo "options:"
    echo "1. Default install."
@@ -36,6 +35,9 @@ function display_extended_install() {
    echo "2. Install postgresql"
    echo "3. Install java"
    echo "4. Install maven"
+   echo "5. Download/Update project"
+   echo "6. Compile project"
+   echo "-----------------------------------"
 }
 
 ################################################################################
@@ -61,19 +63,39 @@ read user_input1
 
 case $user_input1 in
    1)
-     $git_setup=true
-     $postgresql_setup=true
-     $java_setup=true
-     $maven_setup=true
-     $project_download=true
-     $project_compile=true
+     git_setup=true
+     postgresql_setup=true
+     java_setup=true
+     maven_setup=true
+     project_download=true
+     project_compile=true
    ;;
    2)
      display_extended_install
      read user_input2
+     case $user_input2 in
+       1)
+       git_setup=true
+       ;;
+       2)
+       postgresql_setup=true
+       ;;
+       3)
+       java_setup=true
+       ;;
+       4)
+       maven_setup=true
+       ;;
+       5)
+       project_download=true
+       ;;
+       6)
+       project_compile=true
+       ;;
+     esac
    ;;
    3)
-     $project_run=true
+     project_run=true
    ;;
    4)
      echo "Version 1.0.0 ALPHA"
@@ -96,7 +118,7 @@ exec 3>log
 yum -y update >&3
 yum install -y wget >&3
 
-if [[ $git_setup -eq true ]]
+if [ "$git_setup" = true ]
   then
     if which git | grep "git" >&3
       then
@@ -106,7 +128,7 @@ if [[ $git_setup -eq true ]]
     fi
 fi
 
-if [[ $postgresql_setup -eq true ]]
+if [ "$postgresql_setup" = true ]
   then
     if which pgsql | grep "pgsql" >&3
       then
@@ -121,29 +143,95 @@ if [[ $postgresql_setup -eq true ]]
     fi
 fi
 
-if which java | grep "java" >&3
-then
-echo "Java already installed"
-else
-yum install -y java-1.8.0-openjdk-devel >&3
+if [ "$java_setup" = true ]
+  then
+    if which java | grep "java" >&3
+      then
+        echo "Java already installed"
+    else
+#      yum install -y java-1.8.0-openjdk-devel >&3
+      cd /usr/local/src/ && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
+"http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm"
+      yum localinstall jdk-8u*-linux-x64.rpm
+      rm -f /usr/local/src/jdk-8u*-linux-x64.rpm
+      cd /usr/local/src && wget --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c4826b92b3f075a80e441/jre-8u121-linux-x64.rpm
+      sudo yum localinstall jre-8u121-linux-x64.rpm
+      rm -f /usr/local/src/jre-8u121-linux-x64.rpm
+      {
+        'JAVA_HOME=/usr/java/jdk1.8.0_121/'
+        'PATH=$JAVA_HOME/bin:$PATH'
+        'export PATH JAVA_HOME'
+        'export CLASSPATH=.'
+      } > /etc/profile.d/java.sh
+      chmod +x /etc/profile.d/java.sh
+      source /etc/profile.d/java.sh
+fi
 fi
 
-if which mvn | grep "mvn" >&3
-then
-echo "Maven already installed"
-else
-  if cd /opt; then
-    wget http://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz >&3
-    tar xzf apache-maven-3.6.3-bin.tar.gz >&3
-    ln -s apache-maven-3.6.3 maven >&3
-    echo -n > /etc/profile.d/maven.sh >&3
-    echo "export M2_HOME=/opt/maven" >> /etc/profile.d/maven.sh
-    echo "export PATH=${M2_HOME}/bin:${PATH}" >> /etc/profile.d/maven.sh
-    source /etc/profile.d/maven.sh >&3
-    rm -f apache-maven-3.6.3-bin.tar.gz >&3
-  else
-    error_exit "$LINENO: An arror has occurred."
-  fi
+if [ "$maven_setup" = true ]
+  then
+    if which mvn | grep "mvn" >&3
+      then
+        echo "Maven already installed"
+    else
+      if cd /opt
+        then
+          wget http://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz >&3
+          tar xzf apache-maven-3.6.3-bin.tar.gz >&3
+          ln -s apache-maven-3.6.3 maven >&3
+          echo -n > /etc/profile.d/maven.sh >&3
+          echo "export M2_HOME=/opt/maven" >> /etc/profile.d/maven.sh
+          echo "export PATH=${M2_HOME}/bin:${PATH}" >> /etc/profile.d/maven.sh
+          source /etc/profile.d/maven.sh >&3
+          rm -f apache-maven-3.6.3-bin.tar.gz >&3
+      else
+        error_exit "$LINENO: An arror has occurred."
+      fi
+    fi
 fi
 
 export MAVEN_OPTS="-Xmx512m"
+#export JAVA_HOME=/usr/java/jdk1.8.0_252/
+#export PATH=$PATH:$JAVA_HOME
+
+################################################################################
+# Project                                                                      #
+################################################################################
+
+if [ "$project_download" = true ]
+  then
+    cd /home/
+    if cd /home/project/
+      then
+        cd /home/project/Task1
+        git clone https://github.com/alexdestr/Task1
+        echo "Project updated."
+    else
+        mkdir project
+        cd /home/project/
+        git init
+        git clone https://github.com/alexdestr/Task1
+        echo "Project downloaded."
+    fi
+fi
+
+if [ "$project_compile" = true ]
+  then
+    su - postgres << EOF
+    export PGPASSWORD=1234
+    psql
+    CREATE DATABASE datapolice;
+    \c datapolice
+    psql datapolice
+    \i /home/project/Task1/db/db_create.sql
+EOF
+    cd /home/project/Task1
+    mvn package
+    mvn compile
+    echo "Project builded,"
+fi
+
+if [ "$project_run" = true ]
+  then
+    java -jar /home/project/Task1/target/Task1.jar
+fi
