@@ -1,4 +1,3 @@
-CREATE DATABASE datapolice;
 CREATE TABLE crimeCategories (
 url TEXT PRIMARY KEY,
 name TEXT
