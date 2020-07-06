@@ -109,7 +109,7 @@ if cd /home/; then
    touch -c log
    touch -c error_log
 else
-     error_exit "$LINENO: An error has occured. Cannot change directory! Aborting."
+     error_exit "$LINENO: An error has occured. Cannot change directory! Abortin                                                                                                                                  g."
 fi
 
 exec 2>error_log
@@ -134,7 +134,7 @@ if [ "$postgresql_setup" = true ]
       then
         echo "Postgresql already installed"
     else
-      yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-6-x86_64/pgdg-redhat-repo-latest.noarch.rpm >&3
+      yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-6                                                                                                                                  -x86_64/pgdg-redhat-repo-latest.noarch.rpm >&3
       yum install -y postgresql12 >&3
       yum install -y postgresql12-server >&3
       service postgresql-12 initdb >&3
@@ -150,11 +150,11 @@ if [ "$java_setup" = true ]
         echo "Java already installed"
     else
 #      yum install -y java-1.8.0-openjdk-devel >&3
-      cd /usr/local/src/ && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
-"http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm"
+      cd /usr/local/src/ && wget --no-cookies --no-check-certificate --header "C                                                                                                                                  ookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup                                                                                                                                  -cookie" \
+"http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096                                                                                                                                  fa80163/jdk-8u131-linux-x64.rpm"
       yum localinstall jdk-8u*-linux-x64.rpm
       rm -f /usr/local/src/jdk-8u*-linux-x64.rpm
-      cd /usr/local/src && wget --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c4826b92b3f075a80e441/jre-8u121-linux-x64.rpm
+      cd /usr/local/src && wget --header "Cookie: oraclelicense=accept-securebac                                                                                                                                  kup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c48                                                                                                                                  26b92b3f075a80e441/jre-8u121-linux-x64.rpm
       sudo yum localinstall jre-8u121-linux-x64.rpm
       rm -f /usr/local/src/jre-8u121-linux-x64.rpm
       {
@@ -176,7 +176,7 @@ if [ "$maven_setup" = true ]
     else
       if cd /opt
         then
-          wget http://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz >&3
+          wget http://www-us.apache.org/dist/maven/maven-3/3.6.3/binaries/apache                                                                                                                                  -maven-3.6.3-bin.tar.gz >&3
           tar xzf apache-maven-3.6.3-bin.tar.gz >&3
           ln -s apache-maven-3.6.3 maven >&3
           echo -n > /etc/profile.d/maven.sh >&3
