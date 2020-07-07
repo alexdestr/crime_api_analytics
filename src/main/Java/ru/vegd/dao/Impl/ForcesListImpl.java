@@ -19,7 +19,10 @@ public class ForcesListImpl implements ForcesListDao {
     JdbcTemplate jdbcTemplate;
 
     private static final String SQL_ADD_FORCE = "INSERT INTO forcesList " +
-            "VALUES (?, ?)";
+            "VALUES (?, ?) " +
+            "ON CONFLICT(id) DO UPDATE " +
+            "SET id=?, " +
+            "name=?";
 
     @Override
     public void add(ForcesList forcesList) {
@@ -28,6 +31,8 @@ public class ForcesListImpl implements ForcesListDao {
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ps.setString(1, forcesList.getId());
                 ps.setString(2, forcesList.getName());
+                ps.setString(3, forcesList.getId());
+                ps.setString(4, forcesList.getName());
             }
 
             @Override

@@ -4,7 +4,7 @@ name TEXT
 );
 
 CREATE TABLE forcesList (
-id BIGINT PRIMARY KEY UNIQUE,
+id TEXT PRIMARY KEY,
 name TEXT
 );
 

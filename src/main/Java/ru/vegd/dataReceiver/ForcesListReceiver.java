@@ -1,9 +1,11 @@
 package ru.vegd.dataReceiver;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.springframework.stereotype.Component;
 import ru.vegd.dao.CrimeCategoriesDao;
 import ru.vegd.dao.ForcesListDao;
+import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.Station;
 
 import java.util.ArrayList;
@@ -33,7 +35,11 @@ public class ForcesListReceiver {
         Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);
         try {
             JsonArray jsonArray = jsonArrayFuture.get();
-
+            for (Integer i = 0; i < jsonArray.size(); i++) {
+                JsonObject object = jsonArray.get(i).getAsJsonObject();
+                JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
+                forcesListDao.add(jsonToEntityConverter.convertToForcesList(object));
+            }
         } catch (InterruptedException e) {
             logger.warn("Thread interrupted!");
             e.printStackTrace();
