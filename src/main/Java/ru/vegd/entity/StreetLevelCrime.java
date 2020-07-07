@@ -1,20 +1,13 @@
 package ru.vegd.entity;
 
-import com.google.gson.JsonObject;
-
-import java.sql.Timestamp;
 import java.time.YearMonth;
-import java.util.List;
 import java.util.Objects;
 
-public class StreetLevelCrimes {
+public class StreetLevelCrime {
     private String category;
 
     private String locationType;
-    private Double latitude;
-    private Double longitude;
-    private Long streetId;
-    private String streetName;
+    private StreetLocation streetLocation = new StreetLocation();
 
     private String context;
     private String outcomeCategory;
@@ -24,16 +17,16 @@ public class StreetLevelCrimes {
     private String locationSubtype;
     private YearMonth month;
 
-    public StreetLevelCrimes() {
+    public StreetLevelCrime() {
     }
 
-    public StreetLevelCrimes(String category, String locationType, Double latitude, Double longitude, Long streetId, String streetName, String context, String outcomeCategory, YearMonth outcomeDate, String persistentId, Long id, String locationSubtype, YearMonth month) {
+    public StreetLevelCrime(String category, String locationType, Double latitude, Double longitude, Long streetId, String streetName, String context, String outcomeCategory, YearMonth outcomeDate, String persistentId, Long id, String locationSubtype, YearMonth month) {
         this.category = category;
         this.locationType = locationType;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.streetId = streetId;
-        this.streetName = streetName;
+        this.streetLocation.setLatitude(latitude);
+        this.streetLocation.setLongitude(longitude);
+        this.streetLocation.setStreetId(streetId);
+        this.streetLocation.setStreetName(streetName);
         this.context = context;
         this.outcomeCategory = outcomeCategory;
         this.outcomeDate = outcomeDate;
@@ -60,35 +53,35 @@ public class StreetLevelCrimes {
     }
 
     public Double getLatitude() {
-        return latitude;
+        return streetLocation.getLatitude();
     }
 
     public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+        streetLocation.setLatitude(latitude);
     }
 
     public Double getLongitude() {
-        return longitude;
+        return streetLocation.getLongitude();
     }
 
     public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+        streetLocation.setLongitude(longitude);
     }
 
     public Long getStreetId() {
-        return streetId;
+        return streetLocation.getStreetId();
     }
 
     public void setStreetId(Long streetId) {
-        this.streetId = streetId;
+        streetLocation.setStreetId(streetId);
     }
 
     public String getStreetName() {
-        return streetName;
+        return streetLocation.getStreetName();
     }
 
     public void setStreetName(String streetName) {
-        this.streetName = streetName;
+        streetLocation.setStreetName(streetName);
     }
 
     public String getContext() {
@@ -151,13 +144,10 @@ public class StreetLevelCrimes {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StreetLevelCrimes that = (StreetLevelCrimes) o;
+        StreetLevelCrime that = (StreetLevelCrime) o;
         return Objects.equals(category, that.category) &&
                 Objects.equals(locationType, that.locationType) &&
-                Objects.equals(latitude, that.latitude) &&
-                Objects.equals(longitude, that.longitude) &&
-                Objects.equals(streetId, that.streetId) &&
-                Objects.equals(streetName, that.streetName) &&
+                Objects.equals(streetLocation, that.streetLocation) &&
                 Objects.equals(context, that.context) &&
                 Objects.equals(outcomeCategory, that.outcomeCategory) &&
                 Objects.equals(outcomeDate, that.outcomeDate) &&
@@ -169,19 +159,15 @@ public class StreetLevelCrimes {
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(category, locationType, latitude, longitude, streetId, streetName, context, outcomeCategory, outcomeDate, persistentId, id, locationSubtype, month);
+        return Objects.hash(category, locationType, streetLocation, context, outcomeCategory, outcomeDate, persistentId, id, locationSubtype, month);
     }
 
     @Override
     public String toString() {
-        return "StreetLevelCrimes{" +
+        return "StreetLevelCrime{" +
                 "category='" + category + '\'' +
                 ", locationType='" + locationType + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", streetId=" + streetId +
-                ", streetName='" + streetName + '\'' +
+                ", streetLocation=" + streetLocation +
                 ", context='" + context + '\'' +
                 ", outcomeCategory='" + outcomeCategory + '\'' +
                 ", outcomeDate=" + outcomeDate +

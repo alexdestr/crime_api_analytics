@@ -1,13 +1,9 @@
 package ru.vegd.dao;
 
-import ru.vegd.entity.StreetLevelCrimes;
+import ru.vegd.entity.StreetLevelCrime;
 
 public interface StreetLevelCrimesDao {
 
-    public void addCrime(StreetLevelCrimes crime);
-
-    public void getCrime(Long id);
-
-    public void deleteCrime(Long id);
+    public void add(StreetLevelCrime crime);
 
 }

@@ -12,10 +12,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 import ru.vegd.dao.CrimeCategoriesDao;
+import ru.vegd.dao.ForcesListDao;
 import ru.vegd.dao.StreetLevelCrimesDao;
-import ru.vegd.dataReceiver.Receiver;
+import ru.vegd.dataReceiver.CrimeCategoriesReceiver;
+import ru.vegd.dataReceiver.ForcesListReceiver;
+import ru.vegd.dataReceiver.StreetLevelCrimesReceiver;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
-import ru.vegd.entity.StreetLocation;
+import ru.vegd.entity.Station;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,6 +31,9 @@ public class Application {
 
     @Autowired
     CrimeCategoriesDao crimeCategoriesDao;
+
+    @Autowired
+    ForcesListDao forcesListDao;
 
     @Autowired
     StreetLevelCrimesDao streetLevelCrimesDao;
@@ -47,9 +53,10 @@ public class Application {
         Application application = ctx.getBean(Application.class);
         CrimeCategoriesDao crimeCategoriesDao = application.crimeCategoriesDao;
         StreetLevelCrimesDao streetLevelCrimesDao = application.streetLevelCrimesDao;
+        ForcesListDao forcesListDao = application.forcesListDao;
 
         CSVReader reader = null;
-        List<StreetLocation> csvData = new ArrayList<>();
+        List<Station> csvData = new ArrayList<>();
         try {
             reader = new CSVReader(new FileReader(FILE_PATH));
             String[] line;
@@ -57,7 +64,7 @@ public class Application {
                 if (line[0].equals("name")) {
                     continue;
                 } else {
-                    csvData.add(new StreetLocation(line[0], Double.valueOf(line[1]), Double.valueOf(line[2])));
+                    csvData.add(new Station(line[0], Double.valueOf(line[1]), Double.valueOf(line[2])));
                 }
             }
         } catch (IOException e) {
@@ -70,6 +77,9 @@ public class Application {
         String lng = null;
         String lat = null;
         String date = null;
+
+        YearMonth fromDate = YearMonth.of(2018, 1);
+        YearMonth toDate = YearMonth.of(2018, 6);
 
         Option propertyOption = Option.builder()
                 .longOpt("C")
@@ -93,14 +103,8 @@ public class Application {
             date = properties.getProperty("date");
         }
 
-        YearMonth fromDate = YearMonth.of(2018, 1);
-        YearMonth toDate = YearMonth.of(2018, 6);
-
-        Receiver crimesCategoryReceiver = new Receiver("https://data.police.uk/api/crime-categories", csvData, streetLevelCrimesDao);
-        Receiver streetLevelCrimesReceiver = new Receiver(link, csvData, streetLevelCrimesDao);
-        List<JsonArray> crimesCategories = crimesCategoryReceiver.receiveData();
-        streetLevelCrimesReceiver.receiveData(fromDate, toDate);
-
+        CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver("https://data.police.uk/api/crime-categories", csvData, crimeCategoriesDao);
+        List<JsonArray> crimesCategories = crimeCategoriesReceiver.receiveData();
         for (Integer id = 0; id < crimesCategories.size(); id++) {
             JsonArray jsonArray = crimesCategories.get(id);
             for (Integer z = 0; z < jsonArray.size(); z++) {
@@ -109,6 +113,12 @@ public class Application {
                 crimeCategoriesDao.addCrimeCategory(jsonToEntityConverter.convertToCrimeCategories(json));
             }
         }
+
+        ForcesListReceiver forcesListReceiver = new ForcesListReceiver("https://data.police.uk/api/forces", csvData, forcesListDao);
+        forcesListReceiver.receiveData();
+
+        StreetLevelCrimesReceiver streetLevelCrimesReceiver = new StreetLevelCrimesReceiver(link, csvData, streetLevelCrimesDao);
+        streetLevelCrimesReceiver.receiveData(fromDate, toDate);
     }
 
 }

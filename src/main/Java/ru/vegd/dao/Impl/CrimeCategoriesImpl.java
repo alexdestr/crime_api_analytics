@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.vegd.Application;
 import ru.vegd.dao.CrimeCategoriesDao;
-import ru.vegd.entity.CrimeCategories;
+import ru.vegd.entity.CrimeCategory;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -26,15 +25,15 @@ public class CrimeCategoriesImpl implements CrimeCategoriesDao {
             "name = ?";
 
     @Override
-    public void addCrimeCategory(CrimeCategories crimeCategories) {
+    public void addCrimeCategory(CrimeCategory crimeCategory) {
         jdbcTemplate.batchUpdate(SQL_ADD_CRIME_CATEGORY,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1, crimeCategories.getUrl());
-                        ps.setString(2, crimeCategories.getName());
-                        ps.setString(3, crimeCategories.getUrl());
-                        ps.setString(4, crimeCategories.getName());
+                        ps.setString(1, crimeCategory.getUrl());
+                        ps.setString(2, crimeCategory.getName());
+                        ps.setString(3, crimeCategory.getUrl());
+                        ps.setString(4, crimeCategory.getName());
                     }
 
                     @Override

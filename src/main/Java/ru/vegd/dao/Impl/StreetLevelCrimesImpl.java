@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.vegd.dao.StreetLevelCrimesDao;
-import ru.vegd.entity.StreetLevelCrimes;
+import ru.vegd.entity.StreetLevelCrime;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,41 +20,39 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDao {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    List list = new ArrayList<>();
-
     private static final String SQL_ADD_CRIME = "INSERT INTO streetLevelCrimes" +
             "(category, " +
-            "locationType, " +
+            "location_type, " +
             "latitude, " +
             "longitude, " +
-            "streetId, " +
-            "streetName, " +
+            "street_id, " +
+            "street_name, " +
             "context, " +
-            "outcomeCategory, " +
-            "outcomeDate, " +
-            "persistentId, " +
+            "outcome_category, " +
+            "outcome_date, " +
+            "persistent_id, " +
             "id, " +
-            "locationSubtype, " +
+            "location_subtype, " +
             "month) " +
             "VALUES " +
             "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
             "ON CONFLICT(id) DO UPDATE " +
             "SET category = ?, " +
-            "locationType = ?, " +
+            "location_type = ?, " +
             "latitude = ?, " +
             "longitude = ?, " +
-            "streetId = ?, " +
-            "streetName = ?, " +
+            "street_id = ?, " +
+            "street_name = ?, " +
             "context = ?, " +
-            "outcomeCategory = ?, " +
-            "outcomeDate = ?, " +
-            "persistentId = ?, " +
+            "outcome_category = ?, " +
+            "outcome_date = ?, " +
+            "persistent_id = ?, " +
             "id = ?, " +
-            "locationSubtype = ?, " +
+            "location_subtype = ?, " +
             "month = ?";
 
     @Override
-    public void addCrime(StreetLevelCrimes crime) {
+    public void add(StreetLevelCrime crime) {
         jdbcTemplate.batchUpdate(SQL_ADD_CRIME,
                 new BatchPreparedStatementSetter() {
                     @Override
@@ -93,17 +91,5 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDao {
                     }
                 }
         );
-    }
-
-    @Override
-    public void getCrime(Long id) {
-
-    }
-
-
-
-    @Override
-    public void deleteCrime(Long id) {
-
     }
 }

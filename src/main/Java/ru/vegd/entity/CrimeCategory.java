@@ -2,13 +2,13 @@ package ru.vegd.entity;
 
 import java.util.Objects;
 
-public class CrimeCategories {
+public class CrimeCategory {
     private String url;
     private String name;
 
-    public CrimeCategories() {}
+    public CrimeCategory() {}
 
-    public CrimeCategories(String url, String name) {
+    public CrimeCategory(String url, String name) {
         this.url = url;
         this.name = name;
     }
@@ -33,7 +33,7 @@ public class CrimeCategories {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CrimeCategories that = (CrimeCategories) o;
+        CrimeCategory that = (CrimeCategory) o;
         return Objects.equals(url, that.url) &&
                 Objects.equals(name, that.name);
     }

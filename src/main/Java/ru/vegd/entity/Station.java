@@ -2,11 +2,16 @@ package ru.vegd.entity;
 
 import java.util.Objects;
 
-public class StreetLocation {
+public class Station {
     private String streetName;
-    private Long streetId;
     private Double latitude;
     private Double longitude;
+
+    public Station(String streetName, Double longitude, Double latitude) {
+        this.streetName = streetName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     public String getStreetName() {
         return streetName;
@@ -14,14 +19,6 @@ public class StreetLocation {
 
     public void setStreetName(String streetName) {
         this.streetName = streetName;
-    }
-
-    public Long getStreetId() {
-        return streetId;
-    }
-
-    public void setStreetId(Long streetId) {
-        this.streetId = streetId;
     }
 
     public Double getLatitude() {
@@ -44,24 +41,22 @@ public class StreetLocation {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StreetLocation that = (StreetLocation) o;
-        return Objects.equals(streetName, that.streetName) &&
-                Objects.equals(streetId, that.streetId) &&
-                Objects.equals(latitude, that.latitude) &&
-                Objects.equals(longitude, that.longitude);
+        Station station = (Station) o;
+        return Objects.equals(streetName, station.streetName) &&
+                Objects.equals(latitude, station.latitude) &&
+                Objects.equals(longitude, station.longitude);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(streetName, streetId, latitude, longitude);
+        return Objects.hash(streetName, latitude, longitude);
     }
 
     @Override
     public String toString() {
-        return "StreetLocation{" +
+        return "Station{" +
                 "streetName='" + streetName + '\'' +
-                ", streetId=" + streetId +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 '}';

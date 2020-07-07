@@ -1,10 +1,9 @@
 package ru.vegd.dao;
 
-import ru.vegd.entity.CrimeCategories;
+import ru.vegd.entity.CrimeCategory;
 
 public interface CrimeCategoriesDao {
 
-    void addCrimeCategory(CrimeCategories crimeCategories);
-
+    void addCrimeCategory(CrimeCategory crimeCategory);
 
 }
