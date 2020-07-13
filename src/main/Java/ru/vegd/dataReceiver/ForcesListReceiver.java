@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import ru.vegd.dao.ForcesListDao;
 import ru.vegd.dataReceiver.loader.JsonLoader;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
-import ru.vegd.entity.ForcesList;
+import ru.vegd.entity.Force;
 import ru.vegd.entity.Station;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class ForcesListReceiver {
     private List<Station> csvData;
 
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
-    private List<ForcesList> resultList = new ArrayList<>();
+    private List<Force> resultList = new ArrayList<>();
 
     public ForcesListReceiver(String link, List<Station> csvData, ForcesListDao forcesListDao) {
         this.link = link;

@@ -1,11 +1,11 @@
 package ru.vegd.dao;
 
-import ru.vegd.entity.ForcesList;
+import ru.vegd.entity.Force;
 
 import java.util.List;
 
 public interface ForcesListDao {
 
-    void add(List<ForcesList> forcesList);
+    void add(List<Force> force);
 
 }

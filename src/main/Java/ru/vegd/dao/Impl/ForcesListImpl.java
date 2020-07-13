@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.vegd.dao.ForcesListDao;
-import ru.vegd.entity.ForcesList;
+import ru.vegd.entity.Force;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -26,19 +26,19 @@ public class ForcesListImpl implements ForcesListDao {
             "name=?";
 
     @Override
-    public void add(List<ForcesList> forcesList) {
+    public void add(List<Force> force) {
         jdbcTemplate.batchUpdate(SQL_ADD_FORCE, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setString(1, forcesList.get(i).getId());
-                ps.setString(2, forcesList.get(i).getName());
-                ps.setString(3, forcesList.get(i).getId());
-                ps.setString(4, forcesList.get(i).getName());
+                ps.setString(1, force.get(i).getId());
+                ps.setString(2, force.get(i).getName());
+                ps.setString(3, force.get(i).getId());
+                ps.setString(4, force.get(i).getName());
             }
 
             @Override
             public int getBatchSize() {
-                return forcesList.size();
+                return force.size();
             }
         });
     }

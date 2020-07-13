@@ -2,7 +2,7 @@ package ru.vegd.dataReceiver.utils;
 
 import com.google.gson.JsonObject;
 import ru.vegd.entity.CrimeCategory;
-import ru.vegd.entity.ForcesList;
+import ru.vegd.entity.Force;
 import ru.vegd.entity.StreetLevelCrime;
 
 import java.time.YearMonth;
@@ -12,19 +12,19 @@ public class JsonToEntityConverter {
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(JsonToEntityConverter.class.getName());
 
     // TODO: move to methods
-    ForcesList forcesList = new ForcesList();
+    Force force = new Force();
     CrimeCategory crimeCategory = new CrimeCategory();
     StreetLevelCrime crimes = new StreetLevelCrime();
 
-    public ForcesList convertToForcesList(JsonObject json) {
+    public Force convertToForcesList(JsonObject json) {
         if (!json.get("id").isJsonNull()) {
             // TODO: init var and set(var)
-            forcesList.setId(json.get("id").getAsString().replaceAll("\"", ""));
+            force.setId(json.get("id").getAsString().replaceAll("\"", ""));
         }
         if (!json.get("name").isJsonNull()) {
-            forcesList.setName(json.get("name").getAsString().replaceAll("\"", ""));
+            force.setName(json.get("name").getAsString().replaceAll("\"", ""));
         }
-        return forcesList;
+        return force;
     }
 
     public CrimeCategory convertToCrimeCategories(JsonObject json) {

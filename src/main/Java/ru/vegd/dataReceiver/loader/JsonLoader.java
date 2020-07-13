@@ -20,6 +20,9 @@ public class JsonLoader implements Callable<JsonArray> {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(JsonLoader.class.getName());
 
+    private static final Integer secondsToSleepOn505ErrorCode = 30;
+    private static final Integer sleepTimeInSeconds = 1;
+
     private String name;
     private String link;
 
@@ -37,9 +40,6 @@ public class JsonLoader implements Callable<JsonArray> {
         DefaultHttpClient httpClient = null;
         HttpResponse response = null;
         JsonArray jsonArray = null;
-        // todo: psf
-        Integer secondsToSleepOn505ErrorCode = 30;
-        Integer sleepTimeInSeconds = 1;
         try {
             httpClient = new DefaultHttpClient(new ThreadSafeClientConnManager());
             HttpGet getRequest = new HttpGet(

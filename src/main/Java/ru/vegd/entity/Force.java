@@ -3,16 +3,16 @@ package ru.vegd.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ForcesList implements Serializable {
+public class Force implements Serializable {
 
     private static final long serialVersionUID = -8803513478606613346L;
 
     private String id;
     private String name;
 
-    public ForcesList() {}
+    public Force() {}
 
-    public ForcesList(String id) {
+    public Force(String id) {
         this.id = id;
     }
 
@@ -36,7 +36,7 @@ public class ForcesList implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ForcesList that = (ForcesList) o;
+        Force that = (Force) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name);
     }
@@ -49,7 +49,7 @@ public class ForcesList implements Serializable {
 
     @Override
     public String toString() {
-        return "ForcesList{" +
+        return "Force{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 '}';
