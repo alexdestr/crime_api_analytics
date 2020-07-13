@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import ru.vegd.dao.ForcesListDao;
 import ru.vegd.dataReceiver.loader.JsonLoader;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
+import ru.vegd.entity.ForcesList;
 import ru.vegd.entity.Station;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class ForcesListReceiver {
     private List<Station> csvData;
 
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
-    private List<JsonArray> resultList = new ArrayList<>();
+    private List<ForcesList> resultList = new ArrayList<>();
 
     public ForcesListReceiver(String link, List<Station> csvData, ForcesListDao forcesListDao) {
         this.link = link;
@@ -31,7 +32,7 @@ public class ForcesListReceiver {
         this.forcesListDao = forcesListDao;
     }
 
-    public List<JsonArray> receiveData() {
+    public void receiveData() {
         JsonLoader jsonLoader = new JsonLoader("JsonLoader", link);
         Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);
         try {
@@ -39,8 +40,9 @@ public class ForcesListReceiver {
             for (Integer i = 0; i < jsonArray.size(); i++) {
                 JsonObject object = jsonArray.get(i).getAsJsonObject();
                 JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
-                forcesListDao.add(jsonToEntityConverter.convertToForcesList(object));
+                resultList.add(jsonToEntityConverter.convertToForcesList(object));
             }
+            forcesListDao.add(resultList);
         } catch (InterruptedException e) {
             logger.warn("Thread interrupted!");
             e.printStackTrace();
@@ -58,6 +60,5 @@ public class ForcesListReceiver {
         } catch (InterruptedException e) {
             logger.warn("Some threads are closed ahead of schedule");
         }
-        return resultList;
     }
 }

@@ -1,8 +1,12 @@
 package ru.vegd.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class StreetLocation {
+public class StreetLocation implements Serializable {
+
+    private static final long serialVersionUID = 4117802432774264239L;
+
     private String streetName;
     private Long streetId;
     private Double latitude;

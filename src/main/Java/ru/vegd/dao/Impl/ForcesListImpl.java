@@ -9,6 +9,7 @@ import ru.vegd.entity.ForcesList;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class ForcesListImpl implements ForcesListDao {
@@ -25,19 +26,19 @@ public class ForcesListImpl implements ForcesListDao {
             "name=?";
 
     @Override
-    public void add(ForcesList forcesList) {
+    public void add(List<ForcesList> forcesList) {
         jdbcTemplate.batchUpdate(SQL_ADD_FORCE, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setString(1, forcesList.getId());
-                ps.setString(2, forcesList.getName());
-                ps.setString(3, forcesList.getId());
-                ps.setString(4, forcesList.getName());
+                ps.setString(1, forcesList.get(i).getId());
+                ps.setString(2, forcesList.get(i).getName());
+                ps.setString(3, forcesList.get(i).getId());
+                ps.setString(4, forcesList.get(i).getName());
             }
 
             @Override
             public int getBatchSize() {
-                return 1000;
+                return forcesList.size();
             }
         });
     }

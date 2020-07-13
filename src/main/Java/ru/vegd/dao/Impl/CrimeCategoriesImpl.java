@@ -9,6 +9,7 @@ import ru.vegd.entity.CrimeCategory;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class CrimeCategoriesImpl implements CrimeCategoriesDao {
@@ -25,20 +26,20 @@ public class CrimeCategoriesImpl implements CrimeCategoriesDao {
             "name = ?";
 
     @Override
-    public void addCrimeCategory(CrimeCategory crimeCategory) {
+    public void add(List<CrimeCategory> categoryList) {
         jdbcTemplate.batchUpdate(SQL_ADD_CRIME_CATEGORY,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1, crimeCategory.getUrl());
-                        ps.setString(2, crimeCategory.getName());
-                        ps.setString(3, crimeCategory.getUrl());
-                        ps.setString(4, crimeCategory.getName());
+                        ps.setString(1, categoryList.get(i).getUrl());
+                        ps.setString(2, categoryList.get(i).getName());
+                        ps.setString(3, categoryList.get(i).getUrl());
+                        ps.setString(4, categoryList.get(i).getName());
                     }
 
                     @Override
                     public int getBatchSize() {
-                        return 1000;
+                        return categoryList.size();
                     }
                 }
         );

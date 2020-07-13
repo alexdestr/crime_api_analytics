@@ -1,8 +1,11 @@
 package ru.vegd.dataReceiver;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import ru.vegd.dao.CrimeCategoriesDao;
 import ru.vegd.dataReceiver.loader.JsonLoader;
+import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
+import ru.vegd.entity.CrimeCategory;
 import ru.vegd.entity.Station;
 
 import java.util.ArrayList;
@@ -23,7 +26,7 @@ public class CrimeCategoriesReceiver {
 
     private ThreadPoolExecutor executor =
             (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
-    private List<JsonArray> resultList = new ArrayList<>();
+    private List<JsonArray> jsonArray = new ArrayList<>();
 
     public CrimeCategoriesReceiver(String link, List<Station> csvData, CrimeCategoriesDao crimeCategoriesDao) {
         this.link = link;
@@ -31,12 +34,12 @@ public class CrimeCategoriesReceiver {
         this.crimeCategoriesDao = crimeCategoriesDao;
     }
 
-    public List<JsonArray> receiveData() {
+    public void receiveData() {
         JsonLoader jsonLoader = new JsonLoader("JsonLoader", link);
         Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);
 
         try {
-            resultList.add(jsonArrayFuture.get());
+            jsonArray.add(jsonArrayFuture.get());
         } catch (InterruptedException e) {
             logger.warn("Thread interrupted!");
         } catch (ExecutionException e) {
@@ -54,7 +57,12 @@ public class CrimeCategoriesReceiver {
         } catch (InterruptedException e) {
             logger.warn("Some threads are closed ahead of schedule");
         }
-
-        return resultList;
+        List<CrimeCategory> resultList = new ArrayList<>();
+        for (JsonArray json : jsonArray) {
+            for (Integer i = 0; i < json.size(); i++) {
+                resultList.add(new JsonToEntityConverter().convertToCrimeCategories(json.get(i).getAsJsonObject()));
+            }
+        }
+        crimeCategoriesDao.add(resultList);
     }
 }

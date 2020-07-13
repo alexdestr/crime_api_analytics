@@ -1,8 +1,12 @@
 package ru.vegd.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class CrimeCategory {
+public class CrimeCategory implements Serializable {
+
+    private static final long serialVersionUID = 7583138973522475111L;
+
     private String url;
     private String name;
 

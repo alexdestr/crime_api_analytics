@@ -1,8 +1,11 @@
 package ru.vegd.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class ForcesList {
+public class ForcesList implements Serializable {
+
+    private static final long serialVersionUID = -8803513478606613346L;
 
     private String id;
     private String name;

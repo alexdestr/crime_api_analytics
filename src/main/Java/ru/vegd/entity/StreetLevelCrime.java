@@ -1,9 +1,13 @@
 package ru.vegd.entity;
 
+import java.io.Serializable;
 import java.time.YearMonth;
 import java.util.Objects;
 
-public class StreetLevelCrime {
+public class StreetLevelCrime implements Serializable {
+
+    private static final long serialVersionUID = -1498872298022161553L;
+
     private String category;
 
     private String locationType;

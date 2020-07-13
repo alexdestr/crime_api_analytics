@@ -1,8 +1,11 @@
 package ru.vegd.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class StopAndSearchesByForce {
+public class StopAndSearchesByForce implements Serializable {
+
+    private static final long serialVersionUID = -796366176847932127L;
 
     private String type;
     private String involvedPerson;

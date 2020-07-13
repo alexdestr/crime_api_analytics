@@ -102,14 +102,7 @@ public class Application {
         }
 
         CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver("https://data.police.uk/api/crime-categories", csvData, crimeCategoriesDao);
-        List<JsonArray> crimesCategories = crimeCategoriesReceiver.receiveData();
-        for (JsonArray jsonArray : crimesCategories) {
-            for (Integer z = 0; z < jsonArray.size(); z++) {
-                JsonObject json = jsonArray.get(z).getAsJsonObject();
-                JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
-                crimeCategoriesDao.addCrimeCategory(jsonToEntityConverter.convertToCrimeCategories(json));
-            }
-        }
+        crimeCategoriesReceiver.receiveData();
 
         ForcesListReceiver forcesListReceiver = new ForcesListReceiver("https://data.police.uk/api/forces", csvData, forcesListDao);
         forcesListReceiver.receiveData();
