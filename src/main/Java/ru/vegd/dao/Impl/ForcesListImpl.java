@@ -37,7 +37,7 @@ public class ForcesListImpl implements ForcesListDao {
 
             @Override
             public int getBatchSize() {
-                return 1;
+                return 1000;
             }
         });
     }

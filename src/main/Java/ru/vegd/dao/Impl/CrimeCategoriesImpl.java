@@ -38,7 +38,7 @@ public class CrimeCategoriesImpl implements CrimeCategoriesDao {
 
                     @Override
                     public int getBatchSize() {
-                        return 1;
+                        return 1000;
                     }
                 }
         );

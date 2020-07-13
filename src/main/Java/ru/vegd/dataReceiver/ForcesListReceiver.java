@@ -2,9 +2,8 @@ package ru.vegd.dataReceiver;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.springframework.stereotype.Component;
-import ru.vegd.dao.CrimeCategoriesDao;
 import ru.vegd.dao.ForcesListDao;
+import ru.vegd.dataReceiver.loader.JsonLoader;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.Station;
 
@@ -16,12 +15,14 @@ public class ForcesListReceiver {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(ForcesListReceiver.class.getName());
 
+    private static final Integer threadNum = Runtime.getRuntime().availableProcessors() + 1; // optimal number of threads
+
     private ForcesListDao forcesListDao;
 
     private String link;
     private List<Station> csvData;
 
-    private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+    private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
     private List<JsonArray> resultList = new ArrayList<>();
 
     public ForcesListReceiver(String link, List<Station> csvData, ForcesListDao forcesListDao) {

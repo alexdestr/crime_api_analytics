@@ -1,8 +1,8 @@
 package ru.vegd.dataReceiver;
 
 import com.google.gson.JsonArray;
-import org.springframework.stereotype.Component;
 import ru.vegd.dao.CrimeCategoriesDao;
+import ru.vegd.dataReceiver.loader.JsonLoader;
 import ru.vegd.entity.Station;
 
 import java.util.ArrayList;
@@ -11,7 +11,10 @@ import java.util.concurrent.*;
 
 public class CrimeCategoriesReceiver {
 
-    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(CrimeCategoriesReceiver.class.getName());
+    private final static org.apache.log4j.Logger logger =
+            org.apache.log4j.Logger.getLogger(CrimeCategoriesReceiver.class.getName());
+
+    private static final Integer threadNum = Runtime.getRuntime().availableProcessors() + 1; // optimal number of threads
 
     private CrimeCategoriesDao crimeCategoriesDao;
 
@@ -19,7 +22,7 @@ public class CrimeCategoriesReceiver {
     private List<Station> csvData;
 
     private ThreadPoolExecutor executor =
-            (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+            (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
     private List<JsonArray> resultList = new ArrayList<>();
 
     public CrimeCategoriesReceiver(String link, List<Station> csvData, CrimeCategoriesDao crimeCategoriesDao) {

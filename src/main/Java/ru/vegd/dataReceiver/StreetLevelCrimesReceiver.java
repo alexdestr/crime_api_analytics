@@ -3,8 +3,10 @@ package ru.vegd.dataReceiver;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import ru.vegd.dao.StreetLevelCrimesDao;
+import ru.vegd.dataReceiver.loader.JsonLoader;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.Station;
+import ru.vegd.entity.StreetLevelCrime;
 import ru.vegd.linkBuilder.LinkBuider;
 
 import java.time.YearMonth;
@@ -17,12 +19,14 @@ public class StreetLevelCrimesReceiver {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(StreetLevelCrimesReceiver.class.getName());
 
+    private static final Integer threadNum = Runtime.getRuntime().availableProcessors() + 1; // optimal number of threads
+
     private StreetLevelCrimesDao streetLevelCrimesDao;
 
     private String link;
     private List<Station> csvData;
 
-    private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+    private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
     private List<JsonArray> resultList = new ArrayList<>();
 
     public StreetLevelCrimesReceiver(String link, List<Station> csvData, StreetLevelCrimesDao streetLevelCrimesDao) {
@@ -43,11 +47,13 @@ public class StreetLevelCrimesReceiver {
                 Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);
                 try {
                     JsonArray jsonArray = jsonArrayFuture.get();
+                    List<StreetLevelCrime> resultList = new ArrayList<>();
                     for (Integer i = 0; i < jsonArray.size(); i++) {
                         JsonObject object = jsonArray.get(i).getAsJsonObject();
                         JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
-                        streetLevelCrimesDao.add(jsonToEntityConverter.convertToStreetLevelCrimes(object));
+                        resultList.add(jsonToEntityConverter.convertToStreetLevelCrimes(object));
                     }
+                    streetLevelCrimesDao.add(resultList);
                 } catch (InterruptedException e) {
                     logger.warn("Thread interrupted!");
                 } catch (ExecutionException e) {

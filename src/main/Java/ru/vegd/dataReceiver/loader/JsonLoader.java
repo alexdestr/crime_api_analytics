@@ -1,9 +1,8 @@
-package ru.vegd.dataReceiver;
+package ru.vegd.dataReceiver.loader;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -63,7 +62,8 @@ public class JsonLoader implements Callable<JsonArray> {
                         }
                     }
                 } else {
-                    throw new ResponseException("Unknown http code : HTTP code", httpCode);
+                    i = 0;
+                    break;
                 }
             }
             BufferedReader br = new BufferedReader(

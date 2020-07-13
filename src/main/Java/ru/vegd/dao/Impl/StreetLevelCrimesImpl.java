@@ -52,42 +52,42 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDao {
             "month = ?";
 
     @Override
-    public void add(StreetLevelCrime crime) {
+    public void add(List<StreetLevelCrime> crimeList) {
         jdbcTemplate.batchUpdate(SQL_ADD_CRIME,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
-                        ps.setString(1, crime.getCategory());
-                        ps.setString(2, crime.getLocatonType());
-                        ps.setDouble(3, crime.getLatitude());
-                        ps.setDouble(4, crime.getLongitude());
-                        ps.setLong(5, crime.getStreetId());
-                        ps.setString(6, crime.getStreetName());
-                        ps.setString(7, crime.getContext());
-                        ps.setString(8, crime.getOutcomeCategory());
-                        ps.setString(9, String.valueOf(crime.getOutcomeDate()));
-                        ps.setString(10, crime.getPersistentId());
-                        ps.setLong(11, crime.getId());
-                        ps.setString(12, crime.getLocatonType());
-                        ps.setString(13, String.valueOf(crime.getMonth()));
-                        ps.setString(14, crime.getCategory());
-                        ps.setString(15, crime.getLocatonType());
-                        ps.setDouble(16, crime.getLatitude());
-                        ps.setDouble(17, crime.getLongitude());
-                        ps.setLong(18, crime.getStreetId());
-                        ps.setString(19, crime.getStreetName());
-                        ps.setString(20, crime.getContext());
-                        ps.setString(21, crime.getOutcomeCategory());
-                        ps.setString(22, String.valueOf(crime.getOutcomeDate()));
-                        ps.setString(23, crime.getPersistentId());
-                        ps.setLong(24, crime.getId());
-                        ps.setString(25, crime.getLocationSubtype());
-                        ps.setString(26, String.valueOf(crime.getMonth()));
+                        ps.setString(1, crimeList.get(i).getCategory());
+                        ps.setString(2, crimeList.get(i).getLocatonType());
+                        ps.setDouble(3, crimeList.get(i).getLatitude());
+                        ps.setDouble(4, crimeList.get(i).getLongitude());
+                        ps.setLong(5, crimeList.get(i).getStreetId());
+                        ps.setString(6, crimeList.get(i).getStreetName());
+                        ps.setString(7, crimeList.get(i).getContext());
+                        ps.setString(8, crimeList.get(i).getOutcomeCategory());
+                        ps.setString(9, String.valueOf(crimeList.get(i).getOutcomeDate()));
+                        ps.setString(10, crimeList.get(i).getPersistentId());
+                        ps.setLong(11, crimeList.get(i).getId());
+                        ps.setString(12, crimeList.get(i).getLocatonType());
+                        ps.setString(13, String.valueOf(crimeList.get(i).getMonth()));
+                        ps.setString(14, crimeList.get(i).getCategory());
+                        ps.setString(15, crimeList.get(i).getLocatonType());
+                        ps.setDouble(16, crimeList.get(i).getLatitude());
+                        ps.setDouble(17, crimeList.get(i).getLongitude());
+                        ps.setLong(18, crimeList.get(i).getStreetId());
+                        ps.setString(19, crimeList.get(i).getStreetName());
+                        ps.setString(20, crimeList.get(i).getContext());
+                        ps.setString(21, crimeList.get(i).getOutcomeCategory());
+                        ps.setString(22, String.valueOf(crimeList.get(i).getOutcomeDate()));
+                        ps.setString(23, crimeList.get(i).getPersistentId());
+                        ps.setLong(24, crimeList.get(i).getId());
+                        ps.setString(25, crimeList.get(i).getLocationSubtype());
+                        ps.setString(26, String.valueOf(crimeList.get(i).getMonth()));
                     }
 
                     @Override
                     public int getBatchSize() {
-                        return 1;
+                        return crimeList.size();
                     }
                 }
         );
