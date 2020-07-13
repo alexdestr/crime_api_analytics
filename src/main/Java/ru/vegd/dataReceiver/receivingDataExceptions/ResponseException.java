@@ -30,21 +30,6 @@ public class ResponseException extends Exception {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ResponseException that = (ResponseException) o;
-        return Objects.equals(errorNumber, that.errorNumber) &&
-                Objects.equals(errorMsg, that.errorMsg);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(errorNumber, errorMsg);
-    }
-
-    @Override
     public String toString() {
         return "ResponseException{" +
                 "errorNumber=" + errorNumber +

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#set -e
-
 ################################################################################
 # Other functions                                                              #
 ################################################################################
@@ -109,7 +107,7 @@ if cd /home/; then
    touch -c log
    touch -c error_log
 else
-     error_exit "$LINENO: An error has occured. Cannot change directory! Abortin                                                                                                                                  g."
+   error_exit "$LINENO: An error has occured. Cannot change directory! Abortin                                                                                                                                  g."
 fi
 
 exec 2>error_log
@@ -149,7 +147,6 @@ if [ "$java_setup" = true ]
       then
         echo "Java already installed"
     else
-    yum install java-1.8.0-openjdk
     yum install java-1.8.0-openjdk-devel
     fi
 fi
@@ -177,8 +174,6 @@ if [ "$maven_setup" = true ]
 fi
 
 export MAVEN_OPTS="-Xmx512m"
-#export JAVA_HOME=/usr/java/jdk1.8.0_252/
-#export PATH=$PATH:$JAVA_HOME
 
 ################################################################################
 # Project                                                                      #
@@ -186,11 +181,10 @@ export MAVEN_OPTS="-Xmx512m"
 
 if [ "$project_download" = true ]
   then
-    cd /home/
     if cd /home/project/
       then
         cd /home/project/Task1
-        git clone https://github.com/alexdestr/Task1
+        git fetch
         echo "Project updated."
     else
         mkdir project

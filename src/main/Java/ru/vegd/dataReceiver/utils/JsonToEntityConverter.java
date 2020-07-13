@@ -11,12 +11,14 @@ public class JsonToEntityConverter {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(JsonToEntityConverter.class.getName());
 
+    // TODO: move to methods
     ForcesList forcesList = new ForcesList();
     CrimeCategory crimeCategory = new CrimeCategory();
     StreetLevelCrime crimes = new StreetLevelCrime();
 
     public ForcesList convertToForcesList(JsonObject json) {
         if (!json.get("id").isJsonNull()) {
+            // TODO: init var and set(var)
             forcesList.setId(json.get("id").getAsString().replaceAll("\"", ""));
         }
         if (!json.get("name").isJsonNull()) {

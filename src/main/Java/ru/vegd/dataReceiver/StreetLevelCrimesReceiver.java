@@ -50,10 +50,8 @@ public class StreetLevelCrimesReceiver {
                     }
                 } catch (InterruptedException e) {
                     logger.warn("Thread interrupted!");
-                    e.printStackTrace();
                 } catch (ExecutionException e) {
                     logger.warn("Execution interrupted!");
-                    e.printStackTrace();
                 }
             }
         }

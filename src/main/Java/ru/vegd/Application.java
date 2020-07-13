@@ -59,16 +59,14 @@ public class Application {
         List<Station> csvData = new ArrayList<>();
         try {
             reader = new CSVReader(new FileReader(FILE_PATH));
-            String[] line;
+            String[] line = null;
             while ((line = reader.readNext()) != null) {
-                if (line[0].equals("name")) {
-                    continue;
-                } else {
+                if (!line[0].equals("name")) {
                     csvData.add(new Station(line[0], Double.valueOf(line[1]), Double.valueOf(line[2])));
                 }
             }
         } catch (IOException e) {
-            logger.error("Cant open file");
+            logger.error("Can't open file");
         }
 
         Options options = new Options();
@@ -97,7 +95,7 @@ public class Application {
             e.printStackTrace();
         }
 
-        if (cmd.hasOption("D")) {
+        if (Objects.requireNonNull(cmd).hasOption("D")) {
             Properties properties = cmd.getOptionProperties("D");
             link = properties.getProperty("link");
             date = properties.getProperty("date");
@@ -105,8 +103,7 @@ public class Application {
 
         CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver("https://data.police.uk/api/crime-categories", csvData, crimeCategoriesDao);
         List<JsonArray> crimesCategories = crimeCategoriesReceiver.receiveData();
-        for (Integer id = 0; id < crimesCategories.size(); id++) {
-            JsonArray jsonArray = crimesCategories.get(id);
+        for (JsonArray jsonArray : crimesCategories) {
             for (Integer z = 0; z < jsonArray.size(); z++) {
                 JsonObject json = jsonArray.get(z).getAsJsonObject();
                 JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();

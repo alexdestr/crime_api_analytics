@@ -12,6 +12,7 @@ import ru.vegd.dataReceiver.receivingDataExceptions.ResponseException;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +38,7 @@ public class JsonLoader implements Callable<JsonArray> {
         DefaultHttpClient httpClient = null;
         HttpResponse response = null;
         JsonArray jsonArray = null;
+        // todo: psf
         Integer secondsToSleepOn505ErrorCode = 30;
         Integer sleepTimeInSeconds = 1;
         try {
@@ -61,13 +63,12 @@ public class JsonLoader implements Callable<JsonArray> {
                         }
                     }
                 } else {
-                    i = 0;
-                    break;
+                    throw new ResponseException("Unknown http code : HTTP code", httpCode);
                 }
             }
             BufferedReader br = new BufferedReader(
-                    new InputStreamReader((response.getEntity().getContent())));
-
+                    new InputStreamReader((Objects.requireNonNull(response).getEntity().getContent())));
+            // TODO: move out
             jsonArray = JsonParser.parseReader(br).getAsJsonArray();
             httpClient.getConnectionManager().shutdown();
 
