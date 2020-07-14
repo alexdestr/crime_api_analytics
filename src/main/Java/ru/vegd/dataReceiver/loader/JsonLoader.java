@@ -73,7 +73,6 @@ public class JsonLoader implements Callable<JsonArray> {
                         }
                     }
                 } else {
-                    i = 0;
                     break;
                 }
             }

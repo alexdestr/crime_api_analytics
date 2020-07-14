@@ -55,7 +55,8 @@ public class Application {
         String link = null;
         String lng = null;
         String lat = null;
-        String date = null;
+        YearMonth startDate = null;
+        YearMonth endDate = null;
 
         Option propertyOption = Option.builder()
                 .longOpt("C")
@@ -75,7 +76,8 @@ public class Application {
         if (Objects.requireNonNull(cmd).hasOption("D")) {
             Properties properties = cmd.getOptionProperties("D");
             link = properties.getProperty("link");
-            date = properties.getProperty("date");
+            startDate = YearMonth.parse(properties.getProperty("startDate"));
+            endDate = YearMonth.parse(properties.getProperty("endDate")); Integer
         }
 
         entryPoint.entry();

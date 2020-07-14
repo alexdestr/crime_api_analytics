@@ -101,14 +101,15 @@ case $user_input1 in
    ;;
 esac
 
-if cd /home/; then
+if pushd /home/; then
    mkdir -p logs
    cd logs
    touch -c log
    touch -c error_log
 else
-   error_exit "$LINENO: An error has occured. Cannot change directory! Abortin                                                                                                                                  g."
+   error_exit "$LINENO: An error has occured. Cannot change directory! Aborting."
 fi
+popd
 
 exec 2>error_log # Redirect error output into to file
 exec 3>log # Redirect log output into to file
@@ -157,7 +158,7 @@ if [ "$maven_setup" = true ]
       then
         echo "Maven already installed"
     else
-      if cd /opt
+      if pushd /opt
         then
           wget https://downloads.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz >&3
           tar xzf apache-maven-3.6.3-bin.tar.gz >&3
@@ -171,6 +172,7 @@ if [ "$maven_setup" = true ]
         error_exit "$LINENO: An arror has occurred."
       fi
     fi
+    popd
 fi
 
 export MAVEN_OPTS="-Xmx512m"
@@ -181,18 +183,21 @@ export MAVEN_OPTS="-Xmx512m"
 
 if [ "$project_download" = true ]
   then
-    if cd /home/project/
+    if pushd /home/project/
       then
-        cd /home/project/Task1
+        pushd /home/project/Task1
         git fetch
         echo "Project updated."
+        popd
     else
         mkdir project
-        cd /home/project/
+        pushd /home/project/
         git init
         git clone https://github.com/alexdestr/Task1
         echo "Project downloaded."
+        popd
     fi
+    popd
 fi
 
 if [ "$project_compile" = true ]
@@ -205,10 +210,11 @@ if [ "$project_compile" = true ]
     psql datapolice
     \i /home/project/Task1/db/db_create.sql
 EOF
-    cd /home/project/Task1
+    pushd /home/project/Task1
     mvn clean package
     mvn package
     echo "Project builded."
+    popd
 fi
 
 if [ "$project_run" = true ]
