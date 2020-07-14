@@ -41,7 +41,7 @@ public class StreetLevelCrimesReceiver {
     }
 
     /**
-     * Pulls data from thread, convert to an entity and inserts into to database.
+     * Take data from thread, convert to an entity and inserts into the database.
      * @param fromDate date in the format (YYYY-MM) from which data will be received (inclusively)
      * @param toDate date in the format (YYYY-MM) for which data will be received (inclusively)
      */

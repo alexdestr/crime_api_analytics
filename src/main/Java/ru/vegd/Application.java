@@ -48,23 +48,14 @@ public class Application {
 
         ApplicationContext ctx =
                 new AnnotationConfigApplicationContext("ru.vegd");
-
-        Application application = ctx.getBean(Application.class);
-        CrimeCategoriesDao crimeCategoriesDao = application.crimeCategoriesDao;
-        StreetLevelCrimesDao streetLevelCrimesDao = application.streetLevelCrimesDao;
-        ForcesListDao forcesListDao = application.forcesListDao;
-
-        List<Station> csvData = CSVParser.getStations();
+        EntryPoint entryPoint = (EntryPoint) ctx.getBean("entryPoint");
 
         Options options = new Options();
         CommandLine cmd = null;
-        String link;
+        String link = null;
         String lng = null;
         String lat = null;
         String date = null;
-
-        YearMonth fromDate = YearMonth.of(2018, 1);
-        YearMonth toDate = YearMonth.of(2018, 6);
 
         Option propertyOption = Option.builder()
                 .longOpt("C")
@@ -79,7 +70,6 @@ public class Application {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
             logger.warn("Parsing cmd error.");
-            e.printStackTrace();
         }
 
         if (Objects.requireNonNull(cmd).hasOption("D")) {
@@ -88,14 +78,8 @@ public class Application {
             date = properties.getProperty("date");
         }
 
-        CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver(csvData, crimeCategoriesDao);
-        crimeCategoriesReceiver.receiveData();
+        entryPoint.entry();
 
-        ForcesListReceiver forcesListReceiver = new ForcesListReceiver(csvData, forcesListDao);
-        forcesListReceiver.receiveData();
-
-        StreetLevelCrimesReceiver streetLevelCrimesReceiver = new StreetLevelCrimesReceiver(csvData, streetLevelCrimesDao);
-        streetLevelCrimesReceiver.receiveData(fromDate, toDate);
     }
 
 }

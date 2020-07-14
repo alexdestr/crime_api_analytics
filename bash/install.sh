@@ -206,9 +206,9 @@ if [ "$project_compile" = true ]
     \i /home/project/Task1/db/db_create.sql
 EOF
     cd /home/project/Task1
+    mvn clean package
     mvn package
-    mvn compile
-    echo "Project builded,"
+    echo "Project builded."
 fi
 
 if [ "$project_run" = true ]
