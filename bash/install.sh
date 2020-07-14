@@ -110,8 +110,8 @@ else
    error_exit "$LINENO: An error has occured. Cannot change directory! Abortin                                                                                                                                  g."
 fi
 
-exec 2>error_log
-exec 3>log
+exec 2>error_log # Redirect error output into to file
+exec 3>log # Redirect log output into to file
 
 yum -y update >&3
 yum install -y wget >&3

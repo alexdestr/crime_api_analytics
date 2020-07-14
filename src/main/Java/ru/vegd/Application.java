@@ -19,6 +19,7 @@ import ru.vegd.dataReceiver.ForcesListReceiver;
 import ru.vegd.dataReceiver.StreetLevelCrimesReceiver;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.Station;
+import ru.vegd.utils.CSVParser;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -40,8 +41,6 @@ public class Application {
 
     private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Application.class.getName());
 
-    private static final String FILE_PATH = "LondonStations.csv";
-
     public static void main(String[] args) {
         new SpringApplicationBuilder(Application.class)
                 .web(WebApplicationType.NONE) // .REACTIVE, .SERVLET
@@ -55,19 +54,7 @@ public class Application {
         StreetLevelCrimesDao streetLevelCrimesDao = application.streetLevelCrimesDao;
         ForcesListDao forcesListDao = application.forcesListDao;
 
-        CSVReader reader = null;
-        List<Station> csvData = new ArrayList<>();
-        try {
-            reader = new CSVReader(new FileReader(FILE_PATH));
-            String[] line = null;
-            while ((line = reader.readNext()) != null) {
-                if (!line[0].equals("name")) {
-                    csvData.add(new Station(line[0], Double.valueOf(line[1]), Double.valueOf(line[2])));
-                }
-            }
-        } catch (IOException e) {
-            logger.error("Can't open file");
-        }
+        List<Station> csvData = CSVParser.getStations();
 
         Options options = new Options();
         CommandLine cmd = null;
