@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
+/**
+ * Processes data and inserts into the database.
+ */
 public class CrimeCategoriesReceiver {
 
     private final static org.apache.log4j.Logger logger =

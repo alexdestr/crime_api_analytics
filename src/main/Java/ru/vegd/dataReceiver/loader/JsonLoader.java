@@ -15,7 +15,9 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * Receive json data from URL.
+ */
 public class JsonLoader implements Callable<JsonArray> {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(JsonLoader.class.getName());
