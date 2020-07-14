@@ -68,7 +68,6 @@ public class JsonLoader implements Callable<JsonArray> {
             }
             BufferedReader br = new BufferedReader(
                     new InputStreamReader((Objects.requireNonNull(response).getEntity().getContent())));
-            // TODO: move out
             jsonArray = JsonParser.parseReader(br).getAsJsonArray();
             httpClient.getConnectionManager().shutdown();
 

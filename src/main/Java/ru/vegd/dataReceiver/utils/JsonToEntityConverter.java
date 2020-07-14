@@ -11,30 +11,30 @@ public class JsonToEntityConverter {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(JsonToEntityConverter.class.getName());
 
-    // TODO: move to methods
-    Force force = new Force();
-    CrimeCategory crimeCategory = new CrimeCategory();
-    StreetLevelCrime crimes = new StreetLevelCrime();
-
     public Force convertToForcesList(JsonObject json) {
+        Force force = new Force();
         if (!json.get("id").isJsonNull()) {
-            // TODO: init var and set(var)
-            force.setId(json.get("id").getAsString().replaceAll("\"", ""));
+            String id = json.get("id").getAsString().replaceAll("\"", "");
+            force.setId(id);
         }
         if (!json.get("name").isJsonNull()) {
-            force.setName(json.get("name").getAsString().replaceAll("\"", ""));
+            String name = json.get("name").getAsString().replaceAll("\"", "");
+            force.setName(name);
         }
         return force;
     }
 
     public CrimeCategory convertToCrimeCategories(JsonObject json) {
+        CrimeCategory crimeCategory = new CrimeCategory();
         if (!json.get("url").isJsonNull()) {
-            crimeCategory.setUrl(json.get("url").getAsString().replaceAll("\"", ""));
+            String url = json.get("url").getAsString().replaceAll("\"", "");
+            crimeCategory.setUrl(url);
         } else {
             crimeCategory.setUrl(null);
         }
         if (!json.get("name").isJsonNull()) {
-            crimeCategory.setName(json.get("name").getAsString().replaceAll("\"", ""));
+            String name = json.get("name").getAsString().replaceAll("\"", "");
+            crimeCategory.setName(name);
         } else {
             crimeCategory.setName(null);
         }
@@ -42,24 +42,31 @@ public class JsonToEntityConverter {
     }
 
     public StreetLevelCrime convertToStreetLevelCrimes(JsonObject json) {
+        StreetLevelCrime crimes = new StreetLevelCrime();
         if (!json.get("category").isJsonNull()) {
-            crimes.setCategory(json.get("category").getAsString().replaceAll("\"", ""));
+            String category = json.get("category").getAsString().replaceAll("\"", "");
+            crimes.setCategory(category);
         } else {
             crimes.setCategory(null);
         }
         if (!json.get("location_type").isJsonNull()) {
-            crimes.setLocatonType(json.get("location_type").getAsString().replaceAll("\"", ""));
+            String locationType = json.get("location_type").getAsString().replaceAll("\"", "");
+            crimes.setLocatonType(locationType);
         } else {
             crimes.setLocatonType(null);
         }
         if (!json.get("location").isJsonNull()) {
             if (!json.get("location").getAsJsonObject().get("latitude").isJsonNull() && !json.get("location").getAsJsonObject().get("longitude").isJsonNull()) {
-                crimes.setLatitude(json.get("location").getAsJsonObject().get("latitude").getAsDouble());
-                crimes.setLongitude(json.get("location").getAsJsonObject().get("longitude").getAsDouble());
+                Double latitude = json.get("location").getAsJsonObject().get("latitude").getAsDouble();
+                crimes.setLatitude(latitude);
+                Double longitude = json.get("location").getAsJsonObject().get("longitude").getAsDouble();
+                crimes.setLongitude(longitude);
             }
             if (!json.get("location").getAsJsonObject().get("street").getAsJsonObject().get("id").isJsonNull() && !json.get("location").getAsJsonObject().get("street").getAsJsonObject().get("name").isJsonNull()) {
-                crimes.setStreetId(json.get("location").getAsJsonObject().get("street").getAsJsonObject().get("id").getAsLong());
-                crimes.setStreetName(json.get("location").getAsJsonObject().get("street").getAsJsonObject().get("name").getAsString().replaceAll("\"",""));
+                Long id = json.get("location").getAsJsonObject().get("street").getAsJsonObject().get("id").getAsLong();
+                crimes.setStreetId(id);
+                String name = json.get("location").getAsJsonObject().get("street").getAsJsonObject().get("name").getAsString().replaceAll("\"","");
+                crimes.setStreetName(name);
             }
 
         } else {
@@ -69,39 +76,46 @@ public class JsonToEntityConverter {
             crimes.setStreetName(null);
         }
         if (!json.get("context").isJsonNull() && !json.get("context").getAsString().isEmpty()) {
-            crimes.setContext(json.get("context").getAsString().replaceAll("\"", ""));
+            String context = json.get("context").getAsString().replaceAll("\"", "");
+            crimes.setContext(context);
         } else {
             crimes.setContext(null);
         }
         if (!json.get("outcome_status").isJsonNull()) {
             if (!json.get("outcome_status").getAsJsonObject().get("category").isJsonNull() && !json.get("outcome_status").getAsJsonObject().get("date").isJsonNull()) {
-                crimes.setOutcomeCategory(json.get("outcome_status").getAsJsonObject().get("category").getAsString().replaceAll("\"",""));
-                crimes.setOutcomeDate(YearMonth.parse(json.get("outcome_status").getAsJsonObject().get("date").getAsString().replaceAll("\"", "")));
+                String outcomeCategory = json.get("outcome_status").getAsJsonObject().get("category").getAsString().replaceAll("\"","");
+                crimes.setOutcomeCategory(outcomeCategory);
+                YearMonth outcameDate = YearMonth.parse(json.get("outcome_status").getAsJsonObject().get("date").getAsString().replaceAll("\"", ""));
+                crimes.setOutcomeDate(outcameDate);
             }
         } else {
             crimes.setOutcomeCategory(null);
             crimes.setOutcomeDate(null);
         }
         if (!json.get("persistent_id").isJsonNull() && !json.get("persistent_id").getAsString().isEmpty()) {
-            crimes.setPersistentId(json.get("persistent_id").getAsString().replaceAll("\"", ""));
+            String persistentId = json.get("persistent_id").getAsString().replaceAll("\"", "");
+            crimes.setPersistentId(persistentId);
         } else {
             crimes.setPersistentId(null);
         }
         if (!json.get("id").isJsonNull()) {
-            crimes.setId(json.get("id").getAsLong());
+            Long id = json.get("id").getAsLong();
+            crimes.setId(id);
         } else {
             crimes.setId(null);
         }
         if (!json.get("location_subtype").isJsonNull() && !json.get("location_subtype").getAsString().isEmpty()) {
-            crimes.setLocationSubtype(json.get("location_subtype").getAsString().replaceAll("\"", ""));
+            String locationSubtype = json.get("location_subtype").getAsString().replaceAll("\"", "");
+            crimes.setLocationSubtype(locationSubtype);
         } else {
             crimes.setLocationSubtype(null);
         }
         if (!json.get("month").isJsonNull()) {
-            crimes.setMonth(YearMonth.parse(json.get("month").getAsString().replaceAll("\"", "")));
+            YearMonth month = YearMonth.parse(json.get("month").getAsString().replaceAll("\"", ""));
+            crimes.setMonth(month);
         } else {
             crimes.setMonth(null);
         }
-        return  crimes;
+        return crimes;
     }
 }
