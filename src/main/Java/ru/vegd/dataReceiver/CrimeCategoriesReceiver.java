@@ -18,22 +18,28 @@ public class CrimeCategoriesReceiver {
             org.apache.log4j.Logger.getLogger(CrimeCategoriesReceiver.class.getName());
 
     private static final Integer threadNum = Runtime.getRuntime().availableProcessors() + 1; // optimal number of threads
+    private static final String link = "https://data.police.uk/api/crime-categories";
 
     private CrimeCategoriesDao crimeCategoriesDao;
 
-    private String link;
     private List<Station> csvData;
 
     private ThreadPoolExecutor executor =
             (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
     private List<JsonArray> jsonArray = new ArrayList<>();
 
-    public CrimeCategoriesReceiver(String link, List<Station> csvData, CrimeCategoriesDao crimeCategoriesDao) {
-        this.link = link;
+    /**
+     * @param csvData list of police stations and their coordinates.
+     * @param crimeCategoriesDao DAO with injected connection to load data into a database.
+     */
+    public CrimeCategoriesReceiver(List<Station> csvData, CrimeCategoriesDao crimeCategoriesDao) {
         this.csvData = csvData;
         this.crimeCategoriesDao = crimeCategoriesDao;
     }
 
+    /**
+     * Pulls data from thread, convert to an entity and inserts into to database.
+     */
     public void receiveData() {
         JsonLoader jsonLoader = new JsonLoader("JsonLoader", link);
         Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);

@@ -71,7 +71,7 @@ public class Application {
 
         Options options = new Options();
         CommandLine cmd = null;
-        String link = "https://data.police.uk/api/crimes-street/all-crime";
+        String link;
         String lng = null;
         String lat = null;
         String date = null;
@@ -101,13 +101,13 @@ public class Application {
             date = properties.getProperty("date");
         }
 
-        CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver("https://data.police.uk/api/crime-categories", csvData, crimeCategoriesDao);
+        CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver(csvData, crimeCategoriesDao);
         crimeCategoriesReceiver.receiveData();
 
-        ForcesListReceiver forcesListReceiver = new ForcesListReceiver("https://data.police.uk/api/forces", csvData, forcesListDao);
+        ForcesListReceiver forcesListReceiver = new ForcesListReceiver(csvData, forcesListDao);
         forcesListReceiver.receiveData();
 
-        StreetLevelCrimesReceiver streetLevelCrimesReceiver = new StreetLevelCrimesReceiver(link, csvData, streetLevelCrimesDao);
+        StreetLevelCrimesReceiver streetLevelCrimesReceiver = new StreetLevelCrimesReceiver(csvData, streetLevelCrimesDao);
         streetLevelCrimesReceiver.receiveData(fromDate, toDate);
     }
 

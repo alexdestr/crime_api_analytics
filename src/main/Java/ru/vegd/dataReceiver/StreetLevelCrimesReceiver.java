@@ -20,21 +20,29 @@ public class StreetLevelCrimesReceiver {
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(StreetLevelCrimesReceiver.class.getName());
 
     private static final Integer threadNum = Runtime.getRuntime().availableProcessors() + 1; // optimal number of threads
+    private static final String link = "https://data.police.uk/api/crimes-street/all-crime";
 
     private StreetLevelCrimesDao streetLevelCrimesDao;
 
-    private String link;
     private List<Station> csvData;
 
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
     private List<JsonArray> resultList = new ArrayList<>();
 
-    public StreetLevelCrimesReceiver(String link, List<Station> csvData, StreetLevelCrimesDao streetLevelCrimesDao) {
-        this.link = link;
+    /**
+     * @param csvData list of police stations and their coordinates.
+     * @param streetLevelCrimesDao DAO with injected connection to load data into a database.
+     */
+    public StreetLevelCrimesReceiver(List<Station> csvData, StreetLevelCrimesDao streetLevelCrimesDao) {
         this.csvData = csvData;
         this.streetLevelCrimesDao = streetLevelCrimesDao;
     }
 
+    /**
+     * Pulls data from thread, convert to an entity and inserts into to database.
+     * @param fromDate date in the format (YYYY-MM) from which data will be received (inclusively)
+     * @param toDate date in the format (YYYY-MM) for which data will be received (inclusively)
+     */
     public void receiveData(YearMonth fromDate, YearMonth toDate) {
         for (Station station : csvData) {
             for (YearMonth date = fromDate; !date.equals(toDate.plusMonths(1L)); date = date.plusMonths(1L)) {

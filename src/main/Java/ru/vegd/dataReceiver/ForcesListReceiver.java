@@ -17,21 +17,28 @@ public class ForcesListReceiver {
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(ForcesListReceiver.class.getName());
 
     private static final Integer threadNum = Runtime.getRuntime().availableProcessors() + 1; // optimal number of threads
+    private static final String link = "https://data.police.uk/api/forces";
 
     private ForcesListDao forcesListDao;
 
-    private String link;
+
     private List<Station> csvData;
 
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
     private List<Force> resultList = new ArrayList<>();
 
-    public ForcesListReceiver(String link, List<Station> csvData, ForcesListDao forcesListDao) {
-        this.link = link;
+    /**
+     * @param csvData list of police stations and their coordinates.
+     * @param forcesListDao DAO with injected connection to load data into a database.
+     */
+    public ForcesListReceiver(List<Station> csvData, ForcesListDao forcesListDao) {
         this.csvData = csvData;
         this.forcesListDao = forcesListDao;
     }
 
+    /**
+     * Pulls data from thread, convert to an entity and inserts into to database.
+     */
     public void receiveData() {
         JsonLoader jsonLoader = new JsonLoader("JsonLoader", link);
         Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);

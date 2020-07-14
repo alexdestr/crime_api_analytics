@@ -26,6 +26,10 @@ public class JsonLoader implements Callable<JsonArray> {
     private String name;
     private String link;
 
+    /**
+     * @param name - Name of thread.
+     * @param link - Link to download.
+     */
     public JsonLoader(String name, String link) {
         this.name = name;
         this.link = link;
@@ -35,6 +39,11 @@ public class JsonLoader implements Callable<JsonArray> {
         return name;
     }
 
+    /**
+     * Download data received through API request. And parse it to {@link JsonArray}.
+     * @return JsonArray which contains json objects received from request.
+     * @throws ResponseException if request returned 505 error more then 2 times.
+     */
     @Override
     public JsonArray call() throws Exception {
         DefaultHttpClient httpClient = null;
