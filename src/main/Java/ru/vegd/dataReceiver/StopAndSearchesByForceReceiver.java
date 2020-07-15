@@ -1,14 +1,21 @@
 package ru.vegd.dataReceiver;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import ru.vegd.dao.ForcesListDAO;
 import ru.vegd.dao.StopAndSearchesByForceDAO;
+import ru.vegd.dataReceiver.loader.JsonLoader;
+import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
+import ru.vegd.entity.Force;
 import ru.vegd.entity.Station;
 import ru.vegd.entity.StopAndSearchesByForce;
+import ru.vegd.linkBuilder.StopAndSearchesByForceLinkBuilder;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class StopAndSearchesByForceReceiver {
@@ -19,36 +26,38 @@ public class StopAndSearchesByForceReceiver {
     private static final String link = "https://data.police.uk/api/stops-force";
 
     private StopAndSearchesByForceDAO stopAndSearchesByForceDAO;
-
-    private List<Station> csvData;
+    private ForcesListDAO forcesListDAO;
 
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
     private List<JsonArray> resultList = new ArrayList<>();
 
+    List<Force> forceList;
+
     /**
      * @param stopAndSearchesByForceDAO DAO with injected connection to load data into a database.
      */
-    public StopAndSearchesByForceReceiver(StopAndSearchesByForceDAO stopAndSearchesByForceDAO) {
+    public StopAndSearchesByForceReceiver(StopAndSearchesByForceDAO stopAndSearchesByForceDAO, ForcesListDAO forcesListDAO) {
         this.stopAndSearchesByForceDAO = stopAndSearchesByForceDAO;
+        this.forcesListDAO = forcesListDAO;
     }
 
     public void receiveData(String force, YearMonth fromDate, YearMonth toDate) {
-        for () {
+        forceList.addAll(forcesListDAO.getAllForces());
+        for (Force police : forceList) {
             for (YearMonth date = fromDate; !date.equals(toDate.plusMonths(1L)); date = date.plusMonths(1L)) {
-                String finalLink = new StreetLevelCrimesLinkBuider().setStartLink(link)
-                        .setLongitude(station.getLongitude())
-                        .setLatitude(station.getLatitude())
+                String finalLink = new StopAndSearchesByForceLinkBuilder().setStartLink(link)
+                        .setForce(police.getId())
                         .setDate(date)
                         .build();
-                JsonLoader jsonLoader = new JsonLoader("JsonLoader" + date.toString() + " Street: " + station.getStreetName(), finalLink);
+                JsonLoader jsonLoader = new JsonLoader("JsonLoader" + date.toString() + " Street: " + police.getId(), finalLink);
                 Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);
                 try {
                     JsonArray jsonArray = jsonArrayFuture.get();
-                    List<StreetLevelCrime> resultList = new ArrayList<>();
+                    List<StopAndSearchesByForce> resultList = new ArrayList<>();
                     for (Integer i = 0; i < jsonArray.size(); i++) {
                         JsonObject object = jsonArray.get(i).getAsJsonObject();
                         JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
-                        resultList.add(jsonToEntityConverter.convertToStreetLevelCrimes(object));
+                        resultList.add(jsonToEntityConverter.(object));
                     }
                     streetLevelCrimesDAO.add(resultList);
                 } catch (InterruptedException e) {
