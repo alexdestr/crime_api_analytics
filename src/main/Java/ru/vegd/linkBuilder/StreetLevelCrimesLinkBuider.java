@@ -2,7 +2,7 @@ package ru.vegd.linkBuilder;
 
 import java.time.YearMonth;
 
-public class LinkBuider {
+public class StreetLevelCrimesLinkBuider {
     private String startLink;
     private Double latitude;
     private Double longitude;
@@ -11,22 +11,22 @@ public class LinkBuider {
     private String finalLink;
 
 
-    public LinkBuider setStartLink(String startLink) {
+    public StreetLevelCrimesLinkBuider setStartLink(String startLink) {
         this.startLink = startLink;
         return this;
     }
 
-    public LinkBuider setLatitude(Double latitude) {
+    public StreetLevelCrimesLinkBuider setLatitude(Double latitude) {
         this.latitude = latitude;
         return this;
     }
 
-    public LinkBuider setLongitude(Double longitude) {
+    public StreetLevelCrimesLinkBuider setLongitude(Double longitude) {
         this.longitude = longitude;
         return this;
     }
 
-    public LinkBuider setDate(YearMonth date) {
+    public StreetLevelCrimesLinkBuider setDate(YearMonth date) {
         this.date = date;
         return this;
     }

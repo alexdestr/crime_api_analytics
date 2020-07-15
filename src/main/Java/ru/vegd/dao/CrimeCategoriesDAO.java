@@ -4,7 +4,7 @@ import ru.vegd.entity.CrimeCategory;
 
 import java.util.List;
 
-public interface CrimeCategoriesDao {
+public interface CrimeCategoriesDAO {
 
     void add(List<CrimeCategory> categoryList);
 

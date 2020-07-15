@@ -12,8 +12,9 @@ public class Force implements Serializable {
 
     public Force() {}
 
-    public Force(String id) {
+    public Force(String id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     public String getId() {

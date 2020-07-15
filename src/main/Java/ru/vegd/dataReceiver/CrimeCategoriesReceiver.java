@@ -1,8 +1,7 @@
 package ru.vegd.dataReceiver;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import ru.vegd.dao.CrimeCategoriesDao;
+import ru.vegd.dao.CrimeCategoriesDAO;
 import ru.vegd.dataReceiver.loader.JsonLoader;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.CrimeCategory;
@@ -23,7 +22,7 @@ public class CrimeCategoriesReceiver {
     private static final Integer threadNum = Runtime.getRuntime().availableProcessors() + 1; // optimal number of threads
     private static final String link = "https://data.police.uk/api/crime-categories";
 
-    private CrimeCategoriesDao crimeCategoriesDao;
+    private CrimeCategoriesDAO crimeCategoriesDAO;
 
     private List<Station> csvData;
 
@@ -33,11 +32,11 @@ public class CrimeCategoriesReceiver {
 
     /**
      * @param csvData list of police stations and their coordinates.
-     * @param crimeCategoriesDao DAO with injected connection to load data into a database.
+     * @param crimeCategoriesDAO DAO with injected connection to load data into a database.
      */
-    public CrimeCategoriesReceiver(List<Station> csvData, CrimeCategoriesDao crimeCategoriesDao) {
+    public CrimeCategoriesReceiver(List<Station> csvData, CrimeCategoriesDAO crimeCategoriesDAO) {
         this.csvData = csvData;
-        this.crimeCategoriesDao = crimeCategoriesDao;
+        this.crimeCategoriesDAO = crimeCategoriesDAO;
     }
 
     /**
@@ -72,6 +71,6 @@ public class CrimeCategoriesReceiver {
                 resultList.add(new JsonToEntityConverter().convertToCrimeCategories(json.get(i).getAsJsonObject()));
             }
         }
-        crimeCategoriesDao.add(resultList);
+        crimeCategoriesDAO.add(resultList);
     }
 }

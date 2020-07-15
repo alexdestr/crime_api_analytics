@@ -4,7 +4,7 @@ import ru.vegd.entity.StreetLevelCrime;
 
 import java.util.List;
 
-public interface StreetLevelCrimesDao {
+public interface StreetLevelCrimesDAO {
 
     void add(List<StreetLevelCrime> crimeList);
 

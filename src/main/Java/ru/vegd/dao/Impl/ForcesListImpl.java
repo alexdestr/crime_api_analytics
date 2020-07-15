@@ -4,15 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.vegd.dao.ForcesListDao;
+import ru.vegd.dao.ForcesListDAO;
 import ru.vegd.entity.Force;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class ForcesListImpl implements ForcesListDao {
+public class ForcesListImpl implements ForcesListDAO {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(ForcesListImpl.class.getName());
 
@@ -24,6 +25,8 @@ public class ForcesListImpl implements ForcesListDao {
             "ON CONFLICT(id) DO UPDATE " +
             "SET id=?, " +
             "name=?";
+    private static final String SQL_GET_ALL_FORCES = "SELECT id, name " +
+            "FROM forcesList";
 
     @Override
     public void add(List<Force> force) {
@@ -41,5 +44,14 @@ public class ForcesListImpl implements ForcesListDao {
                 return force.size();
             }
         });
+    }
+
+    @Override
+    public List<Force> getAllForces() {
+        return jdbcTemplate.query(SQL_GET_ALL_FORCES,
+                (rs, rowNum) -> new Force(
+                        rs.getString("id"),
+                        rs.getString("name")
+                ));
     }
 }

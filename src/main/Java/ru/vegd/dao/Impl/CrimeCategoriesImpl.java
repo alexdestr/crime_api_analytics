@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.vegd.dao.CrimeCategoriesDao;
+import ru.vegd.dao.CrimeCategoriesDAO;
 import ru.vegd.entity.CrimeCategory;
 
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class CrimeCategoriesImpl implements CrimeCategoriesDao {
+public class CrimeCategoriesImpl implements CrimeCategoriesDAO {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(CrimeCategoriesImpl.class.getName());
 

@@ -1,30 +1,24 @@
 package ru.vegd.dataReceiver;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import ru.vegd.dao.StreetLevelCrimesDAO;
-import ru.vegd.dataReceiver.loader.JsonLoader;
-import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
+import ru.vegd.dao.StopAndSearchesByForceDAO;
 import ru.vegd.entity.Station;
-import ru.vegd.entity.StreetLevelCrime;
-import ru.vegd.linkBuilder.StreetLevelCrimesLinkBuider;
+import ru.vegd.entity.StopAndSearchesByForce;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
-/**
- * Processes data and inserts into the database.
- */
-public class StreetLevelCrimesReceiver {
+public class StopAndSearchesByForceReceiver {
 
-    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(StreetLevelCrimesReceiver.class.getName());
+    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(StopAndSearchesByForceReceiver.class.getName());
 
     private static final Integer threadNum = Runtime.getRuntime().availableProcessors() + 1; // optimal number of threads
-    private static final String link = "https://data.police.uk/api/crimes-street/all-crime";
+    private static final String link = "https://data.police.uk/api/stops-force";
 
-    private StreetLevelCrimesDAO streetLevelCrimesDAO;
+    private StopAndSearchesByForceDAO stopAndSearchesByForceDAO;
 
     private List<Station> csvData;
 
@@ -32,21 +26,14 @@ public class StreetLevelCrimesReceiver {
     private List<JsonArray> resultList = new ArrayList<>();
 
     /**
-     * @param csvData list of police stations and their coordinates.
-     * @param streetLevelCrimesDAO DAO with injected connection to load data into a database.
+     * @param stopAndSearchesByForceDAO DAO with injected connection to load data into a database.
      */
-    public StreetLevelCrimesReceiver(List<Station> csvData, StreetLevelCrimesDAO streetLevelCrimesDAO) {
-        this.csvData = csvData;
-        this.streetLevelCrimesDAO = streetLevelCrimesDAO;
+    public StopAndSearchesByForceReceiver(StopAndSearchesByForceDAO stopAndSearchesByForceDAO) {
+        this.stopAndSearchesByForceDAO = stopAndSearchesByForceDAO;
     }
 
-    /**
-     * Take data from thread, convert to an entity and inserts into the database.
-     * @param fromDate date in the format (YYYY-MM) from which data will be received (inclusively)
-     * @param toDate date in the format (YYYY-MM) for which data will be received (inclusively)
-     */
-    public void receiveData(YearMonth fromDate, YearMonth toDate) {
-        for (Station station : csvData) {
+    public void receiveData(String force, YearMonth fromDate, YearMonth toDate) {
+        for () {
             for (YearMonth date = fromDate; !date.equals(toDate.plusMonths(1L)); date = date.plusMonths(1L)) {
                 String finalLink = new StreetLevelCrimesLinkBuider().setStartLink(link)
                         .setLongitude(station.getLongitude())
@@ -82,5 +69,5 @@ public class StreetLevelCrimesReceiver {
         }
     }
 
-}
 
+}

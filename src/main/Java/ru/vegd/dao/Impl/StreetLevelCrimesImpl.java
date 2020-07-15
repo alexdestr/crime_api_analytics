@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.vegd.dao.StreetLevelCrimesDao;
+import ru.vegd.dao.StreetLevelCrimesDAO;
 import ru.vegd.entity.StreetLevelCrime;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class StreetLevelCrimesImpl implements StreetLevelCrimesDao {
+public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(StreetLevelCrimesImpl.class.getName());
 

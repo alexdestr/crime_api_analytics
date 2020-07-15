@@ -2,7 +2,7 @@ package ru.vegd.dataReceiver;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import ru.vegd.dao.ForcesListDao;
+import ru.vegd.dao.ForcesListDAO;
 import ru.vegd.dataReceiver.loader.JsonLoader;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.Force;
@@ -22,7 +22,7 @@ public class ForcesListReceiver {
     private static final Integer threadNum = Runtime.getRuntime().availableProcessors() + 1; // optimal number of threads
     private static final String link = "https://data.police.uk/api/forces";
 
-    private ForcesListDao forcesListDao;
+    private ForcesListDAO forcesListDAO;
 
 
     private List<Station> csvData;
@@ -32,11 +32,11 @@ public class ForcesListReceiver {
 
     /**
      * @param csvData list of police stations and their coordinates.
-     * @param forcesListDao DAO with injected connection to load data into a database.
+     * @param forcesListDAO DAO with injected connection to load data into a database.
      */
-    public ForcesListReceiver(List<Station> csvData, ForcesListDao forcesListDao) {
+    public ForcesListReceiver(List<Station> csvData, ForcesListDAO forcesListDAO) {
         this.csvData = csvData;
-        this.forcesListDao = forcesListDao;
+        this.forcesListDAO = forcesListDAO;
     }
 
     /**
@@ -52,7 +52,7 @@ public class ForcesListReceiver {
                 JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
                 resultList.add(jsonToEntityConverter.convertToForcesList(object));
             }
-            forcesListDao.add(resultList);
+            forcesListDAO.add(resultList);
         } catch (InterruptedException e) {
             logger.warn("Thread interrupted!");
             e.printStackTrace();
