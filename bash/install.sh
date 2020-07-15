@@ -205,7 +205,7 @@ if [ "$project_compile" = true ]
     su - postgres << EOF
     export PGPASSWORD=1234
     psql
-    CREATE DATABASE datapolice;
+    \i /home/project/Task1/db/db.sql
     \c datapolice
     psql datapolice
     \i /home/project/Task1/db/db_create.sql

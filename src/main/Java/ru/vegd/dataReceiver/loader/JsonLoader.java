@@ -7,6 +7,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.springframework.http.HttpStatus;
 import ru.vegd.dataReceiver.receivingDataExceptions.ResponseException;
 
 import java.io.BufferedReader;
@@ -22,8 +23,9 @@ public class JsonLoader implements Callable<JsonArray> {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(JsonLoader.class.getName());
 
-    private static final Integer secondsToSleepOn505ErrorCode = 30;
-    private static final Integer sleepTimeInSeconds = 1;
+    private static final Integer SECONDS_TO_SLEEP_505_ERROR_CODE = 30;
+    private static final Integer SLEEP_TIME_IN_SECONDS = 1;
+    private static final Integer MAX_ATTEMPS_NUM = 20;
 
     private String name;
     private String link;
@@ -57,23 +59,30 @@ public class JsonLoader implements Callable<JsonArray> {
                     link);
             getRequest.addHeader("accept", "application/json");
 
-            for (Integer i = secondsToSleepOn505ErrorCode; i <= Integer.MAX_VALUE; i = i + secondsToSleepOn505ErrorCode) {
+            for (Integer i = 0; i < MAX_ATTEMPS_NUM; i++) {
                 response = httpClient.execute(getRequest);
-                Integer httpCode = response.getStatusLine().getStatusCode();
+                HttpStatus httpCode = HttpStatus.resolve(response.getStatusLine().getStatusCode());
 
-                if (httpCode != org.springframework.http.HttpStatus.OK.value()) {
-                    if (httpCode == org.springframework.http.HttpStatus.TOO_MANY_REQUESTS.value()) {
-                        TimeUnit.SECONDS.sleep(sleepTimeInSeconds);
+                if (!httpCode.is2xxSuccessful()) {
+                    if (httpCode.equals(org.springframework.http.HttpStatus.TOO_MANY_REQUESTS.value())) {
+                        TimeUnit.SECONDS.sleep(SLEEP_TIME_IN_SECONDS);
                     }
-                    if (httpCode >= org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+                    if (httpCode.is5xxServerError()) {
                         logger.warn(httpCode + "HTTP error. Trying to reconnect");
-                        TimeUnit.SECONDS.sleep(i);
-                        if (i > secondsToSleepOn505ErrorCode * 2) {
-                            throw new ResponseException("Failed : HTTP error code", httpCode);
+                        TimeUnit.SECONDS.sleep(SECONDS_TO_SLEEP_505_ERROR_CODE * i);
+                        if (i > 3) {
+                            throw new ResponseException("Failed 5xx : HTTP error code", httpCode.value());
                         }
+                    if (httpCode.is4xxClientError()) {
+                        throw new ResponseException("Failed 4xx : HTTP error code", httpCode.value());
+                    }
                     }
                 } else {
-                    break;
+                    if (httpCode.is2xxSuccessful()) {
+                        i = MAX_ATTEMPS_NUM;
+                    } else {
+                        throw new ResponseException("Failed : HTTP error code", httpCode.value());
+                    }
                 }
             }
             BufferedReader br = new BufferedReader(

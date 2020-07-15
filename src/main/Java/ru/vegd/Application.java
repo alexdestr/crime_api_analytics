@@ -77,7 +77,7 @@ public class Application {
             Properties properties = cmd.getOptionProperties("D");
             link = properties.getProperty("link");
             startDate = YearMonth.parse(properties.getProperty("startDate"));
-            endDate = YearMonth.parse(properties.getProperty("endDate")); Integer
+            endDate = YearMonth.parse(properties.getProperty("endDate"));
         }
 
         entryPoint.entry();
