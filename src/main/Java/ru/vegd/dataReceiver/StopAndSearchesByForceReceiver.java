@@ -14,9 +14,7 @@ import ru.vegd.linkBuilder.StopAndSearchesByForceLinkBuilder;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 public class StopAndSearchesByForceReceiver {
 
@@ -31,17 +29,14 @@ public class StopAndSearchesByForceReceiver {
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
     private List<JsonArray> resultList = new ArrayList<>();
 
-    List<Force> forceList;
+    private List<Force> forceList = new ArrayList<>();
 
-    /**
-     * @param stopAndSearchesByForceDAO DAO with injected connection to load data into a database.
-     */
     public StopAndSearchesByForceReceiver(StopAndSearchesByForceDAO stopAndSearchesByForceDAO, ForcesListDAO forcesListDAO) {
         this.stopAndSearchesByForceDAO = stopAndSearchesByForceDAO;
         this.forcesListDAO = forcesListDAO;
     }
 
-    public void receiveData(String force, YearMonth fromDate, YearMonth toDate) {
+    public void receiveData(YearMonth fromDate, YearMonth toDate) {
         forceList.addAll(forcesListDAO.getAllForces());
         for (Force police : forceList) {
             for (YearMonth date = fromDate; !date.equals(toDate.plusMonths(1L)); date = date.plusMonths(1L)) {
@@ -57,9 +52,9 @@ public class StopAndSearchesByForceReceiver {
                     for (Integer i = 0; i < jsonArray.size(); i++) {
                         JsonObject object = jsonArray.get(i).getAsJsonObject();
                         JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
-                        resultList.add(jsonToEntityConverter.(object));
+                        resultList.add(jsonToEntityConverter.convertToStopAndSearchByForce(object));
                     }
-                    streetLevelCrimesDAO.add(resultList);
+                    stopAndSearchesByForceDAO.add(resultList);
                 } catch (InterruptedException e) {
                     logger.warn("Thread interrupted!");
                 } catch (ExecutionException e) {
@@ -69,7 +64,7 @@ public class StopAndSearchesByForceReceiver {
         }
         try {
             executor.shutdown();
-            final boolean done = executor.awaitTermination(csvData.size() * 11, TimeUnit.SECONDS);
+            final boolean done = executor.awaitTermination(forceList.size() * 11, TimeUnit.SECONDS);
             if (!done) {
                 logger.warn("Not all data has received");
             }
