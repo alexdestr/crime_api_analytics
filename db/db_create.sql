@@ -44,5 +44,6 @@ CREAtE TABLE stopAndSearchesByForce (
   object_of_search TEXT,
   outcome TEXT,
   outcome_linked_to_object_of_search BOOLEAN,
-  removal_of_more_than_outer_clothing BOOLEAN
+  removal_of_more_than_outer_clothing BOOLEAN,
+  CONSTRAINT UC_stopandSearchesByForce UNIQUE (type, datetime, age_range, gender, officer_defined_ethnicity, legislation, self_defined_ethnicity)
 );

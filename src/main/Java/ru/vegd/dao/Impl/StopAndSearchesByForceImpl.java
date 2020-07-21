@@ -41,10 +41,11 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
             "outcome_linked_to_object_of_search, " +
             "removal_of_more_than_outer_clothing) " +
             "VALUES " +
-            "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
-            "ON CONFLICT DO UPDATE " +
+            "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+            "ON CONFLICT(type, datetime, age_range, gender, officer_defined_ethnicity, legislation, self_defined_ethnicity) " +
+            "DO UPDATE " +
             "SET " +
-            "(type = ?, " +
+            "type = ?, " +
             "involved_person = ?, " +
             "datetime = ?, " +
             "operation = ?, " +
@@ -61,7 +62,7 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
             "object_of_search = ?, " +
             "outcome = ?, " +
             "outcome_linked_to_object_of_search = ?, " +
-            "removal_of_more_than_outer_clothing = ?)";
+            "removal_of_more_than_outer_clothing = ?";
 
     @Override
     public void add(List<StopAndSearchesByForce> stopAndSearchesByForce) {
