@@ -50,7 +50,7 @@ public class EntryPoint {
             //streetLevelCrimesReceiver.receiveData(fromDate, toDate);
 
             StopAndSearchesByForceReceiver stopAndSearchesByForceReceiver = new StopAndSearchesByForceReceiver(stopAndSearchesByForceDAO, forcesListDAO);
-            stopAndSearchesByForceReceiver.receiveData(fromDate, toDate);
+            //stopAndSearchesByForceReceiver.receiveData(fromDate, toDate);
         } catch (Exception e) {
             logger.error("Something went wrong.");
             e.printStackTrace();
