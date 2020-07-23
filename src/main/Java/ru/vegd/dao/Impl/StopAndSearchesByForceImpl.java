@@ -1,16 +1,14 @@
 package ru.vegd.dao.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 import ru.vegd.dao.StopAndSearchesByForceDAO;
 import ru.vegd.entity.StopAndSearchesByForce;
+import ru.vegd.utils.SQLParser;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.SQLType;
-import java.sql.Types;
+import java.sql.*;
+import java.time.YearMonth;
 import java.util.List;
 
 @Repository
@@ -158,4 +156,5 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
                     }
                 });
     }
+
 }

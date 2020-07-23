@@ -3,12 +3,17 @@ package ru.vegd.dao.Impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Repository;
 import ru.vegd.dao.StreetLevelCrimesDAO;
 import ru.vegd.entity.StreetLevelCrime;
+import ru.vegd.utils.SQLParser;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.YearMonth;
 import java.util.List;
 
 @Repository
@@ -50,6 +55,8 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
             "location_subtype = ?, " +
             "month = ?";
 
+    private static final String PATH_TO_SQL_QUERY_MOST_DANGEROUS_STREET = "db/scripts/mostDangerousStreets.sql";
+
     @Override
     public void add(List<StreetLevelCrime> crimeList) {
         jdbcTemplate.batchUpdate(SQL_ADD_CRIME,
@@ -90,5 +97,28 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
                     }
                 }
         );
+    }
+
+    @Override
+    public void getMostDangerousStreets(YearMonth from, YearMonth to) {
+        String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_MOST_DANGEROUS_STREET);
+        jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, String.valueOf(from));
+                ps.setString(2, String.valueOf(to));
+                ps.setString(3, String.valueOf(from));
+                ps.setString(4, String.valueOf(to));
+            }
+        }, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                System.out.println("--------------");
+                System.out.println("Street ID: " + rs.getString("street_id"));
+                System.out.println("Street Name: " + rs.getString("street_name"));
+                System.out.println("Period: " + rs.getString("period"));
+                System.out.println("Crimes Count: " + rs.getString("cnt"));
+            }
+        });
     }
 }

@@ -37,7 +37,7 @@ public class EntryPoint {
         try {
             List<Station> csvData = CSVParser.getStations();
 
-            YearMonth fromDate = YearMonth.of(2018, 1);
+            YearMonth fromDate = YearMonth.of(2018, 5);
             YearMonth toDate = YearMonth.of(2018, 6);
 
             CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver(csvData, crimeCategoriesDAO);
@@ -51,6 +51,10 @@ public class EntryPoint {
 
             StopAndSearchesByForceReceiver stopAndSearchesByForceReceiver = new StopAndSearchesByForceReceiver(stopAndSearchesByForceDAO, forcesListDAO);
             //stopAndSearchesByForceReceiver.receiveData(fromDate, toDate);
+
+            // Row #1
+            streetLevelCrimesDAO.getMostDangerousStreets(fromDate, toDate);
+
         } catch (Exception e) {
             logger.error("Something went wrong.");
             e.printStackTrace();
