@@ -21,3 +21,5 @@ WHERE a.mth = to_char(to_date(b.mth, 'YYYY-MM') - INTERVAL '1 month', 'YYYY-MM')
 
 SELECT category, mth, previous_month_count, current_month_count, current_month_count - previous_month_count AS delta, concat(cast(round((cast(current_month_count AS decimal) - cast(previous_month_count AS decimal)) / cast(previous_month_count AS decimal) * 100, 1) AS text), '%') AS growth_rate
 FROM odr
+WHERE TO_DATE(mth, 'YYYY-MM') >= TO_DATE(''|| ? ||'', 'YYYY-MM')
+AND TO_DATE(mth, 'YYYY-MM') <= TO_DATE(''|| ? ||'', 'YYYY-MM')

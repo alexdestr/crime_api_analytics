@@ -8,4 +8,5 @@ import java.util.List;
 public interface StreetLevelCrimesDAO {
     void add(List<StreetLevelCrime> crimeList);
     void getMostDangerousStreets(YearMonth from, YearMonth to);
+    void getMonthToMonthCrimeVolumeComparison(YearMonth from, YearMonth to);
 }

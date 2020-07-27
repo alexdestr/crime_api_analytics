@@ -56,6 +56,7 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
             "month = ?";
 
     private static final String PATH_TO_SQL_QUERY_MOST_DANGEROUS_STREET = "db/scripts/script#1/mostDangerousStreets.sql";
+    private static final String PATH_TO_SQL_QUERY_CRIME_VOLUME_COMPARSION = "db/scripts/script#2/crimeVolumeComparsion.sql";
 
     @Override
     public void add(List<StreetLevelCrime> crimeList) {
@@ -118,6 +119,30 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
                 System.out.println("Street Name: " + rs.getString("street_name"));
                 System.out.println("Period: " + rs.getString("period"));
                 System.out.println("Crimes Count: " + rs.getString("cnt"));
+            }
+        });
+    }
+
+    @Override
+    public void getMonthToMonthCrimeVolumeComparison(YearMonth from, YearMonth to) {
+        String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_CRIME_VOLUME_COMPARSION);
+        jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, String.valueOf(from));
+                ps.setString(2, String.valueOf(to));
+
+            }
+        }, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                System.out.println("--------------");
+                System.out.println("Category: " + rs.getString("category"));
+                System.out.println("Month: " + rs.getString("mth"));
+                System.out.println("Previous Month Count: " + rs.getString("previous_month_count"));
+                System.out.println("Current Month Count: " + rs.getString("current_month_count"));
+                System.out.println("Delta: " + rs.getString("delta"));
+                System.out.println("Growth Rate: " + rs.getString("growth_rate"));
             }
         });
     }
