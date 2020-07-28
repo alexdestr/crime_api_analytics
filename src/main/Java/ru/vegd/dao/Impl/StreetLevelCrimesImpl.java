@@ -57,6 +57,7 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
 
     private static final String PATH_TO_SQL_QUERY_MOST_DANGEROUS_STREET = "db/scripts/script#1/mostDangerousStreets.sql";
     private static final String PATH_TO_SQL_QUERY_CRIME_VOLUME_COMPARSION = "db/scripts/script#2/crimeVolumeComparsion.sql";
+    private static final String PATH_TO_SQL_QUERY_CRIMES_WITH_SPECIFIED_OUTCOME_STATUS = "db/scripts/script#3/crimesWithSpecifiedOutcomeStatus.sql";
 
     @Override
     public void add(List<StreetLevelCrime> crimeList) {
@@ -143,6 +144,30 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
                 System.out.println("Current Month Count: " + rs.getString("current_month_count"));
                 System.out.println("Delta: " + rs.getString("delta"));
                 System.out.println("Growth Rate: " + rs.getString("growth_rate"));
+            }
+        });
+    }
+
+    @Override
+    public void getCrimesWithSpecifiedOutcomeStatus(String outcomeCategory, YearMonth from, YearMonth to) {
+        String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_CRIMES_WITH_SPECIFIED_OUTCOME_STATUS);
+        jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, outcomeCategory);
+                ps.setString(2, String.valueOf(from));
+                ps.setString(3, String.valueOf(to));
+                ps.setString(4, String.valueOf(from));
+                ps.setString(5, String.valueOf(to));
+            }
+        }, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                System.out.println("--------------");
+                System.out.println("Street Id: " + rs.getString("street_id"));
+                System.out.println("Street Name: " + rs.getString("street_name"));
+                System.out.println("Outcome Category: " + rs.getString("outcome_category"));
+                System.out.println("Percentage Of The Total Crimes: " + rs.getString("percentage_of_the_total_crimes"));
             }
         });
     }

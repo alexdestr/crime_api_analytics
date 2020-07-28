@@ -56,7 +56,10 @@ public class EntryPoint {
             //streetLevelCrimesDAO.getMostDangerousStreets(fromDate, toDate);
 
             //Row #2
-            streetLevelCrimesDAO.getMonthToMonthCrimeVolumeComparison(fromDate, toDate);
+            //streetLevelCrimesDAO.getMonthToMonthCrimeVolumeComparison(fromDate, toDate);
+
+            //Row #3
+            streetLevelCrimesDAO.getCrimesWithSpecifiedOutcomeStatus("Investigation complete; no suspect identified", fromDate, toDate);
 
         } catch (Exception e) {
             logger.error("Something went wrong.");
