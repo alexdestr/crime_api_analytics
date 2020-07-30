@@ -25,7 +25,7 @@ public class JsonLoader implements Callable<JsonArray> {
 
     private static final Integer SECONDS_TO_SLEEP_505_ERROR_CODE = 30;
     private static final Integer SLEEP_TIME_IN_SECONDS = 1;
-    private static final Integer MAX_ATTEMPS_NUM = 20;
+    private static final Integer MAX_ATTEMPS_NUM = 2;
 
     private String name;
     private String link;
@@ -58,7 +58,7 @@ public class JsonLoader implements Callable<JsonArray> {
             HttpGet getRequest = new HttpGet(
                     link);
             getRequest.addHeader("accept", "application/json");
-
+            // TODO:
             for (Integer i = 0; i < MAX_ATTEMPS_NUM; i++) {
                 response = httpClient.execute(getRequest);
                 HttpStatus httpCode = HttpStatus.resolve(response.getStatusLine().getStatusCode());

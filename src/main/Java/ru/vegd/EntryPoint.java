@@ -38,7 +38,7 @@ public class EntryPoint {
             List<Station> csvData = CSVParser.getStations();
 
             YearMonth fromDate = YearMonth.of(2018, 1);
-            YearMonth toDate = YearMonth.of(2018, 6);
+            YearMonth toDate = YearMonth.of(2020, 12);
 
             CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver(csvData, crimeCategoriesDAO);
             //crimeCategoriesReceiver.receiveData();
@@ -59,7 +59,7 @@ public class EntryPoint {
             //streetLevelCrimesDAO.getMonthToMonthCrimeVolumeComparison(fromDate, toDate);
 
             //Row #3
-            streetLevelCrimesDAO.getCrimesWithSpecifiedOutcomeStatus("Investigation complete; no suspect identified", fromDate, toDate);
+            //streetLevelCrimesDAO.getCrimesWithSpecifiedOutcomeStatus("Investigation complete; no suspect identified", fromDate, toDate);
 
         } catch (Exception e) {
             logger.error("Something went wrong.");
