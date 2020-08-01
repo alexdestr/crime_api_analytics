@@ -62,6 +62,8 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
             "outcome_linked_to_object_of_search = ?, " +
             "removal_of_more_than_outer_clothing = ?";
 
+    private static final String PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY = "db/scripts/script#4/stopAndSearchesStatisticByEthnicity.sql";
+
     @Override
     public void add(List<StopAndSearchesByForce> stopAndSearchesByForce) {
         jdbcTemplate.batchUpdate(SQL_ADD_STOP_AND_SEARCHES_BY_FORCE,
@@ -155,6 +157,29 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
                         return stopAndSearchesByForce.size();
                     }
                 });
+    }
+
+    @Override
+    public void getStatisticByEthnicity(YearMonth from, YearMonth to) {
+        String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY);
+        jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, String.valueOf(from));
+                ps.setString(2, String.valueOf(to));
+            }
+        }, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                System.out.println("--------------");
+                System.out.println("Officer Defined Ethnicity: " + rs.getString("officer_defined_ethnicity"));
+                System.out.println("Stop And Search Count: " + rs.getString("count"));
+                System.out.println("Arrest Rate: " + rs.getString("arrest_rate"));
+                System.out.println("Release Rate: " + rs.getString("release_count"));
+                System.out.println("Other Outcomes Rate: " + rs.getString("other_outcomes_count"));
+                System.out.println("Most Popular Object Of Search: " + rs.getString("object_of_search"));
+            }
+        });
     }
 
 }

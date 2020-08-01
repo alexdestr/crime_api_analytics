@@ -61,6 +61,12 @@ public class EntryPoint {
             //Row #3
             //streetLevelCrimesDAO.getCrimesWithSpecifiedOutcomeStatus("Investigation complete; no suspect identified", fromDate, toDate);
 
+            //Row #4
+            //stopAndSearchesByForceDAO.getStatisticByEthnicity(fromDate, toDate);
+
+            //Row #5
+
+
         } catch (Exception e) {
             logger.error("Something went wrong.");
             e.printStackTrace();
