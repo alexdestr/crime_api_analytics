@@ -41,12 +41,7 @@ public class Application {
 
         Options options = new Options();
         CommandLine cmd = null;
-        Map optionsMap = new HashMap();
-        String row = null;
-        String lng = null;
-        String lat = null;
-        String startDate = null;
-        String endDate = null;
+        Map<String, String> optionsMap = new HashMap<>();
 
         Option propertyOption = Option.builder()
                 .longOpt("D")
@@ -68,8 +63,9 @@ public class Application {
         if (Objects.requireNonNull(cmd).hasOption("D")) {
             Properties properties = cmd.getOptionProperties("D");
             optionsMap.put("type", properties.getProperty("type"));
+            optionsMap.put("downloadData", properties.getProperty("downloadData"));
             optionsMap.put("row", properties.getProperty("row"));
-            optionsMap.put("startDate", startDate = properties.getProperty("startDate"));
+            optionsMap.put("startDate", properties.getProperty("startDate"));
             optionsMap.put("endDate", properties.getProperty("endDate"));
             optionsMap.put("lng", properties.getProperty("lng"));
             optionsMap.put("lat", properties.getProperty("lat"));

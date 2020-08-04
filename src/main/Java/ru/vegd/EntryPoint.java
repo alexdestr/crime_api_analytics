@@ -42,39 +42,67 @@ public class EntryPoint {
     public void entry(Map optionsMap) {
         try {
             List<Station> csvData = CSVParser.getStations();
+            YearMonth fromDate = null;
+            YearMonth toDate = null;
 
-            YearMonth fromDate = YearMonth.parse(optionsMap.get("fromDate"));
-            YearMonth toDate = YearMonth.parse(optionsMap.get("toDate"));
+            if (optionsMap.get("startDate") != null && optionsMap.get("endDate") != null) {
+                fromDate = YearMonth.parse((String) optionsMap.get("startDate"));
+                toDate = YearMonth.parse((String) optionsMap.get("endDate"));
+            }
 
-            CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver(csvData, crimeCategoriesDAO);
-            //crimeCategoriesReceiver.receiveData();
+            if (optionsMap.get("type").equals("downloadData")) {
+                if (optionsMap.get("downloadData").equals("crimeCategories")) {
+                    CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver(csvData, crimeCategoriesDAO);
+                    crimeCategoriesReceiver.receiveData();
+                }
 
-            ForcesListReceiver forcesListReceiver = new ForcesListReceiver(csvData, forcesListDAO);
-            //forcesListReceiver.receiveData();
+                if (optionsMap.get("downloadData").equals("forcesList")) {
+                    ForcesListReceiver forcesListReceiver = new ForcesListReceiver(csvData, forcesListDAO);
+                    forcesListReceiver.receiveData();
+                }
 
-            StreetLevelCrimesReceiver streetLevelCrimesReceiver = new StreetLevelCrimesReceiver(csvData, streetLevelCrimesDAO);
-            //streetLevelCrimesReceiver.receiveData(fromDate, toDate);
+                if (optionsMap.get("downloadData").equals("streetLevelCrimes")) {
+                    StreetLevelCrimesReceiver streetLevelCrimesReceiver = new StreetLevelCrimesReceiver(csvData, streetLevelCrimesDAO);
+                    streetLevelCrimesReceiver.receiveData(fromDate, toDate);
+                }
 
-            StopAndSearchesByForceReceiver stopAndSearchesByForceReceiver = new StopAndSearchesByForceReceiver(stopAndSearchesByForceDAO, forcesListDAO);
-            //stopAndSearchesByForceReceiver.receiveData(fromDate, toDate);
+                if (optionsMap.get("stopAndSearchesByForce").equals("stopAndSearchesByForce")) {
+                    StopAndSearchesByForceReceiver stopAndSearchesByForceReceiver = new StopAndSearchesByForceReceiver(stopAndSearchesByForceDAO, forcesListDAO);
+                    stopAndSearchesByForceReceiver.receiveData(fromDate, toDate);
+                }
+            }
 
-            // Row #1
-            //streetLevelCrimesDAO.getMostDangerousStreets(fromDate, toDate);
+            if (optionsMap.get("type").equals("receiveData")) {
+                if (optionsMap.get("row").equals("1")) {
+                    // Row #1
+                    streetLevelCrimesDAO.getMostDangerousStreets(fromDate, toDate);
+                }
 
-            //Row #2
-            //streetLevelCrimesDAO.getMonthToMonthCrimeVolumeComparison(fromDate, toDate);
+                if (optionsMap.get("row").equals("2")) {
+                    //Row #2
+                    streetLevelCrimesDAO.getMonthToMonthCrimeVolumeComparison(fromDate, toDate);
+                }
 
-            //Row #3
-            //streetLevelCrimesDAO.getCrimesWithSpecifiedOutcomeStatus("Investigation complete; no suspect identified", fromDate, toDate);
+                if (optionsMap.get("row").equals("3")) {
+                    //Row #3
+                    streetLevelCrimesDAO.getCrimesWithSpecifiedOutcomeStatus("Investigation complete; no suspect identified", fromDate, toDate);
+                }
 
-            //Row #4
-            //stopAndSearchesByForceDAO.getStatisticByEthnicity(fromDate, toDate);
+                if (optionsMap.get("row").equals("4")) {
+                    //Row #4
+                    stopAndSearchesByForceDAO.getStatisticByEthnicity(fromDate, toDate);
+                }
 
-            //Row #5
-            //stopAndSearchesByForceDAO.getMostProbableStopAndSearchSnapshotOnStreetLevel(fromDate, toDate);
+                if (optionsMap.get("row").equals("5")) {
+                    //Row #5
+                    stopAndSearchesByForceDAO.getMostProbableStopAndSearchSnapshotOnStreetLevel(fromDate, toDate);
+                }
 
-            //Row #6
-            //commonRows.comparsionStopAndSearchesWithStreetLevelCrimes(fromDate, toDate);
+                if (optionsMap.get("row").equals("6")) {
+                    //Row #6
+                    commonRows.comparsionStopAndSearchesWithStreetLevelCrimes(fromDate, toDate);
+                }
+            }
 
         } catch (Exception e) {
             logger.error("Something went wrong.");
