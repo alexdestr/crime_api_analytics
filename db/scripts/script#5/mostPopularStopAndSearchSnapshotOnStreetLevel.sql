@@ -1,10 +1,11 @@
 WITH stopandsearchbydate AS (
-  SELECT * FROM stopandsearchesbyforce
-  HAVING TO_DATE(to_char(datetime, 'YYYY-MM'), 'YYYY-MM') >= TO_DATE(''|| ? ||'', 'YYYY-MM')
+  SELECT street_id, street_name, age_range, gender, officer_defined_ethnicity, object_of_search, outcome, COUNT(*) FROM stopandsearchesbyforce
+  GROUP BY street_id, street_name, age_range, gender, officer_defined_ethnicity, object_of_search, outcome, datetime
+  HAVING datetime IS NOT NULL AND TO_DATE(to_char(datetime, 'YYYY-MM'), 'YYYY-MM') >= TO_DATE(''|| ? ||'', 'YYYY-MM')
   AND TO_DATE(to_char(datetime, 'YYYY-MM'), 'YYYY-MM') <= TO_DATE(''|| ? ||'', 'YYYY-MM')
-)
+),
 
-WITH count_most_popular_age_range AS (
+count_most_popular_age_range AS (
   SELECT street_id, street_name, age_range, COUNT(*)
   FROM stopandsearchbydate
   WHERE age_range IS NOT NULL

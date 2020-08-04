@@ -63,6 +63,7 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
             "removal_of_more_than_outer_clothing = ?";
 
     private static final String PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY = "db/scripts/script#4/stopAndSearchesStatisticByEthnicity.sql";
+    private static final String PATH_TO_SQL_QUERY_MOST_POPULAR_STOP_AND_SEARCHES_SNAPSHOT_ON_STREET_LEVEL = "db/scripts/script#5/mostPopularStopAndSearchSnapshotOnStreetLevel.sql";
 
     @Override
     public void add(List<StopAndSearchesByForce> stopAndSearchesByForce) {
@@ -178,6 +179,29 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
                 System.out.println("Release Rate: " + rs.getString("release_count"));
                 System.out.println("Other Outcomes Rate: " + rs.getString("other_outcomes_count"));
                 System.out.println("Most Popular Object Of Search: " + rs.getString("object_of_search"));
+            }
+        });
+    }
+
+    @Override
+    public void getMostProbableStopAndSearchSnapshotOnStreetLevel(YearMonth from, YearMonth to) {
+        String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY);
+        jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, String.valueOf(from));
+                ps.setString(2, String.valueOf(to));
+            }
+        }, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                System.out.println(rs.getString("street_id"));
+                System.out.println(rs.getString("street_name"));
+                System.out.println(rs.getString("age_range"));
+                System.out.println(rs.getString("gender"));
+                System.out.println(rs.getString("officer_defined_ethnicity"));
+                System.out.println(rs.getString("object_of_search"));
+                System.out.println(rs.getString("outcome"));
             }
         });
     }

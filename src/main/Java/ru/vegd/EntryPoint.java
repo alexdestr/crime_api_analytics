@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.vegd.dao.CrimeCategoriesDAO;
 import ru.vegd.dao.ForcesListDAO;
+import ru.vegd.dao.Impl.CommonRowsImpl;
 import ru.vegd.dao.StopAndSearchesByForceDAO;
 import ru.vegd.dao.StreetLevelCrimesDAO;
 import ru.vegd.dataReceiver.CrimeCategoriesReceiver;
@@ -32,6 +33,9 @@ public class EntryPoint {
 
     @Autowired
     private StopAndSearchesByForceDAO stopAndSearchesByForceDAO;
+
+    @Autowired
+    private CommonRowsImpl commonRows;
 
     public void entry() {
         try {
@@ -65,7 +69,10 @@ public class EntryPoint {
             //stopAndSearchesByForceDAO.getStatisticByEthnicity(fromDate, toDate);
 
             //Row #5
+            //stopAndSearchesByForceDAO.getMostProbableStopAndSearchSnapshotOnStreetLevel(fromDate, toDate);
 
+            //Row #6
+            commonRows.comparsionStopAndSearchesWithStreetLevelCrimes(fromDate, toDate);
 
         } catch (Exception e) {
             logger.error("Something went wrong.");
