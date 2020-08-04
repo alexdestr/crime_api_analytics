@@ -41,17 +41,20 @@ public class Application {
 
         Options options = new Options();
         CommandLine cmd = null;
-        String type = null;
+        Map optionsMap = new HashMap();
+        String row = null;
         String lng = null;
         String lat = null;
-        YearMonth startDate = null;
-        YearMonth endDate = null;
+        String startDate = null;
+        String endDate = null;
 
         Option propertyOption = Option.builder()
-                .longOpt("C")
-                .argName("property=value")
-                .hasArg()
+                .longOpt("D")
+                .argName("property=value" )
+                .hasArgs()
                 .valueSeparator()
+                .numberOfArgs(2)
+                .desc("use value for given properties" )
                 .build();
         options.addOption(propertyOption);
 
@@ -64,12 +67,15 @@ public class Application {
 
         if (Objects.requireNonNull(cmd).hasOption("D")) {
             Properties properties = cmd.getOptionProperties("D");
-            type = properties.getProperty("type");
-            startDate = YearMonth.parse(properties.getProperty("startDate"));
-            endDate = YearMonth.parse(properties.getProperty("endDate"));
+            optionsMap.put("type", properties.getProperty("type"));
+            optionsMap.put("row", properties.getProperty("row"));
+            optionsMap.put("startDate", startDate = properties.getProperty("startDate"));
+            optionsMap.put("endDate", properties.getProperty("endDate"));
+            optionsMap.put("lng", properties.getProperty("lng"));
+            optionsMap.put("lat", properties.getProperty("lat"));
         }
 
-        entryPoint.entry();
+        entryPoint.entry(optionsMap);
     }
 
 }

@@ -1,5 +1,5 @@
 WITH street_level_crimes_by_date AS (
-  SELECT street_id, street_name, category, month FROM streetlevelcrimes
+  SELECT street_id, street_name, category FROM streetlevelcrimes
   GROUP BY street_id, street_name, category, month
   HAVING TO_DATE(month, 'YYYY-MM') >= TO_DATE(''|| ? ||'', 'YYYY-MM')
   AND TO_DATE(month, 'YYYY-MM') <= TO_DATE(''|| ? ||'', 'YYYY-MM')

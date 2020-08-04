@@ -15,7 +15,9 @@ import ru.vegd.entity.Station;
 import ru.vegd.utils.CSVParser;
 
 import java.time.YearMonth;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class EntryPoint {
@@ -37,12 +39,12 @@ public class EntryPoint {
     @Autowired
     private CommonRowsImpl commonRows;
 
-    public void entry() {
+    public void entry(Map optionsMap) {
         try {
             List<Station> csvData = CSVParser.getStations();
 
-            YearMonth fromDate = YearMonth.of(2018, 1);
-            YearMonth toDate = YearMonth.of(2020, 12);
+            YearMonth fromDate = YearMonth.parse(optionsMap.get("fromDate"));
+            YearMonth toDate = YearMonth.parse(optionsMap.get("toDate"));
 
             CrimeCategoriesReceiver crimeCategoriesReceiver = new CrimeCategoriesReceiver(csvData, crimeCategoriesDAO);
             //crimeCategoriesReceiver.receiveData();
@@ -72,7 +74,7 @@ public class EntryPoint {
             //stopAndSearchesByForceDAO.getMostProbableStopAndSearchSnapshotOnStreetLevel(fromDate, toDate);
 
             //Row #6
-            commonRows.comparsionStopAndSearchesWithStreetLevelCrimes(fromDate, toDate);
+            //commonRows.comparsionStopAndSearchesWithStreetLevelCrimes(fromDate, toDate);
 
         } catch (Exception e) {
             logger.error("Something went wrong.");
