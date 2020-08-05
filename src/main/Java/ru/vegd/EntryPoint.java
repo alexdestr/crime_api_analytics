@@ -14,6 +14,10 @@ import ru.vegd.dataReceiver.StreetLevelCrimesReceiver;
 import ru.vegd.entity.Station;
 import ru.vegd.utils.CSVParser;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +44,7 @@ public class EntryPoint {
     private CommonRowsImpl commonRows;
 
     public void entry(Map optionsMap) {
+        BufferedWriter writer = null;
         try {
             List<Station> csvData = CSVParser.getStations();
             YearMonth fromDate = null;
@@ -75,33 +80,76 @@ public class EntryPoint {
             if (optionsMap.get("type").equals("receiveData")) {
                 if (optionsMap.get("row").equals("1")) {
                     // Row #1
-                    streetLevelCrimesDAO.getMostDangerousStreets(fromDate, toDate);
+                    File file = new File("programOutputRow#1.txt");
+                    writer = new BufferedWriter(new FileWriter(file));
+                    writer.flush();
+                    for (String str : streetLevelCrimesDAO.getMostDangerousStreets(fromDate, toDate)) {
+                        System.out.println(str);
+                        writer.write(str);
+                        writer.newLine();
+                    }
                 }
 
                 if (optionsMap.get("row").equals("2")) {
                     //Row #2
-                    streetLevelCrimesDAO.getMonthToMonthCrimeVolumeComparison(fromDate, toDate);
+                    File file = new File("programOutputRow#2.txt");
+                    writer = new BufferedWriter(new FileWriter(file));
+                    writer.flush();
+                    for (String str : streetLevelCrimesDAO.getMonthToMonthCrimeVolumeComparison(fromDate, toDate)) {
+                        System.out.println(str);
+                        writer.write(str);
+                        writer.newLine();
+                    }
                 }
 
                 if (optionsMap.get("row").equals("3")) {
                     //Row #3
-                    streetLevelCrimesDAO.getCrimesWithSpecifiedOutcomeStatus("Investigation complete; no suspect identified", fromDate, toDate);
+                    File file = new File("programOutputRow#3.txt");
+                    writer = new BufferedWriter(new FileWriter(file));
+                    writer.flush();
+                    for (String str : streetLevelCrimesDAO.getCrimesWithSpecifiedOutcomeStatus("Investigation complete; no suspect identified", fromDate, toDate)) {
+                        System.out.println(str);
+                        writer.write(str);
+                        writer.newLine();
+                    }
                 }
 
                 if (optionsMap.get("row").equals("4")) {
                     //Row #4
-                    stopAndSearchesByForceDAO.getStatisticByEthnicity(fromDate, toDate);
+                    File file = new File("programOutputRow#4.txt");
+                    writer = new BufferedWriter(new FileWriter(file));
+                    writer.flush();
+                    for (String str : stopAndSearchesByForceDAO.getStatisticByEthnicity(fromDate, toDate)) {
+                        System.out.println(str);
+                        writer.write(str);
+                        writer.newLine();
+                    }
                 }
 
                 if (optionsMap.get("row").equals("5")) {
                     //Row #5
-                    stopAndSearchesByForceDAO.getMostProbableStopAndSearchSnapshotOnStreetLevel(fromDate, toDate);
+                    File file = new File("programOutputRow#5.txt");
+                    writer = new BufferedWriter(new FileWriter(file));
+                    writer.flush();
+                    for (String str : stopAndSearchesByForceDAO.getMostProbableStopAndSearchSnapshotOnStreetLevel(fromDate, toDate)) {
+                        System.out.println(str);
+                        writer.write(str);
+                        writer.newLine();
+                    }
                 }
 
                 if (optionsMap.get("row").equals("6")) {
                     //Row #6
-                    commonRows.comparsionStopAndSearchesWithStreetLevelCrimes(fromDate, toDate);
+                    File file = new File("programOutputRow#6.txt");
+                    writer = new BufferedWriter(new FileWriter(file));
+                    writer.flush();
+                    for (String str : commonRows.comparsionStopAndSearchesWithStreetLevelCrimes(fromDate, toDate)) {
+                        System.out.println(str);
+                        writer.write(str);
+                        writer.newLine();
+                    }
                 }
+                writer.close();
             }
 
         } catch (Exception e) {

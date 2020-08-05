@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class CommonRowsImpl implements CommonRowsDAO {
@@ -24,8 +26,9 @@ public class CommonRowsImpl implements CommonRowsDAO {
     private static final String PATH_TO_SQL_QUERY_COMPARSION_STOP_AND_SEARCHES_WITH_STREET_LEVEL_CRIMES = "db/scripts/script#6/stopAndSearchCorrelationWithCrimes.sql";
 
     @Override
-    public void comparsionStopAndSearchesWithStreetLevelCrimes(YearMonth from, YearMonth to) {
+    public List<String> comparsionStopAndSearchesWithStreetLevelCrimes(YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_COMPARSION_STOP_AND_SEARCHES_WITH_STREET_LEVEL_CRIMES);
+        List<String> finalOutput = new ArrayList<>();
         jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
@@ -37,17 +40,21 @@ public class CommonRowsImpl implements CommonRowsDAO {
         }, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                System.out.println("--------------");
-                System.out.println("Street Id: " + rs.getString("street_id"));
-                System.out.println("Street Name: " + rs.getString("street_name"));
-                System.out.println("Month: " + rs.getString("month"));
-                System.out.println("Drugs Crime Count: " + rs.getString("drugs_crime_count"));
-                System.out.println("Drugs Strop And Search Count: " + rs.getString("drugs_stop_and_search_count"));
-                System.out.println("Weapons Crimes Count: " + rs.getString("weapons_crimes_count"));
-                System.out.println("Weapons Stop And Search Count: " + rs.getString("weapons_stop_and_search_count"));
-                System.out.println("Theft Crimes Count: " + rs.getString("theft_crimes_count"));
-                System.out.println("Theft Stop And Search Count: " + rs.getString("theft_stop_and_search_count"));
+                StringBuilder[] output = new StringBuilder[1];
+                output[0] = new StringBuilder("--------------");
+                output[0].append("\n");
+                output[0].append("Street Id: " + rs.getString("street_id")).append("\n");
+                output[0].append("Street Name: " + rs.getString("street_name")).append("\n");
+                output[0].append("Month: " + rs.getString("month")).append("\n");
+                output[0].append("Drugs Crime Count: " + rs.getString("drugs_crime_count")).append("\n");
+                output[0].append("Drugs Strop And Search Count: " + rs.getString("drugs_stop_and_search_count")).append("\n");
+                output[0].append("Weapons Crimes Count: " + rs.getString("weapons_crimes_count")).append("\n");
+                output[0].append("Weapons Stop And Search Count: " + rs.getString("weapons_stop_and_search_count")).append("\n");
+                output[0].append("Theft Crimes Count: " + rs.getString("theft_crimes_count")).append("\n");
+                output[0].append("Theft Stop And Search Count: " + rs.getString("theft_stop_and_search_count"));
+                finalOutput.add(String.valueOf(output[0]));
             }
         });
+        return finalOutput;
     }
 }

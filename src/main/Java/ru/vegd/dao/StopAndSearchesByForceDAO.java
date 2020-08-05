@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface StopAndSearchesByForceDAO {
     void add(List<StopAndSearchesByForce> stopAndSearchesByForce);
-    void getStatisticByEthnicity(YearMonth from, YearMonth to);
-    void getMostProbableStopAndSearchSnapshotOnStreetLevel(YearMonth from, YearMonth to);
+    List<String> getStatisticByEthnicity(YearMonth from, YearMonth to);
+    List<String> getMostProbableStopAndSearchSnapshotOnStreetLevel(YearMonth from, YearMonth to);
 }

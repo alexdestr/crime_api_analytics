@@ -49,7 +49,6 @@ public class Application {
                 .hasArgs()
                 .valueSeparator()
                 .numberOfArgs(2)
-                .desc("use value for given properties" )
                 .build();
         options.addOption(propertyOption);
 

@@ -1,0 +1,35 @@
+--------------
+Officer Defined Ethnicity: Asian
+Stop And Search Count: 33120
+Arrest Rate: 14.6%
+Release Rate: 63.3%
+Other Outcomes Rate: 22.1%
+Most Popular Object Of Search: Controlled drugs
+--------------
+Officer Defined Ethnicity: Black
+Stop And Search Count: 60377
+Arrest Rate: 18.7%
+Release Rate: 65.3%
+Other Outcomes Rate: 16.0%
+Most Popular Object Of Search: Controlled drugs
+--------------
+Officer Defined Ethnicity: Mixed
+Stop And Search Count: 537
+Arrest Rate: 15.3%
+Release Rate: 65.9%
+Other Outcomes Rate: 18.8%
+Most Popular Object Of Search: Controlled drugs
+--------------
+Officer Defined Ethnicity: Other
+Stop And Search Count: 7807
+Arrest Rate: 15.4%
+Release Rate: 63.7%
+Other Outcomes Rate: 20.9%
+Most Popular Object Of Search: Controlled drugs
+--------------
+Officer Defined Ethnicity: White
+Stop And Search Count: 123163
+Arrest Rate: 16.2%
+Release Rate: 59.9%
+Other Outcomes Rate: 24.0%
+Most Popular Object Of Search: Controlled drugs

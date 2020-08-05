@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -92,7 +93,6 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
                         ps.setString(25, crimeList.get(i).getLocationSubtype());
                         ps.setString(26, String.valueOf(crimeList.get(i).getMonth()));
                     }
-
                     @Override
                     public int getBatchSize() {
                         return crimeList.size();
@@ -102,8 +102,9 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
     }
 
     @Override
-    public void getMostDangerousStreets(YearMonth from, YearMonth to) {
+    public List<String> getMostDangerousStreets(YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_MOST_DANGEROUS_STREET);
+        List<String> finalOutput = new ArrayList<>();
         jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
@@ -115,18 +116,23 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
         }, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                System.out.println("--------------");
-                System.out.println("Street ID: " + rs.getString("street_id"));
-                System.out.println("Street Name: " + rs.getString("street_name"));
-                System.out.println("Period: " + rs.getString("period"));
-                System.out.println("Crimes Count: " + rs.getString("cnt"));
+                StringBuilder[] output = new StringBuilder[1];
+                output[0] = new StringBuilder("--------------");
+                output[0].append("\n");
+                output[0].append("Street ID: ").append(rs.getString("street_id")).append("\n");
+                output[0].append("Street Name: ").append(rs.getString("street_name")).append("\n");
+                output[0].append("Period: ").append(rs.getString("period")).append("\n");
+                output[0].append("Crimes Count: ").append(rs.getString("cnt"));
+                finalOutput.add(String.valueOf(output[0]));
             }
         });
+        return finalOutput;
     }
 
     @Override
-    public void getMonthToMonthCrimeVolumeComparison(YearMonth from, YearMonth to) {
+    public List<String> getMonthToMonthCrimeVolumeComparison(YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_CRIME_VOLUME_COMPARSION);
+        List<String> finalOutput = new ArrayList<>();
         jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
@@ -137,20 +143,25 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
         }, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                System.out.println("--------------");
-                System.out.println("Category: " + rs.getString("category"));
-                System.out.println("Month: " + rs.getString("mth"));
-                System.out.println("Previous Month Count: " + rs.getString("previous_month_count"));
-                System.out.println("Current Month Count: " + rs.getString("current_month_count"));
-                System.out.println("Delta: " + rs.getString("delta"));
-                System.out.println("Growth Rate: " + rs.getString("growth_rate"));
+                StringBuilder[] output = new StringBuilder[1];
+                output[0] = new StringBuilder("--------------");
+                output[0].append("\n");
+                output[0].append("Category: ").append(rs.getString("category")).append("\n");
+                output[0].append("Month: ").append(rs.getString("mth")).append("\n");
+                output[0].append("Previous Month Count: ").append(rs.getString("previous_month_count")).append("\n");
+                output[0].append("Current Month Count: ").append(rs.getString("current_month_count")).append("\n");
+                output[0].append("Delta: ").append(rs.getString("delta")).append("\n");
+                output[0].append("Growth Rate: ").append(rs.getString("growth_rate"));
+                finalOutput.add(String.valueOf(output[0]));
             }
         });
+        return finalOutput;
     }
 
     @Override
-    public void getCrimesWithSpecifiedOutcomeStatus(String outcomeCategory, YearMonth from, YearMonth to) {
+    public List<String> getCrimesWithSpecifiedOutcomeStatus(String outcomeCategory, YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_CRIMES_WITH_SPECIFIED_OUTCOME_STATUS);
+        List<String> finalOutput = new ArrayList<>();
         jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
@@ -163,12 +174,16 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
         }, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                System.out.println("--------------");
-                System.out.println("Street Id: " + rs.getString("street_id"));
-                System.out.println("Street Name: " + rs.getString("street_name"));
-                System.out.println("Outcome Category: " + rs.getString("outcome_category"));
-                System.out.println("Percentage Of The Total Crimes: " + rs.getString("percentage_of_the_total_crimes"));
+                StringBuilder[] output = new StringBuilder[1];
+                output[0] = new StringBuilder("--------------");
+                output[0].append("\n");
+                output[0].append("Street Id: " + rs.getString("street_id")).append("\n");
+                output[0].append("Street Name: " + rs.getString("street_name")).append("\n");
+                output[0].append("Outcome Category: " + rs.getString("outcome_category")).append("\n");
+                output[0].append("Percentage Of The Total Crimes: " + rs.getString("percentage_of_the_total_crimes"));
+                finalOutput.add(String.valueOf(output[0]));
             }
         });
+        return finalOutput;
     }
 }

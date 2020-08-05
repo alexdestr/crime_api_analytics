@@ -9,6 +9,7 @@ import ru.vegd.utils.SQLParser;
 
 import java.sql.*;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -161,8 +162,9 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
     }
 
     @Override
-    public void getStatisticByEthnicity(YearMonth from, YearMonth to) {
+    public List<String> getStatisticByEthnicity(YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY);
+        List<String> finalOutput = new ArrayList<>();
         jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
@@ -172,20 +174,25 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
         }, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                System.out.println("--------------");
-                System.out.println("Officer Defined Ethnicity: " + rs.getString("officer_defined_ethnicity"));
-                System.out.println("Stop And Search Count: " + rs.getString("count"));
-                System.out.println("Arrest Rate: " + rs.getString("arrest_rate"));
-                System.out.println("Release Rate: " + rs.getString("release_count"));
-                System.out.println("Other Outcomes Rate: " + rs.getString("other_outcomes_count"));
-                System.out.println("Most Popular Object Of Search: " + rs.getString("object_of_search"));
+                StringBuilder[] output = new StringBuilder[1];
+                output[0] = new StringBuilder("--------------");
+                output[0].append("\n");
+                output[0].append("Officer Defined Ethnicity: ").append(rs.getString("officer_defined_ethnicity")).append("\n");
+                output[0].append("Stop And Search Count: ").append(rs.getString("count")).append("\n");
+                output[0].append("Arrest Rate: ").append(rs.getString("arrest_rate")).append("\n");
+                output[0].append("Release Rate: ").append(rs.getString("release_count")).append("\n");
+                output[0].append("Other Outcomes Rate: ").append(rs.getString("other_outcomes_count")).append("\n");
+                output[0].append("Most Popular Object Of Search: ").append(rs.getString("object_of_search"));
+                finalOutput.add(String.valueOf(output[0]));
             }
         });
+        return finalOutput;
     }
 
     @Override
-    public void getMostProbableStopAndSearchSnapshotOnStreetLevel(YearMonth from, YearMonth to) {
+    public List<String> getMostProbableStopAndSearchSnapshotOnStreetLevel(YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY);
+        List<String> finalOutput = new ArrayList<>();
         jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
@@ -195,15 +202,20 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
         }, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
-                System.out.println(rs.getString("street_id"));
-                System.out.println(rs.getString("street_name"));
-                System.out.println(rs.getString("age_range"));
-                System.out.println(rs.getString("gender"));
-                System.out.println(rs.getString("officer_defined_ethnicity"));
-                System.out.println(rs.getString("object_of_search"));
-                System.out.println(rs.getString("outcome"));
+                StringBuilder[] output = new StringBuilder[1];
+                output[0] = new StringBuilder("--------------");
+                output[0].append("\n");
+                output[0].append("Street Id: ").append(rs.getString("street_id")).append("\n");
+                output[0].append("Street Name: ").append(rs.getString("street_name")).append("\n");
+                output[0].append("Age Range: ").append(rs.getString("age_range")).append("\n");
+                output[0].append("Gender: ").append(rs.getString("gender")).append("\n");
+                output[0].append("Officer Defined Ethnicity: ").append(rs.getString("officer_defined_ethnicity")).append("\n");
+                output[0].append("Object Of Search: ").append(rs.getString("object_of_search")).append("\n");
+                output[0].append("Outcome: ").append(rs.getString("outcome"));
+                finalOutput.add(String.valueOf(output[0]));
             }
         });
+        return finalOutput;
     }
 
 }
