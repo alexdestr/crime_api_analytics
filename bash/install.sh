@@ -56,50 +56,26 @@ project_run=false
 ################################################################################
 ################################################################################
 
-display_help
-read user_input1
-
-case $user_input1 in
-   1)
-     git_setup=true
-     postgresql_setup=true
-     java_setup=true
-     maven_setup=true
-     project_download=true
-     project_compile=true
-   ;;
-   2)
-     display_extended_install
-     read user_input2
-     case $user_input2 in
-       1)
-       git_setup=true
-       ;;
-       2)
-       postgresql_setup=true
-       ;;
-       3)
-       java_setup=true
-       ;;
-       4)
-       maven_setup=true
-       ;;
-       5)
-       project_download=true
-       ;;
-       6)
-       project_compile=true
-       ;;
-     esac
-   ;;
-   3)
-     project_run=true
-   ;;
-   4)
-     echo "Version 1.0.0 ALPHA"
-     exit 0
-   ;;
+while getopts fullInstall:gitSetup:psqlSetup:javaSetup:mavenSetup:projectDownload:projectCompile:projectRun: option
+do
+case "${option}"
+in
+f | -fullInstall) git_setup=true
+postgresql_setup=true
+java_setup=true
+maven_setup=true
+project_download=true
+project_compile=true;;
+-g | --gitSetup) git_setup=${OPTARG}
+display_help;;
+p | -psqlSetup) postgresql_setup=${OPTARG};;
+j | -javaSetup) java_setup=${OPTARG};;
+m | -mavenSetup) maven_setup=${OPTARG};;
+d | -projectDownload) project_download=${OPTARG};;
+c | -projectCompile) project_compile=${OPTARG};;
+r | -projectRun) project_run=${OPTARG};;
 esac
+done
 
 if pushd /home/; then
    mkdir -p logs
@@ -177,47 +153,4 @@ fi
 
 export MAVEN_OPTS="-Xmx512m"
 
-################################################################################
-# Project                                                                      #
-################################################################################
 
-if [ "$project_download" = true ]
-  then
-    if pushd /home/project/
-      then
-        pushd /home/project/Task1
-        git fetch
-        echo "Project updated."
-        popd
-    else
-        mkdir project
-        pushd /home/project/
-        git init
-        git clone https://github.com/alexdestr/Task1
-        echo "Project downloaded."
-        popd
-    fi
-    popd
-fi
-
-if [ "$project_compile" = true ]
-  then
-    su - postgres << EOF
-    export PGPASSWORD=1234
-    psql
-    \i /home/project/Task1/db/db.sql
-    \c datapolice
-    psql datapolice
-    \i /home/project/Task1/db/db_create.sql
-EOF
-    pushd /home/project/Task1
-    mvn clean package
-    mvn package
-    echo "Project builded."
-    popd
-fi
-
-if [ "$project_run" = true ]
-  then
-    java -jar /home/project/Task1/target/Task1.jar
-fi
