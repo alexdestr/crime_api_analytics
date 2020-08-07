@@ -24,7 +24,6 @@ public class ForcesListReceiver {
 
     private ForcesListDAO forcesListDAO;
 
-
     private List<Station> csvData;
 
     private ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
@@ -54,10 +53,10 @@ public class ForcesListReceiver {
             }
             forcesListDAO.add(resultList);
         } catch (InterruptedException e) {
-            logger.warn("Thread interrupted!");
+            logger.warn("Thread interrupted in Json Loader: " + jsonLoader.getName());
             e.printStackTrace();
         } catch (ExecutionException e) {
-            logger.warn("Execution interrupted!");
+            logger.warn("Execution interrupted in Json Loader: " + jsonLoader.getName());
             e.printStackTrace();
         }
         executor.shutdown();

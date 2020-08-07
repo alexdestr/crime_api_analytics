@@ -43,15 +43,15 @@ public class CommonRowsImpl implements CommonRowsDAO {
                 StringBuilder[] output = new StringBuilder[1];
                 output[0] = new StringBuilder("--------------");
                 output[0].append("\n");
-                output[0].append("Street Id: " + rs.getString("street_id")).append("\n");
-                output[0].append("Street Name: " + rs.getString("street_name")).append("\n");
-                output[0].append("Month: " + rs.getString("month")).append("\n");
-                output[0].append("Drugs Crime Count: " + rs.getString("drugs_crime_count")).append("\n");
-                output[0].append("Drugs Strop And Search Count: " + rs.getString("drugs_stop_and_search_count")).append("\n");
-                output[0].append("Weapons Crimes Count: " + rs.getString("weapons_crimes_count")).append("\n");
-                output[0].append("Weapons Stop And Search Count: " + rs.getString("weapons_stop_and_search_count")).append("\n");
-                output[0].append("Theft Crimes Count: " + rs.getString("theft_crimes_count")).append("\n");
-                output[0].append("Theft Stop And Search Count: " + rs.getString("theft_stop_and_search_count"));
+                output[0].append("Street Id: ").append(rs.getString("street_id")).append("\n");
+                output[0].append("Street Name: ").append(rs.getString("street_name")).append("\n");
+                output[0].append("Month: ").append(rs.getString("month")).append("\n");
+                output[0].append("Drugs Crime Count: ").append(rs.getString("drugs_crime_count")).append("\n");
+                output[0].append("Drugs Strop And Search Count: ").append(rs.getString("drugs_stop_and_search_count")).append("\n");
+                output[0].append("Weapons Crimes Count: ").append(rs.getString("weapons_crimes_count")).append("\n");
+                output[0].append("Weapons Stop And Search Count: ").append(rs.getString("weapons_stop_and_search_count")).append("\n");
+                output[0].append("Theft Crimes Count: ").append(rs.getString("theft_crimes_count")).append("\n");
+                output[0].append("Theft Stop And Search Count: ").append(rs.getString("theft_stop_and_search_count"));
                 finalOutput.add(String.valueOf(output[0]));
             }
         });

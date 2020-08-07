@@ -4,19 +4,28 @@ import com.google.gson.JsonObject;
 import ru.vegd.entity.*;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
-import java.util.Date;
-import java.util.Objects;
 
 public class JsonToEntityConverter {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(JsonToEntityConverter.class.getName());
+
+    public AvailableStopAndSearchesByForce convertToAvailableStopAndSearchesByForce(JsonObject json) {
+        AvailableStopAndSearchesByForce available = new AvailableStopAndSearchesByForce();
+        if (!json.get("date").isJsonNull()) {
+            YearMonth date = YearMonth.parse(json.get("date").getAsString().replaceAll("\"", ""));
+            available.setDate(date);
+        }
+        if (!json.get("stop-and-search").isJsonNull()) {
+            for (Integer i = 0; i < json.get("stop-and-search").getAsJsonArray().size(); i++) {
+                available.addForceToList(json.get("stop-and-search").getAsJsonArray().get(i).getAsString());
+            }
+        }
+        return available;
+    }
 
     public Force convertToForcesList(JsonObject json) {
         Force force = new Force();

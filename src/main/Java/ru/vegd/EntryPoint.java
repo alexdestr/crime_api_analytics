@@ -7,19 +7,14 @@ import ru.vegd.dao.ForcesListDAO;
 import ru.vegd.dao.Impl.CommonRowsImpl;
 import ru.vegd.dao.StopAndSearchesByForceDAO;
 import ru.vegd.dao.StreetLevelCrimesDAO;
-import ru.vegd.dataReceiver.CrimeCategoriesReceiver;
-import ru.vegd.dataReceiver.ForcesListReceiver;
-import ru.vegd.dataReceiver.StopAndSearchesByForceReceiver;
-import ru.vegd.dataReceiver.StreetLevelCrimesReceiver;
+import ru.vegd.dataReceiver.*;
 import ru.vegd.entity.Station;
 import ru.vegd.utils.CSVParser;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.time.YearMonth;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,9 +66,16 @@ public class EntryPoint {
                     streetLevelCrimesReceiver.receiveData(fromDate, toDate);
                 }
 
-                if (optionsMap.get("stopAndSearchesByForce").equals("stopAndSearchesByForce")) {
+                if (optionsMap.get("downloadData").equals("stopAndSearchesByForce")) {
+                    StopAndSearchesAvailableForcesReceiver stopAndSearchesAvailableForcesReceiver = new StopAndSearchesAvailableForcesReceiver(stopAndSearchesByForceDAO);
+                    stopAndSearchesAvailableForcesReceiver.receiveData();
                     StopAndSearchesByForceReceiver stopAndSearchesByForceReceiver = new StopAndSearchesByForceReceiver(stopAndSearchesByForceDAO, forcesListDAO);
                     stopAndSearchesByForceReceiver.receiveData(fromDate, toDate);
+                }
+
+                if (optionsMap.get("downloadData").equals("updateAvailableList")) {
+                    StopAndSearchesAvailableForcesReceiver stopAndSearchesAvailableForcesReceiver = new StopAndSearchesAvailableForcesReceiver(stopAndSearchesByForceDAO);
+                    stopAndSearchesAvailableForcesReceiver.receiveData();
                 }
             }
 
@@ -154,7 +156,6 @@ public class EntryPoint {
 
         } catch (Exception e) {
             logger.error("Something went wrong.");
-            e.printStackTrace();
         }
     }
 }

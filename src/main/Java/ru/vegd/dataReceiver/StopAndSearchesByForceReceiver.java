@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
+/**
+ * Processes data and inserts into the database.
+ */
 public class StopAndSearchesByForceReceiver {
 
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(StopAndSearchesByForceReceiver.class.getName());
@@ -31,11 +34,20 @@ public class StopAndSearchesByForceReceiver {
 
     private List<Force> forceList = new ArrayList<>();
 
+    /**
+     * @param stopAndSearchesByForceDAO DAO with injected connection to load data into a database.
+     * @param forcesListDAO DAO with injected connection to load data into a database.
+     */
     public StopAndSearchesByForceReceiver(StopAndSearchesByForceDAO stopAndSearchesByForceDAO, ForcesListDAO forcesListDAO) {
         this.stopAndSearchesByForceDAO = stopAndSearchesByForceDAO;
         this.forcesListDAO = forcesListDAO;
     }
 
+    /**
+     * Take data from thread, convert to an entity and inserts into the database.
+     * @param fromDate date in the format (YYYY-MM) from which data will be received (inclusively)
+     * @param toDate date in the format (YYYY-MM) for which data will be received (inclusively)
+     */
     public void receiveData(YearMonth fromDate, YearMonth toDate) {
         forceList.addAll(forcesListDAO.getAllForces());
         for (Force police : forceList) {
@@ -43,7 +55,11 @@ public class StopAndSearchesByForceReceiver {
                 String finalLink = new StopAndSearchesByForceLinkBuilder().setStartLink(link)
                         .setForce(police.getId())
                         .setDate(date)
+                        .setStopAndSearchesDAO(stopAndSearchesByForceDAO)
                         .build();
+                if (finalLink == null) {
+                    return;
+                }
                 JsonLoader jsonLoader = new JsonLoader("JsonLoader" + date.toString() + " Street: " + police.getId(), finalLink);
                 Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);
                 try {
@@ -56,9 +72,9 @@ public class StopAndSearchesByForceReceiver {
                     }
                     stopAndSearchesByForceDAO.add(resultList);
                 } catch (InterruptedException e) {
-                    logger.warn("Thread interrupted!");
+                    logger.warn("Thread interrupted in Json Loader: " + jsonLoader.getName());
                 } catch (ExecutionException e) {
-                    logger.warn("Execution interrupted!");
+                    logger.warn("Execution interrupted in JsonLoader: " + jsonLoader.getName());
                 }
             }
         }

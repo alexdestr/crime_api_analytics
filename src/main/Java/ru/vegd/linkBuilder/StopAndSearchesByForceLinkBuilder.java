@@ -1,11 +1,17 @@
 package ru.vegd.linkBuilder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ru.vegd.dao.StopAndSearchesByForceDAO;
+
 import java.time.YearMonth;
 
 public class StopAndSearchesByForceLinkBuilder {
     private String startLink;
     private String force;
     private YearMonth date;
+
+    private StopAndSearchesByForceDAO stopAndSearchesByForceDAO;
 
     private String finalString;
 
@@ -24,8 +30,15 @@ public class StopAndSearchesByForceLinkBuilder {
         return this;
     }
 
+    public StopAndSearchesByForceLinkBuilder setStopAndSearchesDAO(StopAndSearchesByForceDAO stopAndSearchesByForceDAO) {
+        this.stopAndSearchesByForceDAO = stopAndSearchesByForceDAO;
+        return this;
+    }
+
     public String build() {
-        this.finalString = startLink + "?force=" + force + "&date=" + date;
+        if (stopAndSearchesByForceDAO.checkForAvailability(date, force)[0]) {
+            this.finalString = startLink + "?force=" + force + "&date=" + date;
+        }
         return finalString;
     }
 }

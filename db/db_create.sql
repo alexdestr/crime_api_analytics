@@ -8,6 +8,12 @@ CREATE TABLE forcesList (
   name TEXT
 );
 
+  CREATE TABLE availableForces (
+    date TEXT,
+    force TEXT,
+  CONSTRAINT UC_avaibleForces UNIQUE (date, force)
+  );
+
 CREATE TABLE streetLevelCrimes (
   category TEXT,
   location_type TEXT,

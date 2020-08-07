@@ -49,9 +49,9 @@ public class CrimeCategoriesReceiver {
         try {
             jsonArray.add(jsonArrayFuture.get());
         } catch (InterruptedException e) {
-            logger.warn("Thread interrupted!");
+            logger.warn("Thread interrupted in Json Loader: " + jsonLoader.getName());
         } catch (ExecutionException e) {
-            logger.warn("Execution interrupted!");
+            logger.warn("Execution interrupted in Json Loader: " + jsonLoader.getName());
         }
         executor.shutdown();
 

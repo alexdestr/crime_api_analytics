@@ -72,5 +72,4 @@ public class Application {
 
         entryPoint.entry(optionsMap);
     }
-
 }

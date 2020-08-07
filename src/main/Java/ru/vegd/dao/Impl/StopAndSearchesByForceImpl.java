@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 import ru.vegd.dao.StopAndSearchesByForceDAO;
+import ru.vegd.entity.AvailableStopAndSearchesByForce;
 import ru.vegd.entity.StopAndSearchesByForce;
 import ru.vegd.utils.SQLParser;
 
@@ -62,6 +63,17 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
             "outcome = ?, " +
             "outcome_linked_to_object_of_search = ?, " +
             "removal_of_more_than_outer_clothing = ?";
+
+    private static final String SQL_ADD_AVAIBLE_STOP_AND_SEARCH_FORCE = "INSERT INTO availableForces " +
+            "VALUES (?, ?) " +
+            "ON CONFLICT(date, force) " +
+            "DO UPDATE " +
+            "SET " +
+            "date = ?, " +
+            "force = ?";
+
+    private static final String SQL_CHECK_FOR_AVAILABILITY = "SELECT EXISTS(SELECT * FROM availableForces " +
+            "WHERE date = ? AND force = ?)";
 
     private static final String PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY = "db/scripts/script#4/stopAndSearchesStatisticByEthnicity.sql";
     private static final String PATH_TO_SQL_QUERY_MOST_POPULAR_STOP_AND_SEARCHES_SNAPSHOT_ON_STREET_LEVEL = "db/scripts/script#5/mostPopularStopAndSearchSnapshotOnStreetLevel.sql";
@@ -160,6 +172,44 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
                     }
                 });
     }
+
+    @Override
+    public void addAvailableForces(List<AvailableStopAndSearchesByForce> availableStopAndSearchesByForces) {
+        jdbcTemplate.batchUpdate(SQL_ADD_AVAIBLE_STOP_AND_SEARCH_FORCE,
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setString(1, String.valueOf(availableStopAndSearchesByForces.get(i).getDate()));
+                        ps.setString(2, availableStopAndSearchesByForces.get(i).getForcesList().get(0));
+                        ps.setString(3, String.valueOf(availableStopAndSearchesByForces.get(i).getDate()));
+                        ps.setString(4, availableStopAndSearchesByForces.get(i).getForcesList().get(0));
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return availableStopAndSearchesByForces.size();
+                    }
+                });
+    }
+
+    @Override
+    public Boolean[] checkForAvailability(YearMonth date, String force) {
+        final Boolean[] isAvailable = {null};
+        jdbcTemplate.query(SQL_CHECK_FOR_AVAILABILITY, new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps) throws SQLException {
+                ps.setString(1, String.valueOf(date));
+                ps.setString(2, force);
+            }
+        }, new RowCallbackHandler() {
+            @Override
+            public void processRow(ResultSet rs) throws SQLException {
+                isAvailable[0] = rs.getBoolean(1);
+            }
+        });
+        return isAvailable;
+    }
+
 
     @Override
     public List<String> getStatisticByEthnicity(YearMonth from, YearMonth to) {
