@@ -58,7 +58,6 @@ public class JsonLoader implements Callable<JsonArray> {
             HttpGet getRequest = new HttpGet(
                     link);
             getRequest.addHeader("accept", "application/json");
-            // TODO:
             for (Integer i = 0; i < MAX_ATTEMPS_NUM; i++) {
                 response = httpClient.execute(getRequest);
                 HttpStatus httpCode = HttpStatus.resolve(response.getStatusLine().getStatusCode());

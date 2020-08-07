@@ -64,7 +64,7 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
             "outcome_linked_to_object_of_search = ?, " +
             "removal_of_more_than_outer_clothing = ?";
 
-    private static final String SQL_ADD_AVAIBLE_STOP_AND_SEARCH_FORCE = "INSERT INTO availableForces " +
+    private static final String SQL_ADD_AVAILABLE_STOP_AND_SEARCH_FORCE = "INSERT INTO availableForces " +
             "VALUES (?, ?) " +
             "ON CONFLICT(date, force) " +
             "DO UPDATE " +
@@ -175,7 +175,7 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
 
     @Override
     public void addAvailableForces(List<AvailableStopAndSearchesByForce> availableStopAndSearchesByForces) {
-        jdbcTemplate.batchUpdate(SQL_ADD_AVAIBLE_STOP_AND_SEARCH_FORCE,
+        jdbcTemplate.batchUpdate(SQL_ADD_AVAILABLE_STOP_AND_SEARCH_FORCE,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {

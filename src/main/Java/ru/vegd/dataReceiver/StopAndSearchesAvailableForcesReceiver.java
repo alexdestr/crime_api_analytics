@@ -31,10 +31,16 @@ public class StopAndSearchesAvailableForcesReceiver {
             (ThreadPoolExecutor) Executors.newFixedThreadPool(threadNum);
     private List<JsonArray> jsonArray = new ArrayList<>();
 
+    /**
+     * @param stopAndSearchesByForceDAO DAO with injected connection to load data into a database.
+     */
     public StopAndSearchesAvailableForcesReceiver(StopAndSearchesByForceDAO stopAndSearchesByForceDAO) {
         this.stopAndSearchesByForceDAO = stopAndSearchesByForceDAO;
     }
 
+    /**
+     * Take data from thread, convert to an entity and inserts into the database.
+     */
     public void receiveData() {
         JsonLoader jsonLoader = new JsonLoader("Available Forces Receiver", link);
         Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);
