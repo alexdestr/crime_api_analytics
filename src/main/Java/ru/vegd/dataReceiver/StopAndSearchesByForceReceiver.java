@@ -36,7 +36,7 @@ public class StopAndSearchesByForceReceiver {
 
     /**
      * @param stopAndSearchesByForceDAO DAO with injected connection to load data into a database.
-     * @param forcesListDAO DAO with injected connection to load data into a database.
+     * @param forcesListDAO             DAO with injected connection to load data into a database.
      */
     public StopAndSearchesByForceReceiver(StopAndSearchesByForceDAO stopAndSearchesByForceDAO, ForcesListDAO forcesListDAO) {
         this.stopAndSearchesByForceDAO = stopAndSearchesByForceDAO;
@@ -45,8 +45,9 @@ public class StopAndSearchesByForceReceiver {
 
     /**
      * Take data from thread, convert to an entity and inserts into the database.
+     *
      * @param fromDate date in the format (YYYY-MM) from which data will be received (inclusively)
-     * @param toDate date in the format (YYYY-MM) for which data will be received (inclusively)
+     * @param toDate   date in the format (YYYY-MM) for which data will be received (inclusively)
      */
     public void receiveData(YearMonth fromDate, YearMonth toDate) {
         forceList.addAll(forcesListDAO.getAllForces());
@@ -57,24 +58,23 @@ public class StopAndSearchesByForceReceiver {
                         .setDate(date)
                         .setStopAndSearchesDAO(stopAndSearchesByForceDAO)
                         .build();
-                if (finalLink == null) {
-                    return;
-                }
-                JsonLoader jsonLoader = new JsonLoader("JsonLoader" + date.toString() + " Street: " + police.getId(), finalLink);
-                Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);
-                try {
-                    JsonArray jsonArray = jsonArrayFuture.get();
-                    List<StopAndSearchesByForce> resultList = new ArrayList<>();
-                    for (Integer i = 0; i < jsonArray.size(); i++) {
-                        JsonObject object = jsonArray.get(i).getAsJsonObject();
-                        JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
-                        resultList.add(jsonToEntityConverter.convertToStopAndSearchByForce(object));
+                if (finalLink != null) {
+                    JsonLoader jsonLoader = new JsonLoader("JsonLoader" + date.toString() + " Street: " + police.getId(), finalLink);
+                    Future<JsonArray> jsonArrayFuture = executor.submit(jsonLoader);
+                    try {
+                        JsonArray jsonArray = jsonArrayFuture.get();
+                        List<StopAndSearchesByForce> resultList = new ArrayList<>();
+                        for (Integer i = 0; i < jsonArray.size(); i++) {
+                            JsonObject object = jsonArray.get(i).getAsJsonObject();
+                            JsonToEntityConverter jsonToEntityConverter = new JsonToEntityConverter();
+                            resultList.add(jsonToEntityConverter.convertToStopAndSearchByForce(object));
+                        }
+                        stopAndSearchesByForceDAO.add(resultList);
+                    } catch (InterruptedException e) {
+                        logger.warn("Thread interrupted in Json Loader: " + jsonLoader.getName());
+                    } catch (ExecutionException e) {
+                        logger.warn("Execution interrupted in JsonLoader: " + jsonLoader.getName());
                     }
-                    stopAndSearchesByForceDAO.add(resultList);
-                } catch (InterruptedException e) {
-                    logger.warn("Thread interrupted in Json Loader: " + jsonLoader.getName());
-                } catch (ExecutionException e) {
-                    logger.warn("Execution interrupted in JsonLoader: " + jsonLoader.getName());
                 }
             }
         }
