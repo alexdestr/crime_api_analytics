@@ -55,6 +55,9 @@ project_run=false
 
 args $0 "$@"
 
+exec 2>error_log # Redirect error output into to file
+exec 3>log # Redirect log output into to file
+
 if [[ "$project_download" = true ]]
   then
     if pushd /home/project/

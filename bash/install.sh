@@ -31,7 +31,6 @@ function args()
         --gitSetup)
             shift;
             git_setup=$1
-            echo $git_setup
             ;;
         --psqlSetup)
             shift;
@@ -164,6 +163,6 @@ export MAVEN_OPTS="-Xmx512m"
 
 if [[ "$project_download" = true || "$project_compile" = true || "$project_run" = true ]]
   then
-    ./project.sh --projectDownload=${project_download} --projectCompile=${project_compile} --projectRun=${project_run}
+    /home/./project.sh --projectDownload=${project_download} --projectCompile=${project_compile} --projectRun=${project_run}
 fi
 
