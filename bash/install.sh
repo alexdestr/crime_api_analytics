@@ -12,7 +12,7 @@ function error_exit {
 function args()
 {
     options=$(getopt --long fullInstall: --long gitSetup: --long psqlSetup: --long javaSetup: --long mavenSetup: --long projectDownload: --long projectCompile: --long projectRun: -- "$@")
-    [ $? -eq 0 ] || {
+    [[ $? -eq 0 ]] || {
         echo "Incorrect option provided"
         exit 1
     }
@@ -55,6 +55,15 @@ function args()
             ;;
         --projectRun)
             shift;
+             project_run=$1
+            ;;
+        --)
+            shift
+            break
+            ;;
+        esac
+        shift
+    done
 }
 
 ################################################################################
@@ -93,7 +102,7 @@ exec 3>log # Redirect log output into to file
 yum -y update >&3
 yum install -y wget >&3
 
-if [ "$git_setup" = true ]
+if [[ "$git_setup" = true ]]
   then
     if which git | grep "git" >&3
       then
@@ -103,7 +112,7 @@ if [ "$git_setup" = true ]
     fi
 fi
 
-if [ "$postgresql_setup" = true ]
+if [[ "$postgresql_setup" = true ]]
   then
     if which pgsql | grep "pgsql" >&3
       then
@@ -118,7 +127,7 @@ if [ "$postgresql_setup" = true ]
     fi
 fi
 
-if [ "$java_setup" = true ]
+if [[ "$java_setup" = true ]]
   then
     if which java | grep "java" >&3
       then
@@ -128,7 +137,7 @@ if [ "$java_setup" = true ]
     fi
 fi
 
-if [ "$maven_setup" = true ]
+if [[ "$maven_setup" = true ]]
   then
     if which mvn | grep "mvn" >&3
       then
@@ -153,4 +162,8 @@ fi
 
 export MAVEN_OPTS="-Xmx512m"
 
+if [[ "$project_download" = true || "$project_compile" = true || "$project_run" = true ]]
+  then
+    ./project.sh --projectDownload=${project_download} --projectCompile=${project_compile} --projectRun=${project_run}
+fi
 

@@ -1,10 +1,61 @@
 #!/bin/bash
 
 ################################################################################
+# Functions                                                                    #
+################################################################################
+
+function error_exit {
+  echo "${PROGNAME}: &{1:-"Unknown Error"}" 1>&2
+  exit 1
+}
+
+function args()
+{
+    options=$(getopt --long projectDownload: --long projectCompile: --long projectRun: -- "$@")
+    [[ $? -eq 0 ]] || {
+        echo "Incorrect option provided"
+        exit 1
+    }
+    eval set -- "$options"
+    while true; do
+        case "$1" in
+        --projectDownload)
+            shift;
+            project_download=$1
+            ;;
+        --projectCompile)
+            shift;
+            project_compile=$1
+            ;;
+        --projectRun)
+            shift;
+             project_run=$1
+            ;;
+        --)
+            shift
+            break
+            ;;
+        esac
+        shift
+    done
+
+}
+
+################################################################################
+# Variables                                                                    #
+################################################################################
+
+project_download=false
+project_compile=false
+project_run=false
+
+################################################################################
 # Project                                                                      #
 ################################################################################
 
-if [ "$project_download" = true ]
+args $0 "$@"
+
+if [[ "$project_download" = true ]]
   then
     if pushd /home/project/
       then
@@ -23,7 +74,7 @@ if [ "$project_download" = true ]
     popd
 fi
 
-if [ "$project_compile" = true ]
+if [[ "$project_compile" = true ]]
   then
     su - postgres << EOF
     export PGPASSWORD=1234
@@ -40,7 +91,7 @@ EOF
     popd
 fi
 
-if [ "$project_run" = true ]
+if [[ "$project_run" = true ]]
   then
     java -jar /home/project/Task1/target/Task1.jar
 fi
