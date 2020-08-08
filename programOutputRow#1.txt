@@ -1,50 +1,50 @@
 --------------
 Street ID: 963812
 Street Name: On or near Meridian Square
-Period: from (2018-01) till (2018-12)
+Period: from (2017-01) till (2018-12)
 Crimes Count: 1279
 --------------
 Street ID: 1490438
 Street Name: Stratford (lu Station)
-Period: from (2018-01) till (2018-12)
+Period: from (2017-01) till (2018-12)
 Crimes Count: 456
 --------------
 Street ID: 963837
 Street Name: On or near Further/higher Educational Building
-Period: from (2018-01) till (2018-12)
+Period: from (2017-01) till (2018-12)
 Crimes Count: 340
 --------------
 Street ID: 963833
 Street Name: On or near Conference/exhibition Centre
-Period: from (2018-01) till (2018-12)
+Period: from (2017-01) till (2018-12)
 Crimes Count: 285
 --------------
 Street ID: 957620
 Street Name: On or near Ollgar Close
-Period: from (2018-01) till (2018-12)
+Period: from (2017-01) till (2018-12)
 Crimes Count: 215
 --------------
 Street ID: 963808
 Street Name: On or near Service Route No 2
-Period: from (2018-01) till (2018-12)
+Period: from (2017-01) till (2018-12)
 Crimes Count: 206
 --------------
 Street ID: 957860
 Street Name: On or near Petrol Station
-Period: from (2018-01) till (2018-12)
+Period: from (2017-01) till (2018-12)
 Crimes Count: 180
 --------------
 Street ID: 963824
 Street Name: On or near Chant Street
-Period: from (2018-01) till (2018-12)
+Period: from (2017-01) till (2018-12)
 Crimes Count: 155
 --------------
 Street ID: 963835
 Street Name: On or near Shopping Area
-Period: from (2018-01) till (2018-12)
+Period: from (2017-01) till (2018-12)
 Crimes Count: 147
 --------------
 Street ID: 963809
 Street Name: On or near Service Route No 1
-Period: from (2018-01) till (2018-12)
+Period: from (2017-01) till (2018-12)
 Crimes Count: 137

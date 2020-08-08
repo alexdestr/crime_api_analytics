@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ################################################################################
-# Other functions                                                              #
+# Functions                                                                    #
 ################################################################################
 
 function error_exit {
@@ -9,33 +9,52 @@ function error_exit {
   exit 1
 }
 
-################################################################################
-# Help                                                                         #
-################################################################################
-
-function display_help() {
-   # Display Help
-   echo "-----------------------------------"
-   echo "Syntax: scriptTemplate [1 | 2 | 3 | 4]"
-   echo "options:"
-   echo "1. Default install."
-   echo "2. Extended install."
-   echo "3. Run project."
-   echo "4. Print software version and exit."
-   echo "-----------------------------------"
-}
-
-function display_extended_install() {
-   # Display Help
-   echo "-----------------------------------"
-   echo "Choose option:"
-   echo "1. Install git"
-   echo "2. Install postgresql"
-   echo "3. Install java"
-   echo "4. Install maven"
-   echo "5. Download/Update project"
-   echo "6. Compile project"
-   echo "-----------------------------------"
+function args()
+{
+    options=$(getopt --long fullInstall: --long gitSetup: --long psqlSetup: --long javaSetup: --long mavenSetup: --long projectDownload: --long projectCompile: --long projectRun: -- "$@")
+    [ $? -eq 0 ] || {
+        echo "Incorrect option provided"
+        exit 1
+    }
+    eval set -- "$options"
+    while true; do
+        case "$1" in
+        --fullInstall)
+            shift;
+            git_setup=$1
+            postgresql_setup=$1
+            java_setup=$1
+            maven_setup=$1
+            project_download=$1
+            project_compile=$1
+            ;;
+        --gitSetup)
+            shift;
+            git_setup=$1
+            echo $git_setup
+            ;;
+        --psqlSetup)
+            shift;
+            postgresql_setup=$1
+            ;;
+        --javaSetup)
+            shift;
+            java_setup=$1
+            ;;
+        --mavenSetup)
+            shift;
+            maven_setup=$1
+            ;;
+        --projectDownload)
+            shift;
+            project_download=$1
+            ;;
+        --projectCompile)
+            shift;
+            project_compile=$1
+            ;;
+        --projectRun)
+            shift;
 }
 
 ################################################################################
@@ -56,26 +75,7 @@ project_run=false
 ################################################################################
 ################################################################################
 
-while getopts fullInstall:gitSetup:psqlSetup:javaSetup:mavenSetup:projectDownload:projectCompile:projectRun: option
-do
-case "${option}"
-in
-f | -fullInstall) git_setup=true
-postgresql_setup=true
-java_setup=true
-maven_setup=true
-project_download=true
-project_compile=true;;
--g | --gitSetup) git_setup=${OPTARG}
-display_help;;
-p | -psqlSetup) postgresql_setup=${OPTARG};;
-j | -javaSetup) java_setup=${OPTARG};;
-m | -mavenSetup) maven_setup=${OPTARG};;
-d | -projectDownload) project_download=${OPTARG};;
-c | -projectCompile) project_compile=${OPTARG};;
-r | -projectRun) project_run=${OPTARG};;
-esac
-done
+args $0 "$@"
 
 if pushd /home/; then
    mkdir -p logs

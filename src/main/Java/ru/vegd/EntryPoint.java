@@ -151,7 +151,9 @@ public class EntryPoint {
                         writer.newLine();
                     }
                 }
-                writer.close();
+                if (writer != null) {
+                    writer.close();
+                }
             }
 
         } catch (Exception e) {

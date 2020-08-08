@@ -1,8 +1,5 @@
 WITH stopandsearchbydate AS (
-  SELECT street_id, street_name, age_range, gender, officer_defined_ethnicity, object_of_search, outcome, COUNT(*) FROM stopandsearchesbyforce
-  GROUP BY street_id, street_name, age_range, gender, officer_defined_ethnicity, object_of_search, outcome, datetime
-  HAVING datetime IS NOT NULL AND TO_DATE(to_char(datetime, 'YYYY-MM'), 'YYYY-MM') >= TO_DATE(''|| ? ||'', 'YYYY-MM')
-  AND TO_DATE(to_char(datetime, 'YYYY-MM'), 'YYYY-MM') <= TO_DATE(''|| ? ||'', 'YYYY-MM')
+  SELECT * FROM stopandsearchesbyforce
 ),
 
 count_most_popular_age_range AS (
@@ -71,7 +68,7 @@ most_popular_outcome AS (
 )
 
 SELECT a.street_id, a.street_name, b.age_range, c.gender, d.officer_defined_ethnicity, f.object_of_search, g.outcome
-FROM stopandsearchbydate AS a
+FROM stopandsearchesbyforce AS a
 JOIN most_popular_age_range AS b ON a.street_id = b.street_id AND b.rn = 1
 JOIN most_popular_gender AS c ON b.street_id = c.street_id AND c.rn = 1
 JOIN most_popular_ethnicity AS d ON c.street_id = d.street_id AND d.rn = 1
