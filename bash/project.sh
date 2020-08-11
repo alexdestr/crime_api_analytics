@@ -11,7 +11,7 @@ function error_exit {
 
 function args()
 {
-    options=$(getopt --long projectDownload: --long projectCompile: --long projectRun: -- "$@")
+    options=$(getopt --long projectDownload: --long projectCompile: --long projectRun: --long Dtype: --long DdownloadData: --long DstartDate: --long DendDate: --long Drow: --long Dlng: --long Dlat: -- "$@")
     [[ $? -eq 0 ]] || {
         echo "Incorrect option provided"
         exit 1
@@ -30,6 +30,62 @@ function args()
         --projectRun)
             shift;
              project_run=$1
+            ;;
+        --Dtype)
+            shift;
+            Dtype=$1
+            if [[ ! ${Dtype} ]]
+            then
+            Dtype=-${Dtype}
+            fi
+            ;;
+        --DdownloadData=$1)
+            shift;
+            DdownloadData=$1
+            if [[ ! ${DdownloadData} ]]
+            then
+            DdownloadData=-${DdownloadData}
+            fi
+            ;;
+        --DstartDate)
+            shift;
+            DstartDate=$1
+            if [[ ! ${DstartDate} ]]
+            then
+            DstartDate=-${DstartDate}
+            fi
+            ;;
+        --DendDate)
+            shift;
+            DendDate=$1
+            if [[ ! ${DendDate} ]]
+            then
+            DendDate=-${DendDate}
+            fi
+            ;;
+        --Drow)
+            shift;
+            Drow=$1
+            if [[ ! ${Drow} ]]
+            then
+            Drow=-${Drow}
+            fi
+            ;;
+        --Dlng)
+            shift;
+            Dlng=$1
+            if [[ ! ${Dlng} ]]
+            then
+            Dlng=-${Dlng}
+            fi
+            ;;
+        --Dlat)
+            shift;
+            Dlat=$1
+            if [[ ! ${Dlat} ]]
+            then
+            Dlat=-${Dlat}
+            fi
             ;;
         --)
             shift
@@ -96,6 +152,8 @@ fi
 
 if [[ "$project_run" = true ]]
   then
-    java -jar /home/project/Task1/target/Task1.jar
+    pushd /home/project/Task1
+    java -jar /home/project/Task1/target/Task1.jar -${Dtype} -${DdownloadData} -${DstartDate} -${DendDate} -${Drow} -${Dlng} -${Dlat}
+    popd
 fi
 

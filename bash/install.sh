@@ -11,7 +11,7 @@ function error_exit {
 
 function args()
 {
-    options=$(getopt --long fullInstall: --long gitSetup: --long psqlSetup: --long javaSetup: --long mavenSetup: --long projectDownload: --long projectCompile: --long projectRun: -- "$@")
+    options=$(getopt --long fullInstall: --long gitSetup: --long psqlSetup: --long javaSetup: --long mavenSetup: --long projectDownload: --long projectCompile: --long projectRun: --long Dtype: --long DdownloadData: --long DstartDate: --long DendDate: --long Drow: --long Dlng: --long Dlat: -- "$@")
     [[ $? -eq 0 ]] || {
         echo "Incorrect option provided"
         exit 1
@@ -55,6 +55,34 @@ function args()
         --projectRun)
             shift;
              project_run=$1
+            ;;
+        --Dtype)
+            shift;
+            Dtype=$1
+            ;;
+        --DdownloadData=$1)
+            shift;
+            DdownloadData=$1
+            ;;
+        --DstartDate)
+            shift;
+            DstartDate=$1
+            ;;
+        --DendDate)
+            shift;
+            DendDate=$1
+            ;;
+        --Drow)
+            shift;
+            Drow=$1
+            ;;
+        --Dlng)
+            shift;
+            Dlng=$1
+            ;;
+        --Dlat)
+            shift;
+            Dlat=$1
             ;;
         --)
             shift
