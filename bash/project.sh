@@ -36,7 +36,7 @@ function args()
             Dtype=$1
             if [[ ! ${Dtype} ]]
             then
-            Dtype=-${Dtype}
+            Dtype=-Dtype=${Dtype}
             fi
             ;;
         --DdownloadData=$1)
@@ -44,7 +44,7 @@ function args()
             DdownloadData=$1
             if [[ ! ${DdownloadData} ]]
             then
-            DdownloadData=-${DdownloadData}
+            DdownloadData=-DdownloadData=${DdownloadData}
             fi
             ;;
         --DstartDate)
@@ -52,7 +52,7 @@ function args()
             DstartDate=$1
             if [[ ! ${DstartDate} ]]
             then
-            DstartDate=-${DstartDate}
+            DstartDate=-DstartDate=${DstartDate}
             fi
             ;;
         --DendDate)
@@ -60,7 +60,7 @@ function args()
             DendDate=$1
             if [[ ! ${DendDate} ]]
             then
-            DendDate=-${DendDate}
+            DendDate=-DendDate=${DendDate}
             fi
             ;;
         --Drow)
@@ -68,7 +68,7 @@ function args()
             Drow=$1
             if [[ ! ${Drow} ]]
             then
-            Drow=-${Drow}
+            Drow=-Drow=${Drow}
             fi
             ;;
         --Dlng)
@@ -76,7 +76,7 @@ function args()
             Dlng=$1
             if [[ ! ${Dlng} ]]
             then
-            Dlng=-${Dlng}
+            Dlng=-Dlng-${Dlng}
             fi
             ;;
         --Dlat)
@@ -84,7 +84,7 @@ function args()
             Dlat=$1
             if [[ ! ${Dlat} ]]
             then
-            Dlat=-${Dlat}
+            Dlat=-Dlat=${Dlat}
             fi
             ;;
         --)
@@ -153,7 +153,7 @@ fi
 if [[ "$project_run" = true ]]
   then
     pushd /home/project/Task1
-    java -jar /home/project/Task1/target/Task1.jar -${Dtype} -${DdownloadData} -${DstartDate} -${DendDate} -${Drow} -${Dlng} -${Dlat}
+    java -jar /home/project/Task1/target/Task1.jar ${Dtype} ${DdownloadData} ${DstartDate} ${DendDate} ${Drow} ${Dlng} ${Dlat}
     popd
 fi
 
