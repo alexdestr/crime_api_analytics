@@ -82,7 +82,7 @@ public class EntryPoint {
             if (optionsMap.get("type").equals("receiveData")) {
                 if (optionsMap.get("row").equals("1")) {
                     // Row #1
-                    File file = new File("programOutputRow#1.txt");
+                    File file = new File("programOutputRow#1.log");
                     writer = new BufferedWriter(new FileWriter(file));
                     writer.flush();
                     for (String str : streetLevelCrimesDAO.getMostDangerousStreets(fromDate, toDate)) {
@@ -94,7 +94,7 @@ public class EntryPoint {
 
                 if (optionsMap.get("row").equals("2")) {
                     //Row #2
-                    File file = new File("programOutputRow#2.txt");
+                    File file = new File("programOutputRow#2.log");
                     writer = new BufferedWriter(new FileWriter(file));
                     writer.flush();
                     for (String str : streetLevelCrimesDAO.getMonthToMonthCrimeVolumeComparison(fromDate, toDate)) {
@@ -106,7 +106,7 @@ public class EntryPoint {
 
                 if (optionsMap.get("row").equals("3")) {
                     //Row #3
-                    File file = new File("programOutputRow#3.txt");
+                    File file = new File("programOutputRow#3.log");
                     writer = new BufferedWriter(new FileWriter(file));
                     writer.flush();
                     for (String str : streetLevelCrimesDAO.getCrimesWithSpecifiedOutcomeStatus("Investigation complete; no suspect identified", fromDate, toDate)) {
@@ -118,7 +118,7 @@ public class EntryPoint {
 
                 if (optionsMap.get("row").equals("4")) {
                     //Row #4
-                    File file = new File("programOutputRow#4.txt");
+                    File file = new File("programOutputRow#4.log");
                     writer = new BufferedWriter(new FileWriter(file));
                     writer.flush();
                     for (String str : stopAndSearchesByForceDAO.getStatisticByEthnicity(fromDate, toDate)) {
@@ -130,7 +130,7 @@ public class EntryPoint {
 
                 if (optionsMap.get("row").equals("5")) {
                     //Row #5
-                    File file = new File("programOutputRow#5.txt");
+                    File file = new File("programOutputRow#5.log");
                     writer = new BufferedWriter(new FileWriter(file));
                     writer.flush();
                     for (String str : stopAndSearchesByForceDAO.getMostProbableStopAndSearchSnapshotOnStreetLevel(fromDate, toDate)) {
@@ -142,7 +142,7 @@ public class EntryPoint {
 
                 if (optionsMap.get("row").equals("6")) {
                     //Row #6
-                    File file = new File("programOutputRow#6.txt");
+                    File file = new File("programOutputRow#6.log");
                     writer = new BufferedWriter(new FileWriter(file));
                     writer.flush();
                     for (String str : commonRows.comparsionStopAndSearchesWithStreetLevelCrimes(fromDate, toDate)) {
