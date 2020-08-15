@@ -34,6 +34,7 @@ public class StreetLevelCrimesLinkBuider {
     public String build() {
         this.finalLink = startLink + "?lng=" + longitude + "&lat=" + latitude + "&date=" + date;
         return finalLink;
+        // TODO: string builder
     }
 
 }

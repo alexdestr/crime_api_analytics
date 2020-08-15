@@ -194,7 +194,7 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
 
     @Override
     public Boolean[] checkForAvailability(YearMonth date, String force) {
-        final Boolean[] isAvailable = {null};
+        final Boolean[] isAvailable = {null}; // TODO: jdbcTemplate check methods
         jdbcTemplate.query(SQL_CHECK_FOR_AVAILABILITY, new PreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
@@ -243,13 +243,7 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
     public List<String> getMostProbableStopAndSearchSnapshotOnStreetLevel(YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY);
         List<String> finalOutput = new ArrayList<>();
-        jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setString(1, String.valueOf(from));
-                ps.setString(2, String.valueOf(to));
-            }
-        }, new RowCallbackHandler() {
+        jdbcTemplate.query(sqlScript, new RowCallbackHandler() {
             @Override
             public void processRow(ResultSet rs) throws SQLException {
                 StringBuilder[] output = new StringBuilder[1];

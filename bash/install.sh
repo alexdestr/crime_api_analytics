@@ -86,6 +86,7 @@ function args()
             ;;
         --)
             shift
+            echo "There is not even one option."
             break
             ;;
         esac

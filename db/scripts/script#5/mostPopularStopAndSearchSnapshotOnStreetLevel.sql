@@ -1,10 +1,6 @@
-WITH stopandsearchbydate AS (
-  SELECT * FROM stopandsearchesbyforce
-),
-
-count_most_popular_age_range AS (
+WITH count_most_popular_age_range AS (
   SELECT street_id, street_name, age_range, COUNT(*)
-  FROM stopandsearchbydate
+  FROM stopandsearchesbyforce
   WHERE age_range IS NOT NULL
   GROUP BY street_id, street_name, age_range
 ),
@@ -17,7 +13,7 @@ most_popular_age_range AS (
 
 count_most_popular_gender AS (
   SELECT street_id, street_name, gender, COUNT(*)
-  FROM stopandsearchbydate
+  FROM stopandsearchesbyforce
   WHERE gender IS NOT NULL
   GROUP BY street_id, street_name, gender
 ),
@@ -30,7 +26,7 @@ most_popular_gender AS (
 
 count_most_popular_ethnicity AS (
   SELECT street_id, street_name, officer_defined_ethnicity, COUNT(*)
-  FROM stopandsearchbydate
+  FROM stopandsearchesbyforce
   WHERE officer_defined_ethnicity IS NOT NULL
   GROUP BY street_id, street_name, officer_defined_ethnicity
 ),
@@ -43,7 +39,7 @@ most_popular_ethnicity AS (
 
 count_most_popular_object_of_search AS (
   SELECT street_id, street_name, object_of_search, COUNT(*)
-  FROM stopandsearchbydate
+  FROM stopandsearchesbyforce
   WHERE object_of_search IS NOT NULL
   GROUP BY street_id, street_name, object_of_search
 ),
@@ -56,7 +52,7 @@ most_popular_object_of_search AS (
 
 count_most_popular_outcome AS (
   SELECT street_id, street_name, outcome, COUNT(*)
-  FROM stopandsearchbydate
+  FROM stopandsearchesbyforce
   WHERE outcome IS NOT NULL
   GROUP BY street_id, street_name, outcome
 ),
