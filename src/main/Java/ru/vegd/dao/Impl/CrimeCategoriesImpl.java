@@ -27,7 +27,8 @@ public class CrimeCategoriesImpl implements CrimeCategoriesDAO {
 
     @Override
     public void add(List<CrimeCategory> categoryList) {
-        jdbcTemplate.batchUpdate(SQL_ADD_CRIME_CATEGORY,
+        jdbcTemplate.batchUpdate(
+                SQL_ADD_CRIME_CATEGORY,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {

@@ -34,7 +34,7 @@ public class StopAndSearchesByForceLinkBuilder {
     }
 
     public String build() {
-        if (stopAndSearchesByForceDAO.checkForAvailability(date, force)[0]) {
+        if (stopAndSearchesByForceDAO.checkForAvailability(date, force)) {
             this.finalLink = startLink + "?force=" + force + "&date=" + date;
         } // TODO: throw warn
         // TODO: string builder

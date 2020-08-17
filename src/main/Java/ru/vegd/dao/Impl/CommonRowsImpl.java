@@ -29,32 +29,34 @@ public class CommonRowsImpl implements CommonRowsDAO {
     public List<String> comparsionStopAndSearchesWithStreetLevelCrimes(YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_COMPARSION_STOP_AND_SEARCHES_WITH_STREET_LEVEL_CRIMES);
         List<String> finalOutput = new ArrayList<>();
-        jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setString(1, String.valueOf(from));
-                ps.setString(2, String.valueOf(to));
-                ps.setString(3, String.valueOf(from));
-                ps.setString(4, String.valueOf(to));
-            }
-        }, new RowCallbackHandler() {
-            @Override
-            public void processRow(ResultSet rs) throws SQLException {
-                StringBuilder[] output = new StringBuilder[1];
-                output[0] = new StringBuilder("--------------");
-                output[0].append("\n");
-                output[0].append("Street Id: ").append(rs.getString("street_id")).append("\n");
-                output[0].append("Street Name: ").append(rs.getString("street_name")).append("\n");
-                output[0].append("Month: ").append(rs.getString("month")).append("\n");
-                output[0].append("Drugs Crime Count: ").append(rs.getString("drugs_crime_count")).append("\n");
-                output[0].append("Drugs Strop And Search Count: ").append(rs.getString("drugs_stop_and_search_count")).append("\n");
-                output[0].append("Weapons Crimes Count: ").append(rs.getString("weapons_crimes_count")).append("\n");
-                output[0].append("Weapons Stop And Search Count: ").append(rs.getString("weapons_stop_and_search_count")).append("\n");
-                output[0].append("Theft Crimes Count: ").append(rs.getString("theft_crimes_count")).append("\n");
-                output[0].append("Theft Stop And Search Count: ").append(rs.getString("theft_stop_and_search_count"));
-                finalOutput.add(String.valueOf(output[0]));
-            }
-        });
+        jdbcTemplate.query(
+                sqlScript,
+                new PreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps) throws SQLException {
+                        ps.setString(1, String.valueOf(from));
+                        ps.setString(2, String.valueOf(to));
+                        ps.setString(3, String.valueOf(from));
+                        ps.setString(4, String.valueOf(to));
+                    }
+                }, new RowCallbackHandler() {
+                    @Override
+                    public void processRow(ResultSet rs) throws SQLException {
+                        StringBuilder output;
+                        output = new StringBuilder("--------------");
+                        output.append("\n");
+                        output.append("Street Id: ").append(rs.getString("street_id")).append("\n");
+                        output.append("Street Name: ").append(rs.getString("street_name")).append("\n");
+                        output.append("Month: ").append(rs.getString("month")).append("\n");
+                        output.append("Drugs Crime Count: ").append(rs.getString("drugs_crime_count")).append("\n");
+                        output.append("Drugs Strop And Search Count: ").append(rs.getString("drugs_stop_and_search_count")).append("\n");
+                        output.append("Weapons Crimes Count: ").append(rs.getString("weapons_crimes_count")).append("\n");
+                        output.append("Weapons Stop And Search Count: ").append(rs.getString("weapons_stop_and_search_count")).append("\n");
+                        output.append("Theft Crimes Count: ").append(rs.getString("theft_crimes_count")).append("\n");
+                        output.append("Theft Stop And Search Count: ").append(rs.getString("theft_stop_and_search_count"));
+                        finalOutput.add(String.valueOf(output));
+                    }
+                });
         return finalOutput;
     }
 }

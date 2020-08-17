@@ -30,20 +30,22 @@ public class ForcesListImpl implements ForcesListDAO {
 
     @Override
     public void add(List<Force> force) {
-        jdbcTemplate.batchUpdate(SQL_ADD_FORCE, new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setString(1, force.get(i).getId());
-                ps.setString(2, force.get(i).getName());
-                ps.setString(3, force.get(i).getId());
-                ps.setString(4, force.get(i).getName());
-            }
+        jdbcTemplate.batchUpdate(
+                SQL_ADD_FORCE,
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ps.setString(1, force.get(i).getId());
+                        ps.setString(2, force.get(i).getName());
+                        ps.setString(3, force.get(i).getId());
+                        ps.setString(4, force.get(i).getName());
+                    }
 
-            @Override
-            public int getBatchSize() {
-                return force.size();
-            }
-        });
+                    @Override
+                    public int getBatchSize() {
+                        return force.size();
+                    }
+                });
     }
 
     @Override

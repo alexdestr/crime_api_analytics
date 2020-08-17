@@ -157,7 +157,7 @@ public class EntryPoint {
             }
 
         } catch (Exception e) {
-            logger.error("Something went wrong.");
+            logger.error("Something went wrong: " + e.getMessage());
         }
     }
 }

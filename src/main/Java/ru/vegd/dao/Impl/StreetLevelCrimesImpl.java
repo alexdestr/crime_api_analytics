@@ -62,7 +62,8 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
 
     @Override
     public void add(List<StreetLevelCrime> crimeList) {
-        jdbcTemplate.batchUpdate(SQL_ADD_CRIME,
+        jdbcTemplate.batchUpdate(
+                SQL_ADD_CRIME,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -93,6 +94,7 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
                         ps.setString(25, crimeList.get(i).getLocationSubtype());
                         ps.setString(26, String.valueOf(crimeList.get(i).getMonth()));
                     }
+
                     @Override
                     public int getBatchSize() {
                         return crimeList.size();
@@ -105,27 +107,29 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
     public List<String> getMostDangerousStreets(YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_MOST_DANGEROUS_STREET);
         List<String> finalOutput = new ArrayList<>();
-        jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setString(1, String.valueOf(from));
-                ps.setString(2, String.valueOf(to));
-                ps.setString(3, String.valueOf(from));
-                ps.setString(4, String.valueOf(to));
-            }
-        }, new RowCallbackHandler() {
-            @Override
-            public void processRow(ResultSet rs) throws SQLException {
-                StringBuilder[] output = new StringBuilder[1];
-                output[0] = new StringBuilder("--------------");
-                output[0].append("\n");
-                output[0].append("Street ID: ").append(rs.getString("street_id")).append("\n");
-                output[0].append("Street Name: ").append(rs.getString("street_name")).append("\n");
-                output[0].append("Period: ").append(rs.getString("period")).append("\n");
-                output[0].append("Crimes Count: ").append(rs.getString("cnt"));
-                finalOutput.add(String.valueOf(output[0]));
-            }
-        });
+        jdbcTemplate.query(
+                sqlScript,
+                new PreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps) throws SQLException {
+                        ps.setString(1, String.valueOf(from));
+                        ps.setString(2, String.valueOf(to));
+                        ps.setString(3, String.valueOf(from));
+                        ps.setString(4, String.valueOf(to));
+                    }
+                }, new RowCallbackHandler() {
+                    @Override
+                    public void processRow(ResultSet rs) throws SQLException {
+                        StringBuilder output;
+                        output = new StringBuilder("--------------");
+                        output.append("\n");
+                        output.append("Street ID: ").append(rs.getString("street_id")).append("\n");
+                        output.append("Street Name: ").append(rs.getString("street_name")).append("\n");
+                        output.append("Period: ").append(rs.getString("period")).append("\n");
+                        output.append("Crimes Count: ").append(rs.getString("cnt"));
+                        finalOutput.add(String.valueOf(output));
+                    }
+                });
         return finalOutput;
     }
 
@@ -133,28 +137,30 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
     public List<String> getMonthToMonthCrimeVolumeComparison(YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_CRIME_VOLUME_COMPARSION);
         List<String> finalOutput = new ArrayList<>();
-        jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setString(1, String.valueOf(from));
-                ps.setString(2, String.valueOf(to));
+        jdbcTemplate.query(
+                sqlScript,
+                new PreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps) throws SQLException {
+                        ps.setString(1, String.valueOf(from));
+                        ps.setString(2, String.valueOf(to));
 
-            }
-        }, new RowCallbackHandler() {
-            @Override
-            public void processRow(ResultSet rs) throws SQLException {
-                StringBuilder[] output = new StringBuilder[1];
-                output[0] = new StringBuilder("--------------");
-                output[0].append("\n");
-                output[0].append("Category: ").append(rs.getString("category")).append("\n");
-                output[0].append("Month: ").append(rs.getString("mth")).append("\n");
-                output[0].append("Previous Month Count: ").append(rs.getString("previous_month_count")).append("\n");
-                output[0].append("Current Month Count: ").append(rs.getString("current_month_count")).append("\n");
-                output[0].append("Delta: ").append(rs.getString("delta")).append("\n");
-                output[0].append("Growth Rate: ").append(rs.getString("growth_rate"));
-                finalOutput.add(String.valueOf(output[0]));
-            }
-        });
+                    }
+                }, new RowCallbackHandler() {
+                    @Override
+                    public void processRow(ResultSet rs) throws SQLException {
+                        StringBuilder output;
+                        output = new StringBuilder("--------------");
+                        output.append("\n");
+                        output.append("Category: ").append(rs.getString("category")).append("\n");
+                        output.append("Month: ").append(rs.getString("mth")).append("\n");
+                        output.append("Previous Month Count: ").append(rs.getString("previous_month_count")).append("\n");
+                        output.append("Current Month Count: ").append(rs.getString("current_month_count")).append("\n");
+                        output.append("Delta: ").append(rs.getString("delta")).append("\n");
+                        output.append("Growth Rate: ").append(rs.getString("growth_rate"));
+                        finalOutput.add(String.valueOf(output));
+                    }
+                });
         return finalOutput;
     }
 
@@ -162,28 +168,30 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
     public List<String> getCrimesWithSpecifiedOutcomeStatus(String outcomeCategory, YearMonth from, YearMonth to) {
         String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_CRIMES_WITH_SPECIFIED_OUTCOME_STATUS);
         List<String> finalOutput = new ArrayList<>();
-        jdbcTemplate.query(sqlScript, new PreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setString(1, outcomeCategory);
-                ps.setString(2, String.valueOf(from));
-                ps.setString(3, String.valueOf(to));
-                ps.setString(4, String.valueOf(from));
-                ps.setString(5, String.valueOf(to));
-            }
-        }, new RowCallbackHandler() {
-            @Override
-            public void processRow(ResultSet rs) throws SQLException {
-                StringBuilder[] output = new StringBuilder[1];
-                output[0] = new StringBuilder("--------------");
-                output[0].append("\n");
-                output[0].append("Street Id: " + rs.getString("street_id")).append("\n");
-                output[0].append("Street Name: " + rs.getString("street_name")).append("\n");
-                output[0].append("Outcome Category: " + rs.getString("outcome_category")).append("\n");
-                output[0].append("Percentage Of The Total Crimes: " + rs.getString("percentage_of_the_total_crimes"));
-                finalOutput.add(String.valueOf(output[0]));
-            }
-        });
+        jdbcTemplate.query(
+                sqlScript,
+                new PreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps) throws SQLException {
+                        ps.setString(1, outcomeCategory);
+                        ps.setString(2, String.valueOf(from));
+                        ps.setString(3, String.valueOf(to));
+                        ps.setString(4, String.valueOf(from));
+                        ps.setString(5, String.valueOf(to));
+                    }
+                }, new RowCallbackHandler() {
+                    @Override
+                    public void processRow(ResultSet rs) throws SQLException {
+                        StringBuilder output;
+                        output = new StringBuilder("--------------");
+                        output.append("\n");
+                        output.append("Street Id: ").append(rs.getString("street_id")).append("\n");
+                        output.append("Street Name: ").append(rs.getString("street_name")).append("\n");
+                        output.append("Outcome Category: ").append(rs.getString("outcome_category")).append("\n");
+                        output.append("Percentage Of The Total Crimes: ").append(rs.getString("percentage_of_the_total_crimes"));
+                        finalOutput.add(String.valueOf(output));
+                    }
+                });
         return finalOutput;
     }
 }
