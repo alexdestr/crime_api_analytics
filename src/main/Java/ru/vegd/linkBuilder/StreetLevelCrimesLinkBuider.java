@@ -32,9 +32,16 @@ public class StreetLevelCrimesLinkBuider {
     }
 
     public String build() {
-        this.finalLink = startLink + "?lng=" + longitude + "&lat=" + latitude + "&date=" + date;
+        this.finalLink = new StringBuilder()
+                .append(startLink)
+                .append("?lng=")
+                .append(longitude)
+                .append("&lat=")
+                .append(latitude)
+                .append("&date=")
+                .append(date)
+                .toString();
         return finalLink;
-        // TODO: string builder
     }
 
 }

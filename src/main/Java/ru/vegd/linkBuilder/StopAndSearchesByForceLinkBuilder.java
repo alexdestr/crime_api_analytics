@@ -35,9 +35,15 @@ public class StopAndSearchesByForceLinkBuilder {
 
     public String build() {
         if (stopAndSearchesByForceDAO.checkForAvailability(date, force)) {
-            this.finalLink = startLink + "?force=" + force + "&date=" + date;
-        } // TODO: throw warn
-        // TODO: string builder
+            this.finalLink = new StringBuilder()
+                    .append(startLink)
+                    .append("?force=")
+                    .append(force)
+                    .append("&date=")
+                    .append(date)
+                    .toString();
+        }
+        // TODO: throw warn
         return finalLink;
     }
 }
