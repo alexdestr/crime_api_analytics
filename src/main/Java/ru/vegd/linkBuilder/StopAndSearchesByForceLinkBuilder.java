@@ -5,6 +5,10 @@ import ru.vegd.dao.StopAndSearchesByForceDAO;
 import java.time.YearMonth;
 
 public class StopAndSearchesByForceLinkBuilder {
+
+    private final static org.apache.log4j.Logger logger =
+            org.apache.log4j.Logger.getLogger(StopAndSearchesByForceLinkBuilder.class.getName());
+
     private String startLink;
     private String force;
     private YearMonth date;
@@ -42,8 +46,9 @@ public class StopAndSearchesByForceLinkBuilder {
                     .append("&date=")
                     .append(date)
                     .toString();
+        } else {
+            logger.info(date + " " + force + " is unavailable." );
         }
-        // TODO: throw warn
         return finalLink;
     }
 }
