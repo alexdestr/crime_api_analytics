@@ -250,7 +250,7 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
 
     @Override
     public List<String> getMostProbableStopAndSearchSnapshotOnStreetLevel(YearMonth from, YearMonth to) {
-        String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY);
+        String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_MOST_POPULAR_STOP_AND_SEARCHES_SNAPSHOT_ON_STREET_LEVEL);
         List<String> finalOutput = new ArrayList<>();
         jdbcTemplate.query(
                 sqlScript,
