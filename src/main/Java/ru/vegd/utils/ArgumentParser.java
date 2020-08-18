@@ -1,4 +1,4 @@
-package ru.vegd;
+package ru.vegd.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,6 @@ import ru.vegd.dao.StopAndSearchesByForceDAO;
 import ru.vegd.dao.StreetLevelCrimesDAO;
 import ru.vegd.dataReceiver.*;
 import ru.vegd.entity.Station;
-import ru.vegd.utils.CSVParser;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,9 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class EntryPoint {
+public class ArgumentParser {
 
-    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(EntryPoint.class.getName());
+    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(ArgumentParser.class.getName());
 
     @Autowired
     private CrimeCategoriesDAO crimeCategoriesDAO;

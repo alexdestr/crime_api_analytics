@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import ru.vegd.dao.CrimeCategoriesDAO;
 import ru.vegd.dao.ForcesListDAO;
 import ru.vegd.dao.StreetLevelCrimesDAO;
+import ru.vegd.utils.ArgumentParser;
 
-import java.time.YearMonth;
 import java.util.*;
 
 @SpringBootApplication
@@ -37,7 +37,7 @@ public class Application {
 
         ApplicationContext ctx =
                 new AnnotationConfigApplicationContext("ru.vegd");
-        EntryPoint entryPoint = (EntryPoint) ctx.getBean("entryPoint");
+        ArgumentParser argumentParser = (ArgumentParser) ctx.getBean("argumentParser");
 
         Options options = new Options();
         CommandLine cmd = null;
@@ -70,6 +70,6 @@ public class Application {
             optionsMap.put("lat", properties.getProperty("lat"));
         }
 
-        entryPoint.entry(optionsMap);
+        argumentParser.entry(optionsMap);
     }
 }

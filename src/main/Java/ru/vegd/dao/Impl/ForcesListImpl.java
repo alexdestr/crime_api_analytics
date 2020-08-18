@@ -18,7 +18,7 @@ public class ForcesListImpl implements ForcesListDAO {
     private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(ForcesListImpl.class.getName());
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     private static final String SQL_ADD_FORCE = "INSERT INTO forcesList " +
             "VALUES (?, ?) " +
