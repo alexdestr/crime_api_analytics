@@ -1,22 +1,19 @@
 SELECT
-  c.street_id,
-  c.street_name,
+  final_rows.street_id,
+  final_rows.street_name,
   'from ('|| ? ||') till (' || ? || ')' AS period,
-  c.cnt AS cnt
+  final_rows.cnt AS cnt
 FROM (
   SELECT
-    b.street_id,
-    b.street_name,
+    rows_by_date.street_id,
+    rows_by_date.street_name,
     COUNT(*) AS cnt
   FROM (
     SELECT *
-    FROM (
-      SELECT *
-      FROM streetlevelcrimes
-      WHERE TO_DATE(month, 'YYYY-MM') >= TO_DATE('' || ? || '', 'YYYY-MM')
-      AND TO_DATE(month, 'YYYY-MM') <= TO_DATE('' || ? || '', 'YYYY-MM')
-    ) AS a
-  ) AS b
-  GROUP BY b.street_id, b.street_name) AS c
-ORDER BY c.cnt
+    FROM streetlevelcrimes
+    WHERE TO_DATE(month, 'YYYY-MM') >= TO_DATE('' || ? || '', 'YYYY-MM')
+    AND TO_DATE(month, 'YYYY-MM') <= TO_DATE('' || ? || '', 'YYYY-MM')
+  ) AS rows_by_date
+  GROUP BY rows_by_date.street_id, rows_by_date.street_name) AS final_rows
+ORDER BY final_rows.cnt
 DESC LIMIT 10
