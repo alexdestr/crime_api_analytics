@@ -92,6 +92,16 @@ public class RequestBody {
     public void setSql(String sql) {
         this.sql = sql;
     }
+
+    @Override
+    public String toString() {
+        return "RequestBody{" +
+                "report=" + report +
+                ", inputs=" + inputs.toString() +
+                ", outputs=" + outputs.toString() +
+                ", sql='" + sql + '\'' +
+                '}';
+    }
 }
 
 class Report {

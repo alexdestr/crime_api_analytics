@@ -11,7 +11,43 @@ import java.time.temporal.TemporalAccessor;
 
 public class JsonToEntityConverter {
 
-    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(JsonToEntityConverter.class.getName());
+    private final static org.apache.log4j.Logger logger =
+            org.apache.log4j.Logger.getLogger(JsonToEntityConverter.class.getName());
+
+    public RequestBody convertToRequestBody(JsonObject json) {
+        RequestBody requestBody = new RequestBody();
+
+        requestBody.setReportName(json.get("report")
+                .getAsJsonObject().get("name").toString().replaceAll("\"", ""));
+        requestBody.setReportDescription(json.get("report")
+                .getAsJsonObject().get("description").toString().replaceAll("\"", ""));
+
+        for (Integer i = 0; i < json.get("inputs").getAsJsonArray().size(); i++) {
+            requestBody.addInputs();
+
+            requestBody.setInputsVar(i, json.get("inputs").getAsJsonArray().get(i)
+                    .getAsJsonObject().get("var").toString().replaceAll("\"", ""));
+            requestBody.setInputsLabel(i, json.get("inputs").getAsJsonArray().get(i)
+                    .getAsJsonObject().get("label").toString().replaceAll("\"", ""));
+            requestBody.setInputsType(i, json.get("inputs").getAsJsonArray().get(i)
+                    .getAsJsonObject().get("type").toString().replaceAll("\"", ""));
+        }
+
+        for (Integer i = 0; i < json.get("outputs").getAsJsonArray().size(); i++) {
+            requestBody.addOutputs();
+
+            requestBody.setOutputsIndex(i, json.get("outputs").getAsJsonArray().get(i)
+                    .getAsJsonObject().get("index").getAsInt());
+            requestBody.setOutputsLabel(i, json.get("outputs").getAsJsonArray().get(i)
+                    .getAsJsonObject().get("label").toString().replaceAll("\"", ""));
+            requestBody.setOutputsType(i, json.get("outputs").getAsJsonArray().get(i)
+                    .getAsJsonObject().get("type").toString().replaceAll("\"", ""));
+        }
+
+        requestBody.setSql(json.get("sql").getAsString());
+
+        return requestBody;
+    }
 
     public AvailableStopAndSearchesByForce convertToAvailableStopAndSearchesByForce(JsonObject json) {
         AvailableStopAndSearchesByForce available = new AvailableStopAndSearchesByForce();
