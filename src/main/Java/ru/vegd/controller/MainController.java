@@ -56,9 +56,9 @@ public class MainController {
             requestBody.setOutputsIndex(i, json.get("outputs").getAsJsonArray().get(i)
                     .getAsJsonObject().get("index").getAsInt());
             requestBody.setOutputsLabel(i, json.get("outputs").getAsJsonArray().get(i)
-                    .getAsJsonObject().get("label").toString());
+                    .getAsJsonObject().get("label").toString().replaceAll("\"", ""));
             requestBody.setOutputsType(i, json.get("outputs").getAsJsonArray().get(i)
-                    .getAsJsonObject().get("type").toString());
+                    .getAsJsonObject().get("type").toString().replaceAll("\"", ""));
         }
 
         return "answer";
