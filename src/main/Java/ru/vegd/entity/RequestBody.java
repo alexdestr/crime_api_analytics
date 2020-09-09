@@ -53,6 +53,10 @@ public class RequestBody {
         inputs.get(id).setType(type);
     }
 
+    public List<Inputs> getInputs() {
+        return inputs;
+    }
+
     public void addOutputs() {
         outputs.add(new Outputs());
     }
@@ -83,6 +87,10 @@ public class RequestBody {
 
     public void setOutputsType(Integer id, String type) {
         outputs.get(id).getType();
+    }
+
+    public List<Outputs> getOutputs() {
+        return outputs;
     }
 
     public String getSql() {

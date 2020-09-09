@@ -1,16 +1,16 @@
 package ru.vegd.controller;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.RequestBody;
+import ru.vegd.sqlBuilder.RequestSQLBuilder;
 import ru.vegd.utils.RequestParser;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -22,6 +22,15 @@ public class MainController {
     public String getApiResponse(HttpServletRequest request) {
         JsonObject json = RequestParser.parseRequestBodyToJsonObject(request);
         RequestBody requestBody = new JsonToEntityConverter().convertToRequestBody(json);
+
+        Map map = new HashMap();
+        map.put("id", "1");
+        RequestSQLBuilder requestSQLBuilder = new RequestSQLBuilder();
+        String sql = requestSQLBuilder
+                .setSQL("SELECT <id> FROM users")
+                .setValues(map)
+                .build();
+
 
         return "answer";
     }
