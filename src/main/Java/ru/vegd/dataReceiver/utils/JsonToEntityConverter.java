@@ -27,6 +27,8 @@ public class JsonToEntityConverter {
 
             requestBody.setInputsVar(i, json.get("inputs").getAsJsonArray().get(i)
                     .getAsJsonObject().get("var").toString().replaceAll("\"", ""));
+            requestBody.setInputsValue(i, json.get("inputs").getAsJsonArray().get(i)
+                    .getAsJsonObject().get("value").toString().replaceAll("\"", ""));
             requestBody.setInputsLabel(i, json.get("inputs").getAsJsonArray().get(i)
                     .getAsJsonObject().get("label").toString().replaceAll("\"", ""));
             requestBody.setInputsType(i, json.get("inputs").getAsJsonArray().get(i)

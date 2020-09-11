@@ -5,5 +5,5 @@ import ru.vegd.entity.RequestBody;
 import java.util.List;
 
 public interface ApiDAO {
-    List getDataByRequest(RequestBody requestBody);
+    RequestBody getDataByRequest(RequestBody requestBody);
 }

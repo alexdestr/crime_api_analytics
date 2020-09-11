@@ -37,6 +37,14 @@ public class RequestBody {
         inputs.get(id).setVar(var);
     }
 
+    public String getInputsValue(Integer id) {
+        return inputs.get(id).getValue();
+    }
+
+    public void setInputsValue(Integer id, String value) {
+        inputs.get(id).setValue(value);
+    }
+
     public String getInputsLabel(Integer id) {
         return inputs.get(id).getLabel();
     }
@@ -55,6 +63,10 @@ public class RequestBody {
 
     public List<Inputs> getInputs() {
         return inputs;
+    }
+
+    public void setInputs(List<Inputs> inputs) {
+        this.inputs = inputs;
     }
 
     public void addOutputs() {
@@ -86,11 +98,23 @@ public class RequestBody {
     }
 
     public void setOutputsType(Integer id, String type) {
-        outputs.get(id).getType();
+        outputs.get(id).setType(type);
+    }
+
+    public String getOutputsValue(Integer id) {
+        return outputs.get(id).getValue();
+    }
+
+    public void setOutputsValue(Integer id, String value) {
+        outputs.get(id).setValue(value);
     }
 
     public List<Outputs> getOutputs() {
         return outputs;
+    }
+
+    public void setOutputs(List<Outputs> outputs) {
+        this.outputs = outputs;
     }
 
     public String getSql() {
@@ -135,6 +159,7 @@ class Report {
 
 class Inputs {
     private String var;
+    private String value;
     private String label;
     private String type;
 
@@ -144,6 +169,14 @@ class Inputs {
 
     public void setVar(String var) {
         this.var = var;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public String getLabel() {
@@ -167,6 +200,7 @@ class Outputs {
     private Integer index;
     private String label;
     private String type;
+    private String value;
 
     public Integer getIndex() {
         return index;
@@ -190,6 +224,14 @@ class Outputs {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }
 
