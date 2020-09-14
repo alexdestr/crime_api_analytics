@@ -126,7 +126,7 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
                         output.append("Street ID: ").append(rs.getString("street_id")).append("\n");
                         output.append("Street Name: ").append(rs.getString("street_name")).append("\n");
                         output.append("Period: ").append(rs.getString("period")).append("\n");
-                        output.append("Crimes Count: ").append(rs.getString("cnt"));
+                        output.append("Crimes Count: ").append(rs.getString("count"));
                         finalOutput.add(String.valueOf(output));
                     }
                 });

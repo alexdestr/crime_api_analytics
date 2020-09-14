@@ -1,21 +1,23 @@
-WITH crimes_count AS
-(SELECT *
-  FROM
-  (SELECT
+WITH crimes_count_for_each_category AS (
+  SELECT
     category,
     MONTH AS mth,
     COUNT(*)
-    OVER(PARTITION BY category, MONTH
-    ORDER BY MONTH)
-   FROM streetlevelcrimes) AS count_for_each_category
-  GROUP BY
-  count_for_each_category.category,
-  count_for_each_category.mth,
-  count_for_each_category.count
-  ORDER BY count_for_each_category.mth
+  OVER(PARTITION BY category, MONTH ORDER BY MONTH)
+  FROM streetlevelcrimes
 ),
 
-odr AS
+crimes_count AS (
+  SELECT *
+  FROM crimes_count_for_each_category
+  GROUP BY
+    crimes_count_for_each_category.category,
+    crimes_count_for_each_category.mth,
+    crimes_count_for_each_category.count
+  ORDER BY crimes_count_for_each_category.mth
+),
+
+month_to_month_comparsion AS
 (SELECT
   current_month_data.category,
   current_month_data.mth,
@@ -32,6 +34,6 @@ SELECT
   current_month_count,
   current_month_count - previous_month_count AS delta,
   concat(cast(round((cast(current_month_count AS decimal) - cast(previous_month_count AS decimal)) / cast(previous_month_count AS decimal) * 100, 1) AS text), '%') AS growth_rate
-FROM odr
+FROM month_to_month_comparsion
 WHERE TO_DATE(mth, 'YYYY-MM') >= TO_DATE(''|| ? ||'', 'YYYY-MM')
 AND TO_DATE(mth, 'YYYY-MM') <= TO_DATE(''|| ? ||'', 'YYYY-MM')

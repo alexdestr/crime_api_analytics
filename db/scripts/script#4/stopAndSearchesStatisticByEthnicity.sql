@@ -3,7 +3,7 @@ WITH count_by_date AS (
     officer_defined_ethnicity,
     datetime,
     outcome,
-    COUNT(*)
+    COUNT(*) AS count
   FROM stopandsearchesbyforce
   GROUP BY
     officer_defined_ethnicity,
@@ -16,7 +16,7 @@ WITH count_by_date AS (
 arrest_count AS (
   SELECT
     officer_defined_ethnicity,
-  COUNT(*)
+    COUNT(*) AS count
   FROM count_by_date
   WHERE outcome = 'Arrest'
   GROUP BY
@@ -26,7 +26,7 @@ arrest_count AS (
 release_count AS (
   SELECT
     officer_defined_ethnicity,
-  COUNT(*)
+    COUNT(*) AS count
   FROM count_by_date
   WHERE outcome = 'A no further action disposal'
   GROUP BY
@@ -36,7 +36,8 @@ release_count AS (
 other_count AS (
   SELECT
     officer_defined_ethnicity,
-    COUNT(*) FROM count_by_date
+    COUNT(*) AS count
+  FROM count_by_date
   WHERE outcome != 'Arrest' AND outcome != 'A no further action disposal' AND outcome IS NOT NULL
   GROUP BY
     officer_defined_ethnicity
@@ -46,16 +47,16 @@ object_of_search AS (
   SELECT
     officer_defined_ethnicity,
     object_of_search,
-    "count",
-    ROW_NUMBER() OVER (PARTITION BY officer_defined_ethnicity ORDER BY "count" DESC) AS rn
+    count,
+  ROW_NUMBER() OVER (PARTITION BY officer_defined_ethnicity ORDER BY count DESC) AS rn
   FROM (SELECT
-          officer_defined_ethnicity,
-          object_of_search,
-          COUNT(*)
+        officer_defined_ethnicity,
+        object_of_search,
+        COUNT(*) AS count
         FROM stopandsearchesbyforce
         GROUP BY
-          officer_defined_ethnicity,
-          object_of_search
+        officer_defined_ethnicity,
+        object_of_search
   ) AS grouped_count
 )
 
@@ -68,11 +69,11 @@ SELECT
   object.object_of_search
 FROM
 (SELECT
- grouped_count_by_date.officer_defined_ethnicity,
-  COUNT(*)
+  grouped_count_by_date.officer_defined_ethnicity,
+  COUNT(*) AS count
  FROM count_by_date AS grouped_count_by_date
  GROUP BY
- grouped_count_by_date.officer_defined_ethnicity)
+  grouped_count_by_date.officer_defined_ethnicity)
 AS common_count
   JOIN arrest_count AS arrest_outcome ON common_count.officer_defined_ethnicity = arrest_outcome.officer_defined_ethnicity
   JOIN release_count AS release_outcome ON arrest_outcome.officer_defined_ethnicity = release_outcome.officer_defined_ethnicity

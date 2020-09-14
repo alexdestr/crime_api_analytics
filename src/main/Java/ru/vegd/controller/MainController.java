@@ -12,6 +12,7 @@ import ru.vegd.utils.RequestParser;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -44,9 +45,13 @@ public class MainController {
                 .build();
         requestBody.setSql(formattedSql);
 
-        for (Integer i = 0; i < api.getDataByRequest(requestBody).getOutputs().size(); i++) {
-            System.out.println(api.getDataByRequest(requestBody).getOutputsValue(i));
-        } // TODO: rework this :)
+        List<RequestBody> apiResponse = api.getDataByRequest(requestBody);
+
+        for (Integer z = 0; z < apiResponse.size(); z++) {
+            for (Integer i = 0; i < apiResponse.get(z).getOutputs().size(); i++) {
+                System.out.println(apiResponse.get(i).getOutputsValue(i));
+            }
+        }
 
         return "answer";
     }

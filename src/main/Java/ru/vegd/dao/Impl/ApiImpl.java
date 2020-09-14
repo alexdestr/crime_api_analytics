@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -22,28 +23,29 @@ public class ApiImpl implements ApiDAO {
     private DataSource dataSource;
 
     @Override
-    public RequestBody getDataByRequest(RequestBody requestBody) {
+    public List<RequestBody> getDataByRequest(RequestBody requestBody) {
         PreparedStatement preparedStatement = null;
         Connection conn = null;
-        RequestBody finalBody = null;
+        List<RequestBody> finalBody = new ArrayList<>(); // TODO: rename
         try {
             conn = dataSource.getConnection();
             conn.setReadOnly(true);
 
             preparedStatement = conn.prepareStatement(requestBody.getSql());
 
-            finalBody = new RequestBody();
-            finalBody.setReportName(requestBody.getReportName());
-            finalBody.setReportDescription(requestBody.getReportDescription());
-            finalBody.setInputs(requestBody.getInputs());
-            finalBody.setOutputs(requestBody.getOutputs());
-            finalBody.setSql(requestBody.getSql());
-
             ResultSet resultSet = preparedStatement.executeQuery();
+            Integer count = 0;
             while (resultSet.next()) {
+                finalBody.add(new RequestBody());
+                finalBody.get(count).setReportName(requestBody.getReportName()); // TODO: rework
+                finalBody.get(count).setReportDescription(requestBody.getReportDescription());
+                finalBody.get(count).setInputs(requestBody.getInputs());
+                finalBody.get(count).setOutputs(requestBody.getOutputs());
+                finalBody.get(count).setSql(requestBody.getSql());
                 for (Integer i = 0; i < requestBody.getOutputs().size(); i++) {
-                    finalBody.setOutputsValue(i, resultSet.getString(requestBody.getOutputsLabel(i)));
+                    finalBody.get(count).setOutputsValue(i, resultSet.getString(requestBody.getOutputsLabel(i)));
                 }
+                count++;
             }
 
         } catch (SQLException e) {
