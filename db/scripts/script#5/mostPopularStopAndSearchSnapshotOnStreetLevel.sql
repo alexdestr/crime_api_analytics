@@ -3,7 +3,7 @@ WITH count_most_popular_age_range AS (
     street_id,
     street_name,
     age_range,
-    COUNT(*)
+    COUNT(*) AS count
   FROM stopandsearchesbyforce
   WHERE age_range IS NOT NULL
   GROUP BY
@@ -27,7 +27,7 @@ count_most_popular_gender AS (
     street_id,
     street_name,
     gender,
-    COUNT(*)
+    COUNT(*) AS count
   FROM stopandsearchesbyforce
   WHERE gender IS NOT NULL AND gender != 'null'
   GROUP BY
@@ -51,13 +51,13 @@ count_most_popular_ethnicity AS (
     street_id,
     street_name,
     officer_defined_ethnicity,
-    COUNT(*)
+    COUNT(*) AS count
   FROM stopandsearchesbyforce
   WHERE officer_defined_ethnicity IS NOT NULL
   GROUP BY
     street_id,
-  street_name,
-  officer_defined_ethnicity
+    street_name,
+    officer_defined_ethnicity
 ),
 
 most_popular_ethnicity AS (
@@ -75,7 +75,7 @@ count_most_popular_object_of_search AS (
     street_id,
     street_name,
     object_of_search,
-    COUNT(*)
+    COUNT(*) AS count
   FROM stopandsearchesbyforce
   WHERE object_of_search IS NOT NULL
   GROUP BY
@@ -99,7 +99,7 @@ count_most_popular_outcome AS (
     street_id,
     street_name,
     outcome,
-    COUNT(*)
+    COUNT(*) AS count
   FROM stopandsearchesbyforce
   WHERE outcome IS NOT NULL
   GROUP BY
@@ -119,24 +119,24 @@ most_popular_outcome AS (
 )
 
 SELECT
-  a.street_id,
-  a.street_name,
-  b.age_range,
-  c.gender,
-  d.officer_defined_ethnicity,
-  f.object_of_search,
-  g.outcome
-FROM stopandsearchesbyforce AS a
-JOIN most_popular_age_range AS b ON a.street_id = b.street_id AND b.rn = 1
-JOIN most_popular_gender AS c ON b.street_id = c.street_id AND c.rn = 1
-JOIN most_popular_ethnicity AS d ON c.street_id = d.street_id AND d.rn = 1
-JOIN most_popular_object_of_search AS f ON d.street_id = f.street_id AND f.rn = 1
-JOIN most_popular_outcome AS g ON f.street_id = g.street_id AND g.rn = 1
+  all_rows.street_id,
+  all_rows.street_name,
+  most_popular_age.age_range,
+  most_popular_gender.gender,
+  most_popular_ethnicity.officer_defined_ethnicity,
+  most_popular_object_of_search.object_of_search,
+  most_popular_outcome.outcome
+FROM stopandsearchesbyforce AS all_rows
+  JOIN most_popular_age_range AS most_popular_age ON all_rows.street_id = most_popular_age.street_id AND most_popular_age.rn = 1
+  JOIN most_popular_gender AS most_popular_gender ON most_popular_age.street_id = most_popular_gender.street_id AND most_popular_gender.rn = 1
+  JOIN most_popular_ethnicity AS most_popular_ethnicity ON most_popular_gender.street_id = most_popular_ethnicity.street_id AND most_popular_ethnicity.rn = 1
+  JOIN most_popular_object_of_search AS most_popular_object_of_search ON most_popular_ethnicity.street_id = most_popular_object_of_search.street_id AND most_popular_object_of_search.rn = 1
+  JOIN most_popular_outcome AS most_popular_outcome ON most_popular_object_of_search.street_id = most_popular_outcome.street_id AND most_popular_outcome.rn = 1
 GROUP BY
-  a.street_id,
-  a.street_name,
-  b.age_range,
-  c.gender,
-  d.officer_defined_ethnicity,
-  f.object_of_search,
-  g.outcome
+  all_rows.street_id,
+  all_rows.street_name,
+  most_popular_age.age_range,
+  most_popular_gender.gender,
+  most_popular_ethnicity.officer_defined_ethnicity,
+  most_popular_object_of_search.object_of_search,
+  most_popular_outcome.outcome
