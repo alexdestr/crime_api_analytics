@@ -43,21 +43,24 @@ other_count AS (
     officer_defined_ethnicity
 ),
 
+grouped_count AS (
+  SELECT
+    officer_defined_ethnicity,
+    object_of_search,
+    COUNT(*) AS count
+  FROM stopandsearchesbyforce
+  GROUP BY
+    officer_defined_ethnicity,
+    object_of_search
+),
+
 object_of_search AS (
   SELECT
     officer_defined_ethnicity,
     object_of_search,
     count,
   ROW_NUMBER() OVER (PARTITION BY officer_defined_ethnicity ORDER BY count DESC) AS rn
-  FROM (SELECT
-        officer_defined_ethnicity,
-        object_of_search,
-        COUNT(*) AS count
-        FROM stopandsearchesbyforce
-        GROUP BY
-        officer_defined_ethnicity,
-        object_of_search
-  ) AS grouped_count
+  FROM grouped_count
 )
 
 SELECT
