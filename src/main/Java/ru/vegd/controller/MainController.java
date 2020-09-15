@@ -3,10 +3,12 @@ package ru.vegd.controller;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.vegd.dao.Impl.ApiImpl;
 import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
-import ru.vegd.entity.RequestBody;
+import ru.vegd.httpEntity.RequestBody;
+import ru.vegd.httpEntity.ResponseBody;
 import ru.vegd.sqlBuilder.RequestSQLBuilder;
 import ru.vegd.utils.RequestParser;
 
@@ -25,7 +27,7 @@ public class MainController {
     ApiImpl api;
 
     @PostMapping("/api")
-    public String getApiResponse(HttpServletRequest request) {
+    public String getApiResponse(HttpServletRequest request, Model model) {
         JsonObject json = RequestParser.parseRequestBodyToJsonObject(request);
         RequestBody requestBody = new JsonToEntityConverter().convertToRequestBody(json);
         Map valueMap = new HashMap();
@@ -45,13 +47,16 @@ public class MainController {
                 .build();
         requestBody.setSql(formattedSql);
 
-        List<RequestBody> apiResponse = api.getDataByRequest(requestBody);
+        List<ResponseBody> responseList = api.getDataByRequest(requestBody);
 
-        for (Integer z = 0; z < apiResponse.size(); z++) {
-            for (Integer i = 0; i < apiResponse.get(z).getOutputs().size(); i++) {
-                System.out.println(apiResponse.get(i).getOutputsValue(i));
+        /*for (Integer z = 0; z < responseList.size(); z++) {
+            for (Integer i = 0; i < responseList.get(z).size(); i++) {
+                System.out.println(responseList.get(z).get(i));
             }
-        }
+        }*/
+
+        model.addAttribute("request", requestBody);
+        model.addAttribute("response", responseList);
 
         return "answer";
     }

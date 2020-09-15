@@ -1,10 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 </head>
-<body>
-123Hello456!
+<body lang="EN-US" link="#0563C1" vlink="#954F72">
+<table border="0" cellspacing="0" cellpadding="0" width="100%"
+       style="width:100%;background:#464547;border-collapse:collapse">
+    <tbody>
+    <tr>
+        <td width="1" style="width:1pt;padding:9.0pt 3.75pt 9.0pt 9.0pt">
+            <img width="224" height="40" src="https://i.imgur.com/vtr7zph.png">
+        </td>
+        <td width="100%" align="left" nowrap="" style="text-align:left;width:0;padding:0in 0in 0in 7.5pt;word-wrap:normal">
+            <b><span style="font-size:16.5pt;font-family:'Arial Bold';color:white;" th:text="${request.report.name}">
+            Report name
+            </span></b>
+        </td>
+    </tbody>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" align="left" width="100%"
+       style="width:100%;border-collapse:collapse;border-spacing: 0">
+    <tbody>
+    <tr>
+        <td style="padding:9.0pt 9.0pt 9.25pt 9.0pt">
+            <p style="margin:0in;margin-bottom:.0001pt;line-height:11.5pt">
+                <b><span style="font-size:11pt;font-family: 'Arial',sans-serif;color: #005563;line-height: 11.5pt;">Description:</span></b>
+                <span style="font-size:11pt;font-family: 'Arial',sans-serif;color: #0f535f;line-height: 11.5pt;" th:text="${request.report.description}">
+              Report description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </span>
+            </p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table border=0 cellspacing=0 cellpadding=0 align="left" width="100%"
+       style="border:solid #929292 1pt;width:100.0%;margin-top:3.5pt;margin-bottom:3.5pt;">
+    <tr th:each="request : ${request.inputs}">
+        <td valign="top" style=";background:#F2F2F2;padding:5pt 2%; width: 17%; min-width: 107px">
+            <b><span style="font-size:10.5pt;font-family:'Arial',sans-serif;color:#464547" th:text="${request.label}">
+          Input label
+          </span></b>
+        </td>
+        <td valign="top" style="background:#F2F2F2;padding:5pt 2%; width: 77%">
+          <span style="font-size:10.5pt;font-family:'Arial',sans-serif;color:black" th:text="${request.value}">
+          Input value
+          </span>
+        </td>
+    </tr>
+
+</table>
+<table border=0 cellspacing=0 cellpadding=0 align=left width="100%"
+       style='width:100.0%;margin-top:3.5pt;margin-bottom:3.5pt;border-spacing: 0'>
+    <tr>
+        <td style='width: 25%; min-width: 90px;border:none;border-bottom:solid #929292 1.5pt;background:white;padding:3pt 5pt; ' th:each="request : ${request.outputs}">
+            <strong><span
+                    style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#464547' th:text="${request.label}">Output Label</span></strong>
+        </td>
+    </tr>
+    <tr th:each="responseList : ${response}">
+        <td style='border:none;background:#81e4ab;padding:5pt 5pt; ' th:each="response : ${responseList.responseList}">
+            <span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#464547' th:text="${response.row}">Value</span>
+        </td>
+    </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" align="left" width="100%"
+       style="width:100%;border-collapse:collapse;border-spacing: 0">
+    <tbody>
+    <tr>
+        <td style="background:#464547;padding:9.0pt 9.0pt 9.25pt 9.0pt">
+            <p align="center" style="margin:0in;margin-bottom:.0001pt;text-align:center;line-height:7.5pt">
+                <span style="font-size:7.0pt;font-family: 'Arial',sans-serif;color: #9c8562;line-height: 7.5pt;"> ​​​This e-mail (including any attachments) may contain information that is private, confidential, or protected by attorney-client or other privilege. If you received this e-mail in error, please delete it from your system and notify sender.</span>
+            </p>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

@@ -56,9 +56,9 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
             "location_subtype = ?, " +
             "month = ?";
 
-    private static final String PATH_TO_SQL_QUERY_MOST_DANGEROUS_STREET = "db/scripts/script#1/mostDangerousStreets.sql";
-    private static final String PATH_TO_SQL_QUERY_CRIME_VOLUME_COMPARSION = "db/scripts/script#2/crimeVolumeComparsion.sql";
-    private static final String PATH_TO_SQL_QUERY_CRIMES_WITH_SPECIFIED_OUTCOME_STATUS = "db/scripts/script#3/crimesWithSpecifiedOutcomeStatus.sql";
+    private static final String PATH_TO_SQL_QUERY_MOST_DANGEROUS_STREET = "db/scripts/script#1/most_dangerous_streets.sql";
+    private static final String PATH_TO_SQL_QUERY_CRIME_VOLUME_COMPARSION = "db/scripts/script#2/crime_volume_comparsion.sql";
+    private static final String PATH_TO_SQL_QUERY_CRIMES_WITH_SPECIFIED_OUTCOME_STATUS = "db/scripts/script#3/crimes_with_specified_outcome_status.sql";
 
     @Override
     public void add(List<StreetLevelCrime> crimeList) {

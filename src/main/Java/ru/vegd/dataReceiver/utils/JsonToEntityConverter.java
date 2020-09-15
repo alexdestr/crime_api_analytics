@@ -2,6 +2,7 @@ package ru.vegd.dataReceiver.utils;
 
 import com.google.gson.JsonObject;
 import ru.vegd.entity.*;
+import ru.vegd.httpEntity.RequestBody;
 
 import java.sql.Timestamp;
 import java.time.Instant;

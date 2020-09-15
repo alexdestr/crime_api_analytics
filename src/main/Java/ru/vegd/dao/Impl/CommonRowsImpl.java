@@ -23,7 +23,7 @@ public class CommonRowsImpl implements CommonRowsDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private static final String PATH_TO_SQL_QUERY_COMPARSION_STOP_AND_SEARCHES_WITH_STREET_LEVEL_CRIMES = "db/scripts/script#6/stopAndSearchCorrelationWithCrimes.sql";
+    private static final String PATH_TO_SQL_QUERY_COMPARSION_STOP_AND_SEARCHES_WITH_STREET_LEVEL_CRIMES = "db/scripts/script#6/stop_and_search_correlation_with_crimes.sql";
 
     @Override
     public List<String> comparsionStopAndSearchesWithStreetLevelCrimes(YearMonth from, YearMonth to) {

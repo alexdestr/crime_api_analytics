@@ -76,8 +76,8 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
     private static final String SQL_CHECK_FOR_AVAILABILITY = "SELECT EXISTS(SELECT * FROM availableForces " +
             "WHERE date = ? AND force = ?)";
 
-    private static final String PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY = "db/scripts/script#4/stopAndSearchesStatisticByEthnicity.sql";
-    private static final String PATH_TO_SQL_QUERY_MOST_POPULAR_STOP_AND_SEARCHES_SNAPSHOT_ON_STREET_LEVEL = "db/scripts/script#5/mostPopularStopAndSearchSnapshotOnStreetLevel.sql";
+    private static final String PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY = "db/scripts/script#4/stop_and_searches_statistic_by_ethnicity.sql";
+    private static final String PATH_TO_SQL_QUERY_MOST_POPULAR_STOP_AND_SEARCHES_SNAPSHOT_ON_STREET_LEVEL = "db/scripts/script#5/most_popular_stop_and_search_snapshot_on_street_level.sql";
 
     @Override
     public void add(List<StopAndSearchesByForce> stopAndSearchesByForce) {

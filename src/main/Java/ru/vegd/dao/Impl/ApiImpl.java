@@ -3,7 +3,8 @@ package ru.vegd.dao.Impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.vegd.dao.ApiDAO;
-import ru.vegd.entity.RequestBody;
+import ru.vegd.httpEntity.RequestBody;
+import ru.vegd.httpEntity.ResponseBody;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -23,10 +24,10 @@ public class ApiImpl implements ApiDAO {
     private DataSource dataSource;
 
     @Override
-    public List<RequestBody> getDataByRequest(RequestBody requestBody) {
+    public List<ResponseBody> getDataByRequest(RequestBody requestBody) {
         PreparedStatement preparedStatement = null;
         Connection conn = null;
-        List<RequestBody> finalBody = new ArrayList<>(); // TODO: rename
+        List<ResponseBody> responseList = new ArrayList<>();
         try {
             conn = dataSource.getConnection();
             conn.setReadOnly(true);
@@ -36,14 +37,10 @@ public class ApiImpl implements ApiDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             Integer count = 0;
             while (resultSet.next()) {
-                finalBody.add(new RequestBody());
-                finalBody.get(count).setReportName(requestBody.getReportName()); // TODO: rework
-                finalBody.get(count).setReportDescription(requestBody.getReportDescription());
-                finalBody.get(count).setInputs(requestBody.getInputs());
-                finalBody.get(count).setOutputs(requestBody.getOutputs());
-                finalBody.get(count).setSql(requestBody.getSql());
+                responseList.add(new ResponseBody());
                 for (Integer i = 0; i < requestBody.getOutputs().size(); i++) {
-                    finalBody.get(count).setOutputsValue(i, resultSet.getString(requestBody.getOutputsLabel(i)));
+                    responseList.get(count).addResponse();
+                    responseList.get(count).setResponseRow(i, resultSet.getString(requestBody.getOutputsLabel(i)));
                 }
                 count++;
             }
@@ -66,7 +63,7 @@ public class ApiImpl implements ApiDAO {
                 logger.warn("Can't return connection. " + e.getMessage());
             }
         }
-        return finalBody;
+        return responseList;
         }
     }
 

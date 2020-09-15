@@ -1,4 +1,4 @@
-package ru.vegd.entity;
+package ru.vegd.httpEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,14 @@ public class RequestBody {
 
     public void setReportDescription(String description) {
         report.setDescription(description);
+    }
+
+    public Report getReport() {
+        return report;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
     }
 
     public void addInputs() {
