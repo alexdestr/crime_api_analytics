@@ -1,10 +1,10 @@
-package ru.vegd.dataReceiver;
+package ru.vegd.receiver;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import ru.vegd.dao.StopAndSearchesByForceDAO;
-import ru.vegd.dataReceiver.loader.JsonLoader;
-import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
+import ru.vegd.receiver.loader.JsonLoader;
+import ru.vegd.receiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.AvailableStopAndSearchesByForce;
 
 import java.util.ArrayList;

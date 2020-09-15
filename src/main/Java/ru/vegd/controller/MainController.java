@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.vegd.dao.Impl.ApiImpl;
-import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
-import ru.vegd.httpEntity.RequestBody;
-import ru.vegd.httpEntity.ResponseBody;
-import ru.vegd.sqlBuilder.RequestSQLBuilder;
+import ru.vegd.dao.impl.ApiImpl;
+import ru.vegd.receiver.utils.JsonToEntityConverter;
+import ru.vegd.http.RequestBody;
+import ru.vegd.http.ResponseBody;
+import ru.vegd.builder.RequestSQLBuilder;
 import ru.vegd.utils.RequestParser;
 
 import javax.servlet.http.HttpServletRequest;

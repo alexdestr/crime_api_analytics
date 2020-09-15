@@ -1,6 +1,4 @@
-package ru.vegd.dataReceiver.receivingDataExceptions;
-
-import java.util.Objects;
+package ru.vegd.receiver.receivingDataExceptions;
 
 public class ResponseException extends Exception {
 

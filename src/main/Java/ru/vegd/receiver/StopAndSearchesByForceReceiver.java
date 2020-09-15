@@ -1,15 +1,14 @@
-package ru.vegd.dataReceiver;
+package ru.vegd.receiver;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import ru.vegd.dao.ForcesListDAO;
 import ru.vegd.dao.StopAndSearchesByForceDAO;
-import ru.vegd.dataReceiver.loader.JsonLoader;
-import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
+import ru.vegd.receiver.loader.JsonLoader;
+import ru.vegd.receiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.Force;
-import ru.vegd.entity.Station;
 import ru.vegd.entity.StopAndSearchesByForce;
-import ru.vegd.linkBuilder.StopAndSearchesByForceLinkBuilder;
+import ru.vegd.builder.StopAndSearchesByForceLinkBuilder;
 
 import java.time.YearMonth;
 import java.util.ArrayList;

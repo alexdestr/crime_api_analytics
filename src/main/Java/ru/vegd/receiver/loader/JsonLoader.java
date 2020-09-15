@@ -1,4 +1,4 @@
-package ru.vegd.dataReceiver.loader;
+package ru.vegd.receiver.loader;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
@@ -8,7 +8,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.springframework.http.HttpStatus;
-import ru.vegd.dataReceiver.receivingDataExceptions.ResponseException;
+import ru.vegd.receiver.receivingDataExceptions.ResponseException;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

@@ -1,7 +1,7 @@
 package ru.vegd.dao;
 
-import ru.vegd.httpEntity.RequestBody;
-import ru.vegd.httpEntity.ResponseBody;
+import ru.vegd.http.RequestBody;
+import ru.vegd.http.ResponseBody;
 
 import java.util.List;
 

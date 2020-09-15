@@ -1,10 +1,10 @@
-package ru.vegd.dao.Impl;
+package ru.vegd.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.vegd.dao.ApiDAO;
-import ru.vegd.httpEntity.RequestBody;
-import ru.vegd.httpEntity.ResponseBody;
+import ru.vegd.http.RequestBody;
+import ru.vegd.http.ResponseBody;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

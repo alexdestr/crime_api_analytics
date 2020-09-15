@@ -1,4 +1,4 @@
-package ru.vegd.linkBuilder;
+package ru.vegd.builder;
 
 import ru.vegd.dao.StopAndSearchesByForceDAO;
 

@@ -1,4 +1,4 @@
-package ru.vegd.dao.Impl;
+package ru.vegd.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -8,7 +8,6 @@ import ru.vegd.dao.ForcesListDAO;
 import ru.vegd.entity.Force;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 

@@ -1,7 +1,6 @@
-package ru.vegd.dao.Impl;
+package ru.vegd.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 import ru.vegd.dao.StopAndSearchesByForceDAO;

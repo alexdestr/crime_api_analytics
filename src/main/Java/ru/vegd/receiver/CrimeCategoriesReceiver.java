@@ -1,9 +1,9 @@
-package ru.vegd.dataReceiver;
+package ru.vegd.receiver;
 
 import com.google.gson.JsonArray;
 import ru.vegd.dao.CrimeCategoriesDAO;
-import ru.vegd.dataReceiver.loader.JsonLoader;
-import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
+import ru.vegd.receiver.loader.JsonLoader;
+import ru.vegd.receiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.CrimeCategory;
 import ru.vegd.entity.Station;
 

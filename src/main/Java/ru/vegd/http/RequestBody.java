@@ -1,4 +1,4 @@
-package ru.vegd.httpEntity;
+package ru.vegd.http;
 
 import java.util.ArrayList;
 import java.util.List;

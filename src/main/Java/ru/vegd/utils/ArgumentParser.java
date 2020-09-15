@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.vegd.dao.CrimeCategoriesDAO;
 import ru.vegd.dao.ForcesListDAO;
-import ru.vegd.dao.Impl.CommonRowsImpl;
+import ru.vegd.dao.impl.CommonRowsImpl;
 import ru.vegd.dao.StopAndSearchesByForceDAO;
 import ru.vegd.dao.StreetLevelCrimesDAO;
-import ru.vegd.dataReceiver.*;
+import ru.vegd.receiver.*;
 import ru.vegd.entity.Station;
 
 import java.io.BufferedWriter;

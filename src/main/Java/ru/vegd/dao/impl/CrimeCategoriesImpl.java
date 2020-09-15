@@ -1,4 +1,4 @@
-package ru.vegd.dao.Impl;
+package ru.vegd.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;

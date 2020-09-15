@@ -1,4 +1,4 @@
-package ru.vegd.sqlBuilder;
+package ru.vegd.builder;
 
 import java.util.HashMap;
 import java.util.Map;

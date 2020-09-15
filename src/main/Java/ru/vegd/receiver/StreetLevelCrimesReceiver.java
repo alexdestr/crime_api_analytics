@@ -1,13 +1,13 @@
-package ru.vegd.dataReceiver;
+package ru.vegd.receiver;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import ru.vegd.dao.StreetLevelCrimesDAO;
-import ru.vegd.dataReceiver.loader.JsonLoader;
-import ru.vegd.dataReceiver.utils.JsonToEntityConverter;
+import ru.vegd.receiver.loader.JsonLoader;
+import ru.vegd.receiver.utils.JsonToEntityConverter;
 import ru.vegd.entity.Station;
 import ru.vegd.entity.StreetLevelCrime;
-import ru.vegd.linkBuilder.StreetLevelCrimesLinkBuider;
+import ru.vegd.builder.StreetLevelCrimesLinkBuider;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
