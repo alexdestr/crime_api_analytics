@@ -8,8 +8,8 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>ru.vegd</groupId>
-  <artifactId>Task1</artifactId>
-  <name>Task1 Maven Webapp</name>
+  <artifactId>crime_api_analytics</artifactId>
+  <name>crime_api_analytics</name>
   <version>1.0-SNAPSHOT</version>
   <build>
     <finalName>Task1</finalName>
