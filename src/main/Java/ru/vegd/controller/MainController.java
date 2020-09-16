@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.vegd.dao.impl.ApiImpl;
+import ru.vegd.receiver.DataReceiver;
 import ru.vegd.receiver.utils.JsonToEntityConverter;
 import ru.vegd.http.RequestBody;
 import ru.vegd.http.ResponseBody;
@@ -24,7 +24,7 @@ public class MainController {
             org.apache.log4j.Logger.getLogger(MainController.class.getName());
 
     @Autowired
-    ApiImpl api;
+    DataReceiver api;
 
     @PostMapping("/api")
     public String getApiResponse(HttpServletRequest request, Model model) {

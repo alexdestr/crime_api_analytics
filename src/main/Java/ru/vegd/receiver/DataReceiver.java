@@ -1,8 +1,7 @@
-package ru.vegd.dao.impl;
+package ru.vegd.receiver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.vegd.dao.ApiDAO;
 import ru.vegd.http.RequestBody;
 import ru.vegd.http.ResponseBody;
 
@@ -15,15 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ApiImpl implements ApiDAO {
+public class DataReceiver {
 
     private final static org.apache.log4j.Logger logger =
-            org.apache.log4j.Logger.getLogger(ApiImpl.class.getName());
+            org.apache.log4j.Logger.getLogger(DataReceiver.class.getName());
 
     @Autowired
     private DataSource dataSource;
 
-    @Override
     public List<ResponseBody> getDataByRequest(RequestBody requestBody) {
         PreparedStatement preparedStatement = null;
         Connection conn = null;
