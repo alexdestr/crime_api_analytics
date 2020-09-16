@@ -16,7 +16,8 @@ import java.util.List;
 @Repository
 public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
 
-    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(StopAndSearchesByForceImpl.class.getName());
+    private final static org.apache.log4j.Logger logger
+            = org.apache.log4j.Logger.getLogger(StopAndSearchesByForceImpl.class.getName());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -75,8 +76,10 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
     private static final String SQL_CHECK_FOR_AVAILABILITY = "SELECT EXISTS(SELECT * FROM availableForces " +
             "WHERE date = ? AND force = ?)";
 
-    private static final String PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY = "db/scripts/script#4/stop_and_searches_statistic_by_ethnicity.sql";
-    private static final String PATH_TO_SQL_QUERY_MOST_POPULAR_STOP_AND_SEARCHES_SNAPSHOT_ON_STREET_LEVEL = "db/scripts/script#5/most_popular_stop_and_search_snapshot_on_street_level.sql";
+    private static final String PATH_TO_SQL_QUERY_STOP_AND_SEARCHES_STATISTIC_BY_ETHNICITY =
+            "db/scripts/script#4/stop_and_searches_statistic_by_ethnicity.sql";
+    private static final String PATH_TO_SQL_QUERY_MOST_POPULAR_STOP_AND_SEARCHES_SNAPSHOT_ON_STREET_LEVEL =
+            "db/scripts/script#5/most_popular_stop_and_search_snapshot_on_street_level.sql";
 
     @Override
     public void add(List<StopAndSearchesByForce> stopAndSearchesByForce) {
@@ -94,14 +97,16 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
                             ps.setNull(4, Types.BOOLEAN);
                         }
                         ps.setString(5, stopAndSearchesByForce.get(i).getOperationName());
-                        if (stopAndSearchesByForce.get(i).getLatitude() != null && stopAndSearchesByForce.get(i).getLongitude() != null) {
+                        if (stopAndSearchesByForce.get(i).getLatitude() != null
+                                && stopAndSearchesByForce.get(i).getLongitude() != null) {
                             ps.setDouble(6, stopAndSearchesByForce.get(i).getLatitude());
                             ps.setDouble(7, stopAndSearchesByForce.get(i).getLongitude());
                         } else {
                             ps.setNull(6, Types.DECIMAL);
                             ps.setNull(7, Types.DECIMAL);
                         }
-                        if (stopAndSearchesByForce.get(i).getStreetId() != null && stopAndSearchesByForce.get(i).getStreetName() != null) {
+                        if (stopAndSearchesByForce.get(i).getStreetId() != null
+                                && stopAndSearchesByForce.get(i).getStreetName() != null) {
                             ps.setDouble(8, stopAndSearchesByForce.get(i).getStreetId());
                             ps.setString(9, stopAndSearchesByForce.get(i).getStreetName());
                         } else {
@@ -116,12 +121,14 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
                         ps.setString(15, stopAndSearchesByForce.get(i).getObjectOfSearch());
                         ps.setString(16, stopAndSearchesByForce.get(i).getOutcome());
                         if (stopAndSearchesByForce.get(i).getOutcomeLinkedToObjectOfSearch() != null) {
-                            ps.setBoolean(17, stopAndSearchesByForce.get(i).getOutcomeLinkedToObjectOfSearch());
+                            ps.setBoolean(17, stopAndSearchesByForce.get(i)
+                                    .getOutcomeLinkedToObjectOfSearch());
                         } else {
                             ps.setNull(17, Types.BOOLEAN);
                         }
                         if (stopAndSearchesByForce.get(i).getRemovalOfMoreThanOuterClothing() != null) {
-                            ps.setBoolean(18, stopAndSearchesByForce.get(i).getRemovalOfMoreThanOuterClothing());
+                            ps.setBoolean(18, stopAndSearchesByForce.get(i)
+                                    .getRemovalOfMoreThanOuterClothing());
                         } else {
                             ps.setNull(18, Types.BOOLEAN);
                         }
@@ -134,14 +141,16 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
                             ps.setNull(22, Types.BOOLEAN);
                         }
                         ps.setString(23, stopAndSearchesByForce.get(i).getOperationName());
-                        if (stopAndSearchesByForce.get(i).getLatitude() != null && stopAndSearchesByForce.get(i).getLongitude() != null) {
+                        if (stopAndSearchesByForce.get(i).getLatitude() != null
+                                && stopAndSearchesByForce.get(i).getLongitude() != null) {
                             ps.setDouble(24, stopAndSearchesByForce.get(i).getLatitude());
                             ps.setDouble(25, stopAndSearchesByForce.get(i).getLongitude());
                         } else {
                             ps.setNull(24, Types.DECIMAL);
                             ps.setNull(25, Types.DECIMAL);
                         }
-                        if (stopAndSearchesByForce.get(i).getStreetId() != null && stopAndSearchesByForce.get(i).getStreetName() != null) {
+                        if (stopAndSearchesByForce.get(i).getStreetId() != null
+                                && stopAndSearchesByForce.get(i).getStreetName() != null) {
                             ps.setDouble(26, stopAndSearchesByForce.get(i).getStreetId());
                             ps.setString(27, stopAndSearchesByForce.get(i).getStreetName());
                         } else {
@@ -156,12 +165,14 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
                         ps.setString(33, stopAndSearchesByForce.get(i).getObjectOfSearch());
                         ps.setString(34, stopAndSearchesByForce.get(i).getOutcome());
                         if (stopAndSearchesByForce.get(i).getOutcomeLinkedToObjectOfSearch() != null) {
-                            ps.setBoolean(35, stopAndSearchesByForce.get(i).getOutcomeLinkedToObjectOfSearch());
+                            ps.setBoolean(35, stopAndSearchesByForce.get(i)
+                                    .getOutcomeLinkedToObjectOfSearch());
                         } else {
                             ps.setNull(35, Types.BOOLEAN);
                         }
                         if (stopAndSearchesByForce.get(i).getRemovalOfMoreThanOuterClothing() != null) {
-                            ps.setBoolean(36, stopAndSearchesByForce.get(i).getRemovalOfMoreThanOuterClothing());
+                            ps.setBoolean(36, stopAndSearchesByForce.get(i)
+                                    .getRemovalOfMoreThanOuterClothing());
                         } else {
                             ps.setNull(36, Types.BOOLEAN);
                         }
@@ -235,12 +246,18 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
                         StringBuilder output;
                         output = new StringBuilder("--------------");
                         output.append("\n");
-                        output.append("Officer Defined Ethnicity: ").append(rs.getString("officer_defined_ethnicity")).append("\n");
-                        output.append("Stop And Search Count: ").append(rs.getString("count")).append("\n");
-                        output.append("Arrest Rate: ").append(rs.getString("arrest_rate")).append("\n");
-                        output.append("Release Rate: ").append(rs.getString("release_count")).append("\n");
-                        output.append("Other Outcomes Rate: ").append(rs.getString("other_outcomes_count")).append("\n");
-                        output.append("Most Popular Object Of Search: ").append(rs.getString("object_of_search"));
+                        output.append("Officer Defined Ethnicity: ")
+                                .append(rs.getString("officer_defined_ethnicity")).append("\n");
+                        output.append("Stop And Search Count: ")
+                                .append(rs.getString("count")).append("\n");
+                        output.append("Arrest Rate: ")
+                                .append(rs.getString("arrest_rate")).append("\n");
+                        output.append("Release Rate: ")
+                                .append(rs.getString("release_count")).append("\n");
+                        output.append("Other Outcomes Rate: ")
+                                .append(rs.getString("other_outcomes_count")).append("\n");
+                        output.append("Most Popular Object Of Search: ")
+                                .append(rs.getString("object_of_search"));
                         finalOutput.add(String.valueOf(output));
                     }
                 });
@@ -249,7 +266,8 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
 
     @Override
     public List<String> getMostProbableStopAndSearchSnapshotOnStreetLevel(YearMonth from, YearMonth to) {
-        String sqlScript = SQLParser.parseSQLFileToString(PATH_TO_SQL_QUERY_MOST_POPULAR_STOP_AND_SEARCHES_SNAPSHOT_ON_STREET_LEVEL);
+        String sqlScript = SQLParser
+                .parseSQLFileToString(PATH_TO_SQL_QUERY_MOST_POPULAR_STOP_AND_SEARCHES_SNAPSHOT_ON_STREET_LEVEL);
         List<String> finalOutput = new ArrayList<>();
         jdbcTemplate.query(
                 sqlScript,
@@ -259,13 +277,20 @@ public class StopAndSearchesByForceImpl implements StopAndSearchesByForceDAO {
                         StringBuilder output;
                         output = new StringBuilder("--------------");
                         output.append("\n");
-                        output.append("Street Id: ").append(rs.getString("street_id")).append("\n");
-                        output.append("Street Name: ").append(rs.getString("street_name")).append("\n");
-                        output.append("Age Range: ").append(rs.getString("age_range")).append("\n");
-                        output.append("Gender: ").append(rs.getString("gender")).append("\n");
-                        output.append("Officer Defined Ethnicity: ").append(rs.getString("officer_defined_ethnicity")).append("\n");
-                        output.append("Object Of Search: ").append(rs.getString("object_of_search")).append("\n");
-                        output.append("Outcome: ").append(rs.getString("outcome"));
+                        output.append("Street Id: ")
+                                .append(rs.getString("street_id")).append("\n");
+                        output.append("Street Name: ")
+                                .append(rs.getString("street_name")).append("\n");
+                        output.append("Age Range: ")
+                                .append(rs.getString("age_range")).append("\n");
+                        output.append("Gender: ")
+                                .append(rs.getString("gender")).append("\n");
+                        output.append("Officer Defined Ethnicity: ")
+                                .append(rs.getString("officer_defined_ethnicity")).append("\n");
+                        output.append("Object Of Search: ")
+                                .append(rs.getString("object_of_search")).append("\n");
+                        output.append("Outcome: ")
+                                .append(rs.getString("outcome"));
                         finalOutput.add(String.valueOf(output));
                     }
                 });

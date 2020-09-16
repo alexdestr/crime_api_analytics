@@ -20,7 +20,8 @@ import java.util.List;
 @Repository
 public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
 
-    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(StreetLevelCrimesImpl.class.getName());
+    private final static org.apache.log4j.Logger logger
+            = org.apache.log4j.Logger.getLogger(StreetLevelCrimesImpl.class.getName());
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -56,9 +57,12 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
             "location_subtype = ?, " +
             "month = ?";
 
-    private static final String PATH_TO_SQL_QUERY_MOST_DANGEROUS_STREET = "db/scripts/script#1/most_dangerous_streets.sql";
-    private static final String PATH_TO_SQL_QUERY_CRIME_VOLUME_COMPARSION = "db/scripts/script#2/crime_volume_comparsion.sql";
-    private static final String PATH_TO_SQL_QUERY_CRIMES_WITH_SPECIFIED_OUTCOME_STATUS = "db/scripts/script#3/crimes_with_specified_outcome_status.sql";
+    private static final String PATH_TO_SQL_QUERY_MOST_DANGEROUS_STREET =
+            "db/scripts/script#1/most_dangerous_streets.sql";
+    private static final String PATH_TO_SQL_QUERY_CRIME_VOLUME_COMPARSION =
+            "db/scripts/script#2/crime_volume_comparsion.sql";
+    private static final String PATH_TO_SQL_QUERY_CRIMES_WITH_SPECIFIED_OUTCOME_STATUS =
+            "db/scripts/script#3/crimes_with_specified_outcome_status.sql";
 
     @Override
     public void add(List<StreetLevelCrime> crimeList) {
@@ -152,12 +156,18 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
                         StringBuilder output;
                         output = new StringBuilder("--------------");
                         output.append("\n");
-                        output.append("Category: ").append(rs.getString("category")).append("\n");
-                        output.append("Month: ").append(rs.getString("mth")).append("\n");
-                        output.append("Previous Month Count: ").append(rs.getString("previous_month_count")).append("\n");
-                        output.append("Current Month Count: ").append(rs.getString("current_month_count")).append("\n");
-                        output.append("Delta: ").append(rs.getString("delta")).append("\n");
-                        output.append("Growth Rate: ").append(rs.getString("growth_rate"));
+                        output.append("Category: ")
+                                .append(rs.getString("category")).append("\n");
+                        output.append("Month: ")
+                                .append(rs.getString("mth")).append("\n");
+                        output.append("Previous Month Count: ")
+                                .append(rs.getString("previous_month_count")).append("\n");
+                        output.append("Current Month Count: ")
+                                .append(rs.getString("current_month_count")).append("\n");
+                        output.append("Delta: ")
+                                .append(rs.getString("delta")).append("\n");
+                        output.append("Growth Rate: ")
+                                .append(rs.getString("growth_rate"));
                         finalOutput.add(String.valueOf(output));
                     }
                 });
@@ -185,10 +195,14 @@ public class StreetLevelCrimesImpl implements StreetLevelCrimesDAO {
                         StringBuilder output;
                         output = new StringBuilder("--------------");
                         output.append("\n");
-                        output.append("Street Id: ").append(rs.getString("street_id")).append("\n");
-                        output.append("Street Name: ").append(rs.getString("street_name")).append("\n");
-                        output.append("Outcome Category: ").append(rs.getString("outcome_category")).append("\n");
-                        output.append("Percentage Of The Total Crimes: ").append(rs.getString("percentage_of_the_total_crimes"));
+                        output.append("Street Id: ")
+                                .append(rs.getString("street_id")).append("\n");
+                        output.append("Street Name: ")
+                                .append(rs.getString("street_name")).append("\n");
+                        output.append("Outcome Category: ")
+                                .append(rs.getString("outcome_category")).append("\n");
+                        output.append("Percentage Of The Total Crimes: ")
+                                .append(rs.getString("percentage_of_the_total_crimes"));
                         finalOutput.add(String.valueOf(output));
                     }
                 });

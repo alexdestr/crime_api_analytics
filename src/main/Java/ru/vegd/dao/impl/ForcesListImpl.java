@@ -14,7 +14,8 @@ import java.util.List;
 @Repository
 public class ForcesListImpl implements ForcesListDAO {
 
-    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(ForcesListImpl.class.getName());
+    private final static org.apache.log4j.Logger logger
+            = org.apache.log4j.Logger.getLogger(ForcesListImpl.class.getName());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

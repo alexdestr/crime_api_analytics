@@ -14,7 +14,8 @@ import java.util.List;
 @Repository
 public class CrimeCategoriesImpl implements CrimeCategoriesDAO {
 
-    private final static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(CrimeCategoriesImpl.class.getName());
+    private final static org.apache.log4j.Logger logger
+            = org.apache.log4j.Logger.getLogger(CrimeCategoriesImpl.class.getName());
 
     @Autowired
     JdbcTemplate jdbcTemplate;
